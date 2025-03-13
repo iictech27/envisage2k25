@@ -28,7 +28,10 @@ const Header = () => {
     { path: "/events", label: "Events" },
     { path: "/countdown", label: "Countdown" },
     { path: "/speakers", label: "Speakers" },
-    { path: "/register", label: "Register" },
+    { path: "/team", label: "Team" },
+    { path: "/partner", label: "Partner" },
+    { path: "/signup", label: "Sign Up" },
+    { path: "/login", label: "Login" },
   ];
 
   return (
@@ -49,7 +52,7 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:block">
           <ul className="flex space-x-8">
-            {navItems.map((item) => (
+            {navItems.slice(0, 6).map((item) => (
               <li key={item.label}>
                 <NavLink
                   to={item.path}
@@ -66,9 +69,20 @@ const Header = () => {
           </ul>
         </nav>
 
-        <button className="cyber-button hidden md:block cursor-pointer hover:scale-105 active:scale-95 transition-transform">
-          Register Now
-        </button>
+        <div className="hidden md:flex space-x-4">
+          <NavLink
+            to="/login"
+            className="font-futuristic text-white hover:text-neon transition-colors duration-300"
+          >
+            Login
+          </NavLink>
+          <NavLink
+            to="/signup"
+            className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+          >
+            Sign Up
+          </NavLink>
+        </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">

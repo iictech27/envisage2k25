@@ -6,6 +6,11 @@ import EventsPage from "./pages/EventsPage";
 import CountdownPage from "./pages/CountdownPage";
 import SpeakersPage from "./pages/SpeakersPage";
 import RegisterPage from "./pages/RegisterPage";
+import SignUpPage from "./pages/SignUpPage";
+import LoginPage from "./pages/LoginPage";
+import TeamPage from "./pages/TeamPage";
+import PartnerPage from "./pages/PartnerPage";
+import GalleryPage from "./pages/GalleryPage";
 
 function App() {
   return (
@@ -17,8 +22,13 @@ function App() {
             <Route path="events" element={<EventsPage />} />
             <Route path="countdown" element={<CountdownPage />} />
             <Route path="speakers" element={<SpeakersPage />} />
+            <Route path="team" element={<TeamPage />} />
+            <Route path="partner" element={<PartnerPage />} />
+            <Route path="gallery" element={<GalleryPage />} />
           </Route>
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
