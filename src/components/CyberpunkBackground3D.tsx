@@ -105,7 +105,7 @@ const CyberpunkBackground3D = ({
         }
 
         // Animate objects in the scene
-        animateObjects(sceneRef.current, timeRef.current, variant);
+        animateObjects(sceneRef.current, timeRef.current);
 
         rendererRef.current.render(sceneRef.current, cameraRef.current);
       }
@@ -426,7 +426,7 @@ const CyberpunkBackground3D = ({
   const animateObjects = (
     scene: THREE.Scene,
     time: number,
-    variant: string,
+    //variant?: string,
   ) => {
     scene.traverse((object) => {
       if (!object.userData) return;

@@ -12,7 +12,11 @@ import {
   Stars,
 } from "@react-three/drei";
 import * as THREE from "three";
+// import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
+import { Preload } from "@react-three/drei";
+import { PerformanceMonitor } from "@react-three/drei";
 
+<Preload all />;
 
 // Add a style tag to ensure text is visible by default
 // const visibleTextStyle = {
@@ -23,9 +27,10 @@ import * as THREE from "three";
 
 // Enhanced 3D background component
 const Background = () => {
+  const isMobile = window.innerWidth < 768;
   // Digital rain effect
   const DigitalRain = () => {
-    const rainCount = 200;
+    const rainCount = isMobile ? 50 : 200;
     const rainDrops = [];
 
     for (let i = 0; i < rainCount; i++) {
@@ -145,7 +150,7 @@ const Background = () => {
   // Floating particles system
   const ParticleSystem = () => {
     const particles = [];
-    const count = 200;
+    const count = isMobile ? 50 : 200;
 
     for (let i = 0; i < count; i++) {
       // Create a spherical distribution
@@ -172,13 +177,19 @@ const Background = () => {
 
     const particleGroup = useRef<THREE.Group>(null);
 
-    useFrame(({ clock }) => {
-      if (!particleGroup.current) return;
-      const t = clock.getElapsedTime();
+    // useFrame(({ clock }) => {
+    //   if (!particleGroup.current) return;
+    //   const t = clock.getElapsedTime();
 
-      // Rotate the entire particle system slowly
+    //   // Rotate the entire particle system slowly
+    //   particleGroup.current.rotation.y = t * 0.05;
+    //   particleGroup.current.rotation.x = Math.sin(t * 0.025) * 0.1;
+    // });
+    useFrame(({ clock }, delta) => {
+      if (!particleGroup.current) return;
+      if (delta > 0.03) return; // Skip frames when FPS is low
+      const t = clock.getElapsedTime();
       particleGroup.current.rotation.y = t * 0.05;
-      particleGroup.current.rotation.x = Math.sin(t * 0.025) * 0.1;
     });
 
     return <group ref={particleGroup}>{particles}</group>;
@@ -254,8 +265,12 @@ const Background = () => {
       <fog attach="fog" args={["#0f172a", 8, 30]} />
 
       <ambientLight intensity={0.2} />
-      <pointLight position={[10, 10, 10]} intensity={0.5} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#22d3ee" />
+      <pointLight position={[10, 10, 10]} intensity={isMobile ? 0.3 : 0.5} />
+      <pointLight
+        position={[-10, -10, -10]}
+        intensity={isMobile ? 0.3 : 0.5}
+        color="#22d3ee"
+      />
 
       {/* Digital rain effect */}
       <DigitalRain />
@@ -276,7 +291,7 @@ const Background = () => {
       <Stars
         radius={100}
         depth={50}
-        count={2000}
+        count={ isMobile ? 500 : 2000}
         factor={4}
         saturation={0}
         fade
@@ -321,6 +336,9 @@ const NeonHero3D = ({ onRegisterClick }: NeonHero3DProps) => {
       {/* 3D Canvas */}
       <div className="absolute inset-0 z-0">
         <Canvas dpr={[1, 2]} gl={{ antialias: true }}>
+          <PerformanceMonitor
+            onChange={({ fps }) => console.log("FPS:", fps)}
+          />
           <Background />
           <OrbitControls
             enableZoom={false}

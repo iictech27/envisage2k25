@@ -183,6 +183,7 @@ const EventsBackground = () => {
 
     return <group ref={particleGroup}>{particles}</group>;
   };
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <>
@@ -207,12 +208,11 @@ const EventsBackground = () => {
 
       {/* Subtle sparkles */}
       <Sparkles
-        count={100}
+        count={isMobile ? 30 : 100}
         scale={20}
         size={1}
         speed={0.3}
         opacity={0.3}
-        color="#22d3ee"
       />
 
       {/* Background sphere */}
