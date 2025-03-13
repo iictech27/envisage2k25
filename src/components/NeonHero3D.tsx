@@ -291,7 +291,7 @@ const Background = () => {
       <Stars
         radius={100}
         depth={50}
-        count={ isMobile ? 500 : 2000}
+        count={isMobile ? 500 : 2000}
         factor={4}
         saturation={0}
         fade

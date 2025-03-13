@@ -4,6 +4,7 @@
 
 :root {
   color-scheme: dark;
+  --animation-speed-multiplier: 1;
 }
 
 body {
@@ -74,4 +75,111 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #6d28d9;
+}
+
+/* Mobile performance optimizations */
+@media (max-width: 767px) {
+  .mobile-optimized {
+    /* Reduce animation complexity */
+    --animation-speed-multiplier: 0.5;
+  }
+
+  /* Optimize rendering for mobile */
+  .homepage-container {
+    contain: content;
+  }
+
+  /* Reduce animation complexity on mobile */
+  .mobile-optimized .animate-glitch-1,
+  .mobile-optimized .animate-glitch-2 {
+    animation-duration: calc(3s * var(--animation-speed-multiplier));
+  }
+
+  .mobile-optimized .animate-spin {
+    animation-duration: calc(1s * var(--animation-speed-multiplier));
+  }
+
+  .mobile-optimized .animate-spin-reverse {
+    animation-duration: calc(1.5s * var(--animation-speed-multiplier));
+  }
+
+  /* Optimize background effects for mobile */
+  .mobile-optimized .bg-grid-pattern {
+    background-size: 20px 20px;
+  }
+
+  /* Use hardware acceleration for certain elements */
+  .will-change-transform {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Additional mobile optimizations */
+
+  /* Optimize scrolling performance */
+  body.mobile-optimized {
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Reduce paint operations during scroll */
+  .mobile-optimized * {
+    backface-visibility: hidden;
+  }
+
+  /* Optimize images for mobile */
+  .mobile-optimized img {
+    content-visibility: auto;
+  }
+
+  /* Reduce repaints for fixed elements */
+  .mobile-optimized .fixed,
+  .mobile-optimized .absolute {
+    transform: translateZ(0);
+  }
+
+  /* Optimize transitions */
+  .mobile-optimized .transition-all,
+  .mobile-optimized .transition-opacity,
+  .mobile-optimized .transition-transform,
+  .mobile-optimized .transition-colors {
+    transition-duration: 0.2s !important;
+  }
+
+  /* Disable hover effects on mobile */
+  .mobile-optimized .hover\:* {
+    transition: none !important;
+  }
+
+  /* Optimize Canvas rendering */
+  .mobile-optimized canvas {
+    image-rendering: optimizeSpeed;
+  }
+}
+
+/* Add animation for spin-reverse if not already defined */
+@keyframes spin-reverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 1.5s linear infinite;
+}
+
+/* Optimize loading of components */
+.homepage-container > div {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Optimize paint operations */
+.cyber-button,
+.glass-card,
+.neon-border {
+  transform: translateZ(0);
 }
