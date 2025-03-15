@@ -1,0 +1,28 @@
+{
+  "name": "envisage_backend",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "dotenvx run --env-file=.env.local --env-file=.env --overload -- tsx watch src",
+    "dev": "npm start",
+    "build": "dotenvx run --env-file=.env.local --env-file=.env --overload -- tsc src/index.ts",
+    "build_run": "npm run build && node build/index.js",
+    "lint": "eslint . --ext .ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "envalid": "^8.0.0",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.38.5",
+    "@eslint/js": "^9.22.0",
+    "@types/express": "^5.0.0",
+    "eslint": "^9.22.0",
+    "globals": "^16.0.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1"
+  }
+}
