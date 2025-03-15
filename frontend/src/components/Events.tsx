@@ -31,7 +31,8 @@ const Events = () => {
       date: "APR 15-17, 2025",
       description:
         "Join the ultimate VR development challenge! Create innovative virtual reality experiences in just 48 hours. Open to developers of all skill levels.",
-      image: "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      image:
+        "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       color: "var(--color-neon-main)",
       category: "hackathon",
     },
@@ -41,7 +42,8 @@ const Events = () => {
       date: "MAY 5-12, 2025",
       description:
         "Experience the intersection of artificial intelligence and creativity. This exhibition showcases stunning artworks created with cutting-edge AI algorithms.",
-      image: "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      image:
+        "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       color: "var(--color-accent-main)",
       category: "exhibition",
     },
@@ -51,7 +53,8 @@ const Events = () => {
       date: "JUN 8, 2025",
       description:
         "Learn the fundamentals of blockchain technology and cryptocurrency. This hands-on workshop will cover smart contracts, DeFi, and NFT development.",
-      image: "https://images.unsplash.com/photo-1639322537231-2f206e06af84?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      image:
+        "https://images.unsplash.com/photo-1639322537231-2f206e06af84?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       color: "var(--color-highlight-main)",
       category: "workshop",
     },
@@ -61,7 +64,8 @@ const Events = () => {
       date: "JUL 22-23, 2025",
       description:
         "Immerse yourself in futuristic sounds at this two-day music festival. Featuring electronic, synthwave, and industrial artists from around the world.",
-      image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      image:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       color: "var(--color-neon-light)",
       category: "entertainment",
     },
@@ -72,26 +76,25 @@ const Events = () => {
 
   // Filter events based on active category and search query
   const filteredEvents = events.filter((event) => {
-    const matchesCategory = activeCategory === "all" || event.category === activeCategory;
-    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          event.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      activeCategory === "all" || event.category === activeCategory;
+    const matchesSearch =
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   return (
-    <section 
-      ref={sectionRef} 
-      className="py-16 relative overflow-hidden"
-    >
+    <section ref={sectionRef} className="py-16 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 z-0">
         {/* Grid background */}
-        <div 
-          className="absolute inset-0" 
-          style={{ 
+        <div
+          className="absolute inset-0"
+          style={{
             backgroundImage: "var(--effect-grid-background)",
             backgroundSize: "var(--effect-grid-size) var(--effect-grid-size)",
-            opacity: 0.2
+            opacity: 0.2,
           }}
         ></div>
       </div>
@@ -99,7 +102,7 @@ const Events = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
         <div className="text-center mb-12">
-          <motion.h2 
+          <motion.h2
             className="text-4xl md:text-5xl font-cyber mb-4 uppercase tracking-wider"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,20 +111,21 @@ const Events = () => {
           >
             Upcoming Events
           </motion.h2>
-          <motion.p 
+          <motion.p
             className="text-lg font-futuristic text-gray-300 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Discover our lineup of cutting-edge tech events and immersive experiences
+            Discover our lineup of cutting-edge tech events and immersive
+            experiences
           </motion.p>
         </div>
 
         {/* Search and filter controls */}
         <div className="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Search input */}
-          <motion.div 
+          <motion.div
             className="relative w-full md:w-64"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -133,26 +137,31 @@ const Events = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-4 py-2 bg-transparent rounded-md font-futuristic"
-              style={{ 
+              style={{
                 border: "1px solid var(--color-border-light)",
                 color: "var(--color-text-primary)",
-                boxShadow: "var(--shadow-neon-sm)"
+                boxShadow: "var(--shadow-neon-sm)",
               }}
             />
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 absolute right-3 top-1/2 transform -translate-y-1/2" 
-              fill="none" 
-              viewBox="0 0 24 24" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 absolute right-3 top-1/2 transform -translate-y-1/2"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
               style={{ color: "var(--color-text-secondary)" }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </motion.div>
 
           {/* Category filters */}
-          <motion.div 
+          <motion.div
             className="flex flex-wrap justify-center gap-2"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -164,24 +173,67 @@ const Events = () => {
                 onClick={() => setActiveCategory(category)}
                 className="px-4 py-2 rounded-full text-sm font-cyber uppercase tracking-wider transition-all duration-300"
                 style={{
-                  backgroundColor: activeCategory === category 
-                    ? `var(--color-${category === 'all' ? 'neon' : category === 'hackathon' ? 'neon' : 
-                        category === 'exhibition' ? 'accent' : category === 'workshop' ? 'highlight' : 
-                        category === 'entertainment' ? 'neon-light' : 'neon'}-main)`
-                    : 'transparent',
-                  color: activeCategory === category 
-                    ? 'var(--color-background-default)' 
-                    : `var(--color-${category === 'all' ? 'neon' : category === 'hackathon' ? 'neon' : 
-                        category === 'exhibition' ? 'accent' : category === 'workshop' ? 'highlight' : 
-                        category === 'entertainment' ? 'neon-light' : 'neon'}-main)`,
-                  border: `1px solid var(--color-${category === 'all' ? 'neon' : category === 'hackathon' ? 'neon' : 
-                    category === 'exhibition' ? 'accent' : category === 'workshop' ? 'highlight' : 
-                    category === 'entertainment' ? 'neon-light' : 'neon'}-main)`,
-                  boxShadow: activeCategory === category 
-                    ? `0 0 10px var(--color-${category === 'all' ? 'neon' : category === 'hackathon' ? 'neon' : 
-                        category === 'exhibition' ? 'accent' : category === 'workshop' ? 'highlight' : 
-                        category === 'entertainment' ? 'neon-light' : 'neon'}-main)` 
-                    : 'none'
+                  backgroundColor:
+                    activeCategory === category
+                      ? `var(--color-${
+                          category === "all"
+                            ? "neon"
+                            : category === "hackathon"
+                            ? "neon"
+                            : category === "exhibition"
+                            ? "accent"
+                            : category === "workshop"
+                            ? "highlight"
+                            : category === "entertainment"
+                            ? "neon-light"
+                            : "neon"
+                        }-main)`
+                      : "transparent",
+                  color:
+                    activeCategory === category
+                      ? "var(--color-background-default)"
+                      : `var(--color-${
+                          category === "all"
+                            ? "neon"
+                            : category === "hackathon"
+                            ? "neon"
+                            : category === "exhibition"
+                            ? "accent"
+                            : category === "workshop"
+                            ? "highlight"
+                            : category === "entertainment"
+                            ? "neon-light"
+                            : "neon"
+                        }-main)`,
+                  border: `1px solid var(--color-${
+                    category === "all"
+                      ? "neon"
+                      : category === "hackathon"
+                      ? "neon"
+                      : category === "exhibition"
+                      ? "accent"
+                      : category === "workshop"
+                      ? "highlight"
+                      : category === "entertainment"
+                      ? "neon-light"
+                      : "neon"
+                  }-main)`,
+                  boxShadow:
+                    activeCategory === category
+                      ? `0 0 10px var(--color-${
+                          category === "all"
+                            ? "neon"
+                            : category === "hackathon"
+                            ? "neon"
+                            : category === "exhibition"
+                            ? "accent"
+                            : category === "workshop"
+                            ? "highlight"
+                            : category === "entertainment"
+                            ? "neon-light"
+                            : "neon"
+                        }-main)`
+                      : "none",
                 }}
               >
                 {category}
@@ -194,28 +246,34 @@ const Events = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredEvents.length > 0 ? (
             filteredEvents.map((event) => (
-              <div 
-                key={event.id} 
+              <div
+                key={event.id}
                 className="bg-secondary-main rounded-lg overflow-hidden shadow-lg border border-border-light hover:border-neon-main transition-all duration-300"
               >
-                <div 
-                  className="h-48 bg-cover bg-center" 
+                <div
+                  className="h-48 bg-cover bg-center"
                   style={{ backgroundImage: `url(${event.image})` }}
                 ></div>
                 <div className="p-4">
-                  <div 
+                  <div
                     className="inline-block px-2 py-1 rounded-full text-xs mb-2"
-                    style={{ 
-                      backgroundColor: `${event.color}20`, 
+                    style={{
+                      backgroundColor: `${event.color}20`,
                       color: event.color,
-                      border: `1px solid ${event.color}60` 
+                      border: `1px solid ${event.color}60`,
                     }}
                   >
                     {event.category}
                   </div>
-                  <h3 className="text-xl font-cyber text-white mb-1">{event.title}</h3>
-                  <p className="text-sm font-digital text-gray-300 mb-2">{event.date}</p>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">{event.description}</p>
+                  <h3 className="text-xl font-cyber text-white mb-1">
+                    {event.title}
+                  </h3>
+                  <p className="text-sm font-digital text-gray-300 mb-2">
+                    {event.date}
+                  </p>
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                    {event.description}
+                  </p>
                   <button
                     className="px-4 py-2 rounded-md font-cyber text-sm uppercase tracking-wider transition-all duration-300"
                     style={{
@@ -231,7 +289,7 @@ const Events = () => {
             ))
           ) : (
             <div className="col-span-full text-center py-16">
-              <p 
+              <p
                 className="text-xl font-cyber mb-4"
                 style={{ color: "var(--color-text-secondary)" }}
               >
@@ -277,4 +335,4 @@ const Events = () => {
   );
 };
 
-export default Events; 
+export default Events;
