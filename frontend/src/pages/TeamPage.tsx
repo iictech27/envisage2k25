@@ -20,15 +20,15 @@ interface TeamMember {
 const TeamPage = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [animatedMembers, setAnimatedMembers] = useState<TeamMember[]>([]);
-
+  
   // Sample team data - replace with your actual team members
   const teamMembers: TeamMember[] = [
     {
       id: 1,
-      name: "Alex Quantum",
-      role: "Founder & CEO",
+      name: "Aaquib Ahmed",
+      role: "Convenor",
       bio: "Visionary metaverse architect with 10+ years experience in virtual reality and blockchain technologies.",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      image: "./images/Aaquib Ahmad.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -37,10 +37,10 @@ const TeamPage = () => {
     },
     {
       id: 2,
-      name: "Sophia Neural",
-      role: "CTO",
+      name: "Aadarsh Sharma",
+      role: "Convenor of External Affairs",
       bio: "AI specialist and full-stack developer with expertise in creating immersive digital experiences.",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      image: "./images/Aadarsh Sharma.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -48,10 +48,10 @@ const TeamPage = () => {
     },
     {
       id: 3,
-      name: "Marcus Blade",
-      role: "Creative Director",
+      name: "Manash Goyal",
+      role: "Co-Convenor",
       bio: "Award-winning digital artist specializing in cyberpunk aesthetics and futuristic UI/UX design.",
-      image: "https://randomuser.me/api/portraits/men/22.jpg",
+      image: "./images/Manash-Goyal.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -60,10 +60,10 @@ const TeamPage = () => {
     },
     {
       id: 4,
-      name: "Luna Cipher",
-      role: "Blockchain Engineer",
+      name: "Payel Chaudhuri",
+      role: "Campus Director HULT Prize",
       bio: "Cryptography expert focused on building secure and decentralized metaverse infrastructure.",
-      image: "https://randomuser.me/api/portraits/women/29.jpg",
+      image: "./images/Payel Chaudhuri.webp",
       socialLinks: {
         github: "https://github.com",
         linkedin: "https://linkedin.com",
@@ -71,10 +71,10 @@ const TeamPage = () => {
     },
     {
       id: 5,
-      name: "Zion Matrix",
-      role: "3D Environment Artist",
+      name: "Ashhar Ali Ahmed",
+      role: "Head of Tech wing",
       bio: "Specializes in creating breathtaking virtual worlds and interactive metaverse environments.",
-      image: "https://randomuser.me/api/portraits/men/41.jpg",
+      image: "./images/Ashhar Ali Ahmed.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -82,10 +82,10 @@ const TeamPage = () => {
     },
     {
       id: 6,
-      name: "Nova Synth",
-      role: "UX Researcher",
+      name: "Kumar Aditya",
+      role: "Head of Tech wing",
       bio: "Human-computer interaction specialist focused on creating intuitive metaverse experiences.",
-      image: "https://randomuser.me/api/portraits/women/63.jpg",
+      image: "./images/Kumar Aditya.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -93,10 +93,10 @@ const TeamPage = () => {
     },
     {
       id: 7,
-      name: "Orion Neon",
-      role: "Game Developer",
+      name: "Utsav Tiwari",
+      role: "Co-Head of Tech wing",
       bio: "Expert in creating engaging gameplay mechanics and interactive experiences in virtual worlds.",
-      image: "https://randomuser.me/api/portraits/men/15.jpg",
+      image: "./images/Utsav Tiwari.webp",
       socialLinks: {
         github: "https://github.com",
         linkedin: "https://linkedin.com",
@@ -104,24 +104,285 @@ const TeamPage = () => {
     },
     {
       id: 8,
-      name: "Echo Vortex",
-      role: "Community Manager",
+      name: "Sreejita Mukhopadhyay",
+      role: "Head of Graphics wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "https://randomuser.me/api/portraits/women/2.jpg",
+      image: "./images/Sreejita Mukhopadhyay.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
       },
     },
+    {
+      id: 9,
+      name: "Amit Saha",
+      role: "Head of Graphics wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Amit Saha.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 10,
+      name: "Atul Kumar Singh",
+      role: "Co-Head of Graphics wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Atul Singh.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 11,
+      name: "Shubham Keshri",
+      role: "Head of Management and Resource wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Shubham Keshri.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 12,
+      name: "Sachin Sharma",
+      role: "Co-head of Management wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Sachin Sharma.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 13,
+      name: "Sheetal Raj",
+      role: "Co-head of Management wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Sheetal Raj.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 14,
+      name: "Soumyadeep Adhikary",
+      role: "Head of Press wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Soumyadeep Adhikary.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 15,
+      name: "Akshat Alok",
+      role: "Co-head of Press wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Akshat Alok.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 16,
+      name: "Pushpendra Lal",
+      role: "Head of Public Relations wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Pushpendra Lal.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 17,
+      name: "Shubhankar Banerjee",
+      role: "Co-head of Public Relations wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Shubhankar Banerjee.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 18,
+      name: "Sananda Roy Chowdhury",
+      role: "Co-head of Resource wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Sananda Roy Chowdhury.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 19,
+      name: "Vaibhav Anand",
+      role: "Co-head of Resource wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Vaibhav Anand.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 20,
+      name: "Uddipta Kar",
+      role: "Head of Social Media wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Uddipta Kar.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 21,
+      name: "Pritam Ghosh",
+      role: "Co-head of Social Media wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Pritam Ghosh.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 22,
+      name: "Srija Chandra",
+      role: "Co-head of Social Media wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Srija Chandra.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 23,
+      name: "Arunabha Sengupta",
+      role: "Head of Sponsorship wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Arunabha.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 24,
+      name: "Sarthak Sarkar",
+      role: "Co-head of Sponsorship wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Sarthak.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 25,
+      name: "Makhdhum Hossain",
+      role: "Co-head of Sponsorship wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Makhdum Hossain.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 26,
+      name: "Abhimanyu Kanjilal",
+      role: "Head of Start-Up wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Abhimanyu Kanjilal1.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 27,
+      name: "Harshankit Raj",
+      role: "Co-head of Start-Up wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Harshankit Raj.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 28,
+      name: "Debabrata Debnath",
+      role: "Co-head of Start-Up wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Debabrata Debnath.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 29,
+      name: "Ayush Dev",
+      role: "Head of Content Wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Ayush Dev.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 30,
+      name: "Aparajita Goswami",
+      role: "Co-head of Content Wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Aparajita Goswami.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+    {
+      id: 31,
+      name: "Rajgopal Kumar",
+      role: "Head of UI/UX wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "./images/Rajgopal Kumar.webp",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
+    },
+
   ];
 
   // Filter categories
   const filters = [
     { id: "all", label: "All Team" },
-    { id: "leadership", label: "Leadership" },
-    { id: "engineering", label: "Engineering" },
-    { id: "creative", label: "Creative" },
-    { id: "community", label: "Community" },
+    { id: "leadership", label: "Administrative Heads" },
+    { id: "tech", label: "Tech Wing" },
+    { id: "management", label: "Management Wing" },
+    { id: "graphics", label: "Graphics Wing" },
+    { id: "resource", label: "Resource Wing" },
+    { id: "press", label: "Press Wing" },
+    { id: "publicRelations", label: "Public Relations Wing" },
+    { id: "socialMedia", label: "Social Media Wing" },
+    { id: "sponsorship", label: "Sponsorship Wing" },
+    { id: "startup", label: "Start-up Wing" },
+    { id: "content", label: "Content Wing" }
   ];
 
   // Filter team members based on active filter
@@ -129,10 +390,17 @@ const TeamPage = () => {
     if (activeFilter === "all") return teamMembers;
 
     const filterMap: Record<string, string[]> = {
-      leadership: ["Founder & CEO", "CTO"],
-      engineering: ["CTO", "Blockchain Engineer", "Game Developer"],
-      creative: ["Creative Director", "3D Environment Artist"],
-      community: ["Community Manager", "UX Researcher"],
+      leadership: ["Convenor", "Convenor of External Affairs", "Co-Convenor", "Campus Director HULT Prize"],
+      tech: ["Head of Tech wing", "Co-Head of Tech wing"],
+      management: ["Head of Management and Resource wing", "Co-head of Management wing"],
+      graphics: ["Head of Graphics wing", "Co-Head of Graphics wing"],
+      resource: ["Head of Management and Resource wing","Co-head of Resource wing"],
+      press:["Head of Press wing","Co-head of Press wing"],
+      publicRelations:["Head of Public Relations wing","Co-head of Public Relations wing"],
+      socialMedia:["Head of Social Media wing","Co-head of Social Media wing"],
+      sponsorship:["Head of Sponsorship wing","Co-head of Sponsorship wing"],
+      startup:["Head of Start-Up wing","Co-head of Start-Up wing"],
+      content:["Head of Content Wing","Co-head of Content Wing"],
     };
 
     return teamMembers.filter((member) =>
@@ -143,14 +411,21 @@ const TeamPage = () => {
   // Animate members appearing one by one
   useEffect(() => {
     const filtered = getFilteredMembers();
+
+    // Reset animated members before applying animation
     setAnimatedMembers([]);
+
+    // Use a fresh copy of the array to prevent unintended duplication
+    let tempMembers: TeamMember[] = [];
 
     filtered.forEach((member, index) => {
       setTimeout(() => {
-        setAnimatedMembers((prev) => [...prev, member]);
+        tempMembers = [...tempMembers, member]; // Maintain a local copy
+        setAnimatedMembers([...tempMembers]); // Update state with new copy
       }, index * 150);
     });
   }, [activeFilter]);
+
 
   return (
     <>
@@ -184,15 +459,15 @@ const TeamPage = () => {
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
+          <div className="flex space-x-6 overflow-x-auto scrollbar-hide px-4 py-2">
             {filters.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setActiveFilter(filter.id)}
-                className={`px-4 py-2 rounded-md font-cyber text-sm transition-all duration-300 ${
+                className={`px-6 py-3 rounded-lg font-cyber text-sm transition-all duration-300 transform whitespace-nowrap ${
                   activeFilter === filter.id
-                    ? "bg-gradient-to-r from-neon to-accent text-white"
-                    : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30"
+                    ? "bg-gradient-to-r from-neon to-accent text-white scale-105 shadow-lg"
+                    : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30 hover:scale-105"
                 }`}
               >
                 {filter.label}
@@ -201,7 +476,7 @@ const TeamPage = () => {
           </div>
 
           {/* Team Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
             {animatedMembers.map((member) => (
               <div
                 key={member.id}
@@ -317,4 +592,6 @@ const TeamPage = () => {
   );
 };
 
+
 export default TeamPage;
+
