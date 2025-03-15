@@ -1,5 +1,7 @@
 const dbCollections = {
-    usersCollection: "user"
+    usersCollection: "user",
+    registrationsCollection: "registration",
+    eventsCollection: "event",
 }
 
 export default dbCollections;
