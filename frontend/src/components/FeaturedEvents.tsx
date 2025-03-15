@@ -28,50 +28,44 @@ interface Event {
 }
 
 // 3D Background component for mobile
-const FeaturedEvents3D = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+const MobileBackground3D = () => {
+  const isMobile = window.innerWidth < 768;
 
   // Floating hexagons around the edges
   const FloatingHexagons = () => {
-    const hexagons = useMemo(() => {
-      const count = 8; // Reduced count for mobile
-      return Array.from({ length: count }, (_, i) => {
-        const posX = Math.random() * 30 - 15;
-        const posY = Math.random() * 30 - 15;
-        const posZ = -5 - Math.random() * 10;
-        const scale = 0.2 + Math.random() * 0.3;
-        const color = Math.random() > 0.5 ? "#7c3aed" : "#22d3ee";
+    const hexagons = [];
+    const count = 8; // Reduced count for mobile
 
-        return (
-          <Float
-            key={i}
-            speed={1 + Math.random()}
-            rotationIntensity={0.2}
-            floatIntensity={0.3}
+    for (let i = 0; i < count; i++) {
+      // Position hexagons around the edges, not in the center
+      const posX = Math.random() * 30 - 15;
+      const posY = Math.random() * 30 - 15;
+      const posZ = -5 - Math.random() * 10;
+      const scale = 0.2 + Math.random() * 0.3;
+
+      hexagons.push(
+        <Float
+          key={i}
+          speed={1 + Math.random()}
+          rotationIntensity={0.2}
+          floatIntensity={0.3}
+        >
+          <Torus
+            args={[0.5, 0.2, 6, 6]}
+            position={[posX, posY, posZ]}
+            scale={scale}
+            rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
           >
-            <Torus
-              args={[0.5, 0.2, 6, 6]}
-              position={[posX, posY, posZ]}
-              scale={scale}
-              rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
-            >
-              <meshStandardMaterial
-                color={color}
-                emissive={color}
-                emissiveIntensity={0.8}
-                wireframe
-              />
-            </Torus>
-          </Float>
-        );
-      });
-    }, []);
+            <meshStandardMaterial
+              color={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
+              emissive={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
+              emissiveIntensity={0.8}
+              wireframe
+            />
+          </Torus>
+        </Float>,
+      );
+    }
 
     return <>{hexagons}</>;
   };
@@ -108,16 +102,16 @@ const FeaturedEvents3D = () => {
 
     return <group ref={particleGroup}>{particles}</group>;
   };
-      // rendering 3D scenes
+
   return (
-    <Canvas>
+    <>
       <ambientLight intensity={0.3} />
       <pointLight position={[0, 0, -10]} intensity={1} color="#22d3ee" />
       <pointLight position={[10, 10, -10]} intensity={0.8} color="#7c3aed" />
 
       <FloatingHexagons />
       <ParticleSystem />
-    </Canvas>
+    </>
   );
 };
 
@@ -342,10 +336,8 @@ const FeaturedEvents = () => {
             </div>
           </div>
 
-          
           {/* Card layout for mobile */}
-          <div className="cylinder-container relative min-h-[500px] flex flex-col">
-          <div className="cylinder-rotation flex-grow">
+          <div className="space-y-6 mt-8">
             {events.map((event, index) => (
               <Link key={event.id} to={event.registrationUrl} className="block">
                 <div className="relative bg-primary/60 border border-neon/30 rounded overflow-hidden hover:shadow-glow-sm transition-all duration-300">
@@ -361,7 +353,7 @@ const FeaturedEvents = () => {
                             : event.imageUrl
                         }
                         alt={event.title}
-                        className="w-full h-auto object-cover"
+                        className="w-full h-full object-cover"
                         loading="lazy"
                         onError={() => handleImageError(index)}
                       />
@@ -489,22 +481,20 @@ const FeaturedEvents = () => {
                 </div>
               </Link>
             ))}
-          </div>
-            {/* View All button with cyberpunk style */}
-            <div className="absolute bottom-[-20px] left-1/2 transform -translate-x-[45%] w-full flex justify-center p-6">
 
+            {/* View All button with cyberpunk style */}
+            <div className="mt-8 relative">
               <Link
                 to="/gallery"
                 className="block relative py-3 text-center font-cyber text-white border border-neon/50 bg-primary/80 overflow-hidden"
               >
                 {/* Animated background */}
                 <div className="absolute inset-0 opacity-20">
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-neon via-accent to-neon bg-[length:200%_100%] animate-gradient-x"></div>
-
+                  <div className="absolute inset-0 bg-gradient-to-r from-neon via-accent to-neon bg-[length:200%_100%] animate-gradient-x"></div>
                 </div>
 
                 <span className="relative z-10 inline-block glitch-hover">
-                  VIEW ALL EVENTS 
+                  VIEW ALL EVENTS
                 </span>
 
                 {/* Corner accents */}
@@ -514,49 +504,11 @@ const FeaturedEvents = () => {
                 <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-neon"></div>
               </Link>
             </div>
-
-
           </div>
         </div>
 
         {/* Add custom styles for the mobile design */}
         <style>{`
-
-          /* 3D Cylindrical Scrolling Effect */
-/* 3D Cylindrical Scrolling Effect */
-.cylinder-container {
-  position: relative;
-  width: 90%;
-  height: 730px; /* Adjust height based on how many cards you have */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 2000px; /* depth */
-  overflow: visible;
-}
-
-/* Wraps all cards in a 3D cylinder */
-.cylinder-rotation {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  animation: rotateCylinder 15s ease-in-out infinite alternate;
-}
-
-/* Event cards positioning in a circular path */
-.cylinder-rotation > a:nth-child(1) { transform: rotateY(60deg) translateZ(50px); }
-.cylinder-rotation > a:nth-child(2) { transform: rotateY(60deg) translateZ(100px); }
-.cylinder-rotation > a:nth-child(3) { transform: rotateY(60deg) translateZ(50px); }
-.cylinder-rotation > a:nth-child(4) { transform: rotateY(60deg) translateZ(100px); }
-
-/* Animation for left to right and right to left movement */
-@keyframes rotateCylinder {
-  from { transform: rotateY(-100deg); }
-  to { transform: rotateY(-20deg); }
-}
-
-
           .city-silhouette {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 200'%3E%3Cpath fill='%237c3aed' d='M0,200 L0,160 L30,160 L30,150 L45,150 L45,140 L55,140 L55,130 L65,130 L65,150 L75,150 L75,140 L85,140 L85,160 L100,160 L100,140 L110,140 L110,150 L120,150 L120,130 L140,130 L140,150 L150,150 L150,120 L160,120 L160,140 L170,140 L170,130 L185,130 L185,150 L200,150 L200,120 L220,120 L220,150 L230,150 L230,140 L240,140 L240,130 L250,130 L250,150 L260,150 L260,140 L270,140 L270,160 L280,160 L280,150 L290,150 L290,160 L300,160 L300,140 L310,140 L310,150 L320,150 L320,160 L340,160 L340,150 L350,150 L350,140 L360,140 L360,130 L370,130 L370,150 L380,150 L380,140 L390,140 L390,160 L400,160 L400,150 L410,150 L410,140 L420,140 L420,160 L430,160 L430,150 L440,150 L440,130 L450,130 L450,150 L460,150 L460,140 L470,140 L470,130 L480,130 L480,150 L490,150 L490,140 L500,140 L500,160 L510,160 L510,150 L520,150 L520,140 L530,140 L530,130 L540,130 L540,150 L550,150 L550,140 L560,140 L560,160 L570,160 L570,150 L580,150 L580,140 L590,140 L590,160 L600,160 L600,150 L610,150 L610,140 L620,140 L620,130 L630,130 L630,150 L640,150 L640,140 L650,140 L650,160 L660,160 L660,150 L670,150 L670,140 L680,140 L680,130 L690,130 L690,150 L700,150 L700,140 L710,140 L710,160 L720,160 L720,150 L730,150 L730,140 L740,140 L740,130 L750,130 L750,150 L760,150 L760,140 L770,140 L770,160 L780,160 L780,150 L790,150 L790,140 L800,140 L800,130 L810,130 L810,150 L820,150 L820,140 L830,140 L830,160 L840,160 L840,150 L850,150 L850,140 L860,140 L860,130 L870,130 L870,150 L880,150 L880,140 L890,140 L890,160 L900,160 L900,150 L910,150 L910,140 L920,140 L920,130 L930,130 L930,150 L940,150 L940,140 L950,140 L950,160 L960,160 L960,150 L970,150 L970,140 L980,140 L980,130 L990,130 L990,150 L1000,150 L1000,200 Z'/%3E%3C/svg%3E");
             background-size: cover;
@@ -1212,10 +1164,10 @@ const FeaturedEvents = () => {
         
         .cyber-text-3d {
           text-shadow: 
-            0 0 5px rgba(34, 211, 238, 0.5),
-            0 0 10px rgba(34, 211, 238, 0.3),
-            0 1px 2px rgba(34, 211, 238, 0.2),
-            0 2px 4px rgba(0, 0, 0, 0.7);
+            0 0 5px rgba(34, 211, 238, 0.7),
+            0 0 10px rgba(34, 211, 238, 0.5),
+            0 1px 2px rgba(34, 211, 238, 0.3),
+            0 2px 4px rgba(0, 0, 0, 0.9);
           animation: text-pulse 4s ease-in-out infinite;
         }
         
@@ -1231,18 +1183,18 @@ const FeaturedEvents = () => {
         @keyframes text-pulse {
           0%, 100% {
             text-shadow: 
-              0 0 3px rgba(34, 211, 238, 0.5),
-              0 0 6px rgba(34, 211, 238, 0.4),
+              0 0 5px rgba(34, 211, 238, 0.7),
+              0 0 10px rgba(34, 211, 238, 0.5),
               0 1px 2px rgba(34, 211, 238, 0.3),
-              0 2px 4px rgba(0, 0, 0, 0.8);
+              0 2px 4px rgba(0, 0, 0, 0.9);
           }
           50% {
             text-shadow: 
-              0 0 6px rgba(34, 211, 238, 0.7),
-              0 0 12px rgba(34, 211, 238, 0.5),
-              0 0 18px rgba(34, 211, 238, 0.4),
-              0 1px 3px rgba(34, 211, 238, 0.3),
-              0 2px 4px rgba(0, 0, 0, 0.8);
+              0 0 10px rgba(34, 211, 238, 0.9),
+              0 0 20px rgba(34, 211, 238, 0.7),
+              0 0 30px rgba(34, 211, 238, 0.5),
+              0 1px 2px rgba(34, 211, 238, 0.3),
+              0 2px 4px rgba(0, 0, 0, 0.9);
           }
         }
         

@@ -1,11 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, RefObject } from "react";
 import { NavLink } from "react-router-dom";
+import { useTheme } from "../styles/ThemeProvider";
+import * as utils from "../styles/utils";
 
 const Header = () => {
+  const theme = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null); // Ref for mobile menu
-  const menuOptionsRef = useRef(null); // Ref for menu options
+  const menuRef = useRef<HTMLDivElement>(null); // Ref for mobile menu
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +22,10 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   useEffect(() => {
     // Disable scrolling when the menu is open
     if (isMenuOpen) {
@@ -29,21 +35,6 @@ const Header = () => {
     }
   }, [isMenuOpen]);
 
-  // Close the menu when clicking outside of it
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        menuRef.current && !menuRef.current.contains(event.target) && 
-        menuOptionsRef.current && !menuOptionsRef.current.contains(event.target)
-      ) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   const navItems = [
     { path: "/", label: "Home" },
     { path: "/events", label: "Events" },
@@ -51,21 +42,36 @@ const Header = () => {
     { path: "/speakers", label: "Speakers" },
     { path: "/team", label: "Team" },
     { path: "/partner", label: "Partner" },
+    { path: "/theme-demo", label: "Theme" },
     { path: "/signup", label: "Sign Up" },
     { path: "/login", label: "Login" },
   ];
+
+  // Glass effect style for the header when scrolled
+  const scrolledHeaderStyle = {
+    ...utils.glassEffect("medium", "md"),
+    borderBottom: `1px solid ${theme.colors.border.light}`,
+    boxShadow: theme.shadows.lg,
+  };
 
   return (
     <div className="relative">
       {/* Header */}
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-          scrolled ? "bg-primary bg-opacity-80 py-2" : "bg-transparent py-4"
+        style={scrolled ? scrolledHeaderStyle : {}}
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${
+          scrolled
+            ? "py-2"
+            : "py-4 bg-gradient-to-b from-primary-dark to-transparent"
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
-            <NavLink to="/" className="text-2xl font-cyber font-bold neon-text">
+            <NavLink
+              to="/"
+              className="text-2xl font-cyber font-bold"
+              style={utils.neonTextEffect(theme.colors.neon.main, "md")}
+            >
               ENVISAGE<span className="text-accent">2025</span>
             </NavLink>
           </div>
@@ -73,14 +79,23 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
-              {navItems.slice(0, 6).map((item) => (
+              {navItems.slice(0, 7).map((item) => (
                 <li key={item.label}>
                   <NavLink
                     to={item.path}
                     className={({ isActive }) =>
-                      `font-futuristic transition-colors duration-300 ${
+                      `font-cyber text-sm uppercase tracking-wider transition-all duration-300 relative px-2 py-1 ${
                         isActive ? "text-neon" : "text-white hover:text-neon"
                       }`
+                    }
+                    style={({ isActive }) =>
+                      isActive
+                        ? {
+                            textShadow: theme.shadows.neon.sm,
+                            borderBottom: `2px solid ${theme.colors.neon.main}`,
+                            boxShadow: `0 4px 6px -6px ${theme.colors.neon.main}`,
+                          }
+                        : {}
                     }
                   >
                     {item.label}
@@ -90,16 +105,25 @@ const Header = () => {
             </ul>
           </nav>
 
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex space-x-4 items-center">
             <NavLink
               to="/login"
-              className="font-futuristic text-white hover:text-neon transition-colors duration-300"
+              className="font-cyber text-sm uppercase tracking-wider text-white hover:text-neon transition-colors duration-300"
             >
               Login
             </NavLink>
             <NavLink
               to="/signup"
               className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+              style={{
+                ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
+                backgroundColor: theme.colors.dark.purple,
+                padding: `${theme.spacing["2"]} ${theme.spacing["4"]}`,
+                borderRadius: theme.borders.radius.md,
+                fontFamily: theme.typography.fontFamily.cyber,
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+              }}
             >
               Sign Up
             </NavLink>
@@ -109,8 +133,68 @@ const Header = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-white focus:outline-none"
+              className="text-white focus:outline-none p-2 rounded-full relative z-[110]"
               aria-label="Toggle Menu"
+              style={
+                isMenuOpen
+                  ? {
+                      backgroundColor: theme.colors.accent.dark,
+                      boxShadow: theme.shadows.neon.sm,
+                    }
+                  : {}
+              }
+            >
+              {isMenuOpen ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Simple Full Screen Mobile Menu */}
+      {isMenuOpen && (
+        <div
+          ref={menuRef}
+          className="fixed inset-0 bg-primary z-[95] flex flex-col"
+          style={{
+            backgroundColor: theme.colors.primary.main,
+          }}
+        >
+          <div className="flex justify-between items-center p-4 border-b border-border-light">
+            <div className="text-xl font-cyber text-white">Menu</div>
+            <button
+              onClick={closeMenu}
+              className="text-white p-2"
+              aria-label="Close Menu"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -123,43 +207,35 @@ const Header = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             </button>
           </div>
-        </div>
-      </header>
 
-      {/* Mobile Navigation */}
-      <nav
-        ref={menuRef}  // Ref for the entire menu
-        className={`md:hidden fixed top-0 right-0 w-1/2 h-screen bg-transparent backdrop-blur-md transition-transform duration-500 ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        } z-50 py-4 px-6`}
-      >
-        {/* Menu background with blur */}
-        <ul
-          ref={menuOptionsRef}  // Ref for the menu options
-          className="flex flex-col space-y-4 text-center"
-        >
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <NavLink
-                to={item.path}
-                onClick={() => setIsMenuOpen(false)} // Close menu on click
-                className={({ isActive }) =>
-                  `block py-2 font-futuristic text-lg transition-colors duration-300 ${
-                    isActive ? "text-neon" : "text-white hover:text-neon"
-                  }`
-                }
-              >
-                {item.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
+          <div className="flex-1 overflow-y-auto py-6">
+            <nav>
+              <ul className="space-y-4 px-4">
+                {navItems.map((item) => (
+                  <li key={item.label}>
+                    <NavLink
+                      to={item.path}
+                      onClick={closeMenu}
+                      className={({ isActive }) =>
+                        `block py-3 px-2 font-cyber text-lg border-b border-border-light ${
+                          isActive ? "text-neon" : "text-white"
+                        }`
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
