@@ -7,9 +7,13 @@ import usersRouter from "./routes/users.js";
 import rootRouter from "./routes/root.js";
 import httpCodes from "../util/httpCodes.js";
 import createHttpError, { isHttpError } from "http-errors";
+import session from "express-session";
+import { mongoStore } from "../db/db.js";
 
 const server = express();
 const port = validatedEnv.PORT;
+const sessionSecret = validatedEnv.SESSION_SECRET;
+const sessionTimeLimitMs = 3 * 60 * 60 * 1000; // 3 hours
 
 function startServer() : void {
 
@@ -23,6 +27,19 @@ function startServer() : void {
 
     // parse json body
     server.use(express.json());
+
+    // NOTE : should be called after setting up json parsing and before declaring routes
+    // setup session management
+    server.use(session({
+        secret: sessionSecret,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: sessionTimeLimitMs,
+        },
+        rolling: true,
+        store: mongoStore
+    }));
 
     // catch favicon.ico requests which are sent by some browsers
     server.get("/favicon.ico", (_req: Request, res: Response) => {

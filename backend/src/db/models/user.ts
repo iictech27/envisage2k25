@@ -3,24 +3,33 @@ import { InferSchemaType, model, Schema } from "mongoose";
 import dbCollections from "../collections.js";
 
 const userSchema = new Schema({
-    userID: {
-        type: String,
-        required: true,
-        unique: true
-    },
     fullName: {
         type: String,
         required: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+	  unique: true,
+	  select: false
     },
+    hashedPassword: {
+        type: String,
+        required: true,
+	  select: false
+    }
 }, {
     timestamps: true
 });
 
-type User = InferSchemaType<typeof userSchema>;                                  // Create a User type based on the Schema
-const UserModel = model<User>(dbCollections.usersCollection, userSchema);        // Create User model and define its Collection and Schema
+interface UserBody {
+    fullName?: string,
+    email?: string,
+    password?: string
+}
+
+type User = InferSchemaType<typeof userSchema>; // Create a User type based on the Schema
+const UserModel = model<User>(dbCollections.usersCollection, userSchema); // Create User model and define its Collection and Schema
 
 export default UserModel;
+export { UserBody };

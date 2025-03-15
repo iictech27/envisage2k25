@@ -2,15 +2,19 @@ import mongoose from "mongoose";
 
 import validatedEnv from "../util/validatedEnv.js";
 import { log, logErr } from "../util/logger.js";
+import MongoStore from "connect-mongo";
 
-const mongo_str = validatedEnv.MONGO_CONNECTION_STR;
+const mongoStr = validatedEnv.MONGO_CONNECTION_STR;
+const mongoStore = MongoStore.create({
+    mongoUrl: mongoStr
+});
 
 function connectDB() : void {
 
     // connect to the mongo db instance
-    mongoose.connect(mongo_str)
+    mongoose.connect(mongoStr)
         .then(() => {
-            log("Connected to DB at " + mongo_str);
+            log("Connected to DB at " + mongoStr);
         })
         .catch((error) => {
             logErr("Error while connecting to db:", "db.ts");
@@ -19,4 +23,4 @@ function connectDB() : void {
 
 }
 
-export { connectDB };
+export { connectDB, mongoStore };
