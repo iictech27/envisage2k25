@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import TeamPage from "./pages/TeamPage";
 import PartnerPage from "./pages/PartnerPage";
 import GalleryPage from "./pages/GalleryPage";
+import ThemeDemo from "./components/ThemeDemo";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="team" element={<TeamPage />} />
             <Route path="partner" element={<PartnerPage />} />
             <Route path="gallery" element={<GalleryPage />} />
+            <Route path="theme-demo" element={<ThemeDemo />} />
           </Route>
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/signup" element={<SignUpPage />} />
