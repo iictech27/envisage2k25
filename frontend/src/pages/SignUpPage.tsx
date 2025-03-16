@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 
+import Header from "../components/Header";
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
+import { postUserSignIn } from "../api/fetch";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -64,12 +65,27 @@ const SignUpPage = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+
+      const userSignUpMessage = await postUserSignIn({
+        fullName: formData.name,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword
+      });
+
       setIsLoading(false);
-      // Redirect to login page after successful signup
+      console.log(userSignUpMessage);
       navigate("/login");
-    }, 1500);
+
+    } catch(error) {
+      console.log(error);
+
+      setErrors({
+        api: error instanceof Error ? error.message : "An error occurred!"
+      });
+      setIsLoading(false);
+    }
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -176,6 +192,12 @@ const SignUpPage = () => {
               <div className="absolute -top-1 -left-1 w-3 h-3 border-l border-t border-neon"></div>
             </div>
 
+            <div className="relative">
+              {errors.api && (
+                <p className="text-red-500 text-l mt-1 mb-1">
+                  {errors.api}
+                </p>
+              )}
             <button
               type="submit"
               disabled={isLoading}
@@ -186,6 +208,7 @@ const SignUpPage = () => {
                 {isLoading ? "PROCESSING..." : "CREATE ACCOUNT"}
               </span>
             </button>
+            </div>
           </form>
 
           <div className="mt-6 text-center">
