@@ -2,6 +2,7 @@ import validatedEnv from "./validatedEnv";
 
 import { ReturnedUserBody } from "./responseBodies/user";
 import { UserSignInCredBody, UserLogInCredBody } from "./requestBodies/user";
+import { RegistrationBody } from "./requestBodies/registration";
 
 const reqTypes = {
   GET: "GET",
@@ -55,4 +56,15 @@ export async function postUserLogIn(credentials: UserLogInCredBody): Promise<Ret
 
 export async function postUserLogOut() {
   await fetchData("/users/logout", { method: reqTypes.POST });
+}
+
+export async function postRegistratinRequest(info: RegistrationBody): Promise<RegistrationBody> {
+  const response = await fetchData("/reg/new", {
+    method: reqTypes.POST,
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(info)
+  });
+
+  return response.json();
 }

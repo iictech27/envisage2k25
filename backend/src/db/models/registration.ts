@@ -16,7 +16,22 @@ const registrationSchema = new Schema({
         required: true
     },
     events: {
-        type: [Schema.Types.ObjectId],
+        type: [Number], // event enum number array
+        required: true
+    },
+    totalPrice: {
+        type: Number,
+        requried: true
+    },
+
+    // FIX : Figure out
+    paymentScreenshot: {
+        type: String,
+        required: true
+    },
+
+    confirmed: {
+        type: Boolean,
         required: true
     },
     additionalInfo:{
