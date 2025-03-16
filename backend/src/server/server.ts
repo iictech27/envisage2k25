@@ -15,6 +15,7 @@ const server = express();
 const port = validatedEnv.PORT;
 const sessionSecret = validatedEnv.SESSION_SECRET;
 const sessionTimeLimitMs = 3 * 60 * 60 * 1000; // 3 hours
+const sessionTimeLimitMs = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
 
 function startServer() : void {
 

@@ -1,7 +1,7 @@
 interface UserSignupBody {
-	fullName?: string,
-	email?: string,
-	password?: string,
+    fullName?: string,
+    email?: string,
+    password?: string,
     confirmPassword?: string
 }
 

@@ -142,9 +142,11 @@ export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = a
             throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid credentials!");
         }
 
+        // create and save session token which is the hashed mongo uid
+        req.session.hashedUserID = await bcrypt.hash(user._id.toString(), hashNum);
+
         if(rememberUser) {
-            // create and save session token which is the hashed mongo uid
-            req.session.hashedUserID = await bcrypt.hash(user._id.toString(), hashNum);
+            req.session.cookie.maxAge = validatedEnv.SESSION_EXP_MAX_HR * 60 * 60 * 1000;
         }
 
         res.status(httpCodes["201"].code);
