@@ -384,7 +384,7 @@ const Countdown = () => {
       <div className="container mx-auto px-4 relative z-20">
         <div className="text-center mb-16">
           <motion.h2
-            className="text-4xl md:text-5xl font-cyber font-bold mb-4 tracking-wider animate-enhanced-glow"
+            className="text-4xl md:text-5xl font-rovelink font-bold mb-4 tracking-wider animate-enhanced-glow"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.7 }}

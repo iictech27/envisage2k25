@@ -317,7 +317,7 @@ const Speakers = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-cyber font-bold mb-4 neon-text">
+          <h2 className="text-5xl md:text-5xl font-rovelink font-bold mb-4 neon-text">
             <span className="text-white">FEATURED</span>
             <span className="text-accent"> SPEAKERS</span>
           </h2>
