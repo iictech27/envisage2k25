@@ -148,13 +148,15 @@ const HomePage = () => {
           isInitialLoad ? "opacity-0" : "opacity-100"
         }`}
       >
-        <AnimatedSection animation={slideIn} className="mb-12">
+        {/* <AnimatedSection animation={slideIn} className="mb-12">
           <FeaturedEvents />
         </AnimatedSection>
 
         <AnimatedSection animation={scaleIn} className="mb-12">
           <Countdown />
-        </AnimatedSection>
+        </AnimatedSection> */}
+        <FeaturedEvents />
+        <Countdown />
         <SpeakersPage />
         {/* <AnimatedSection animation={fadeInUp}>
           <SpeakersPage />
