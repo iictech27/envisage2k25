@@ -16,6 +16,7 @@
     "@tailwindcss/cli": "^4.0.12",
     "@tailwindcss/postcss": "^4.0.12",
     "autoprefixer": "^10.4.21",
+    "envalid": "^8.0.0",
     "framer-motion": "^12.5.0",
     "gsap": "^3.12.7",
     "postcss": "^8.5.3",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",

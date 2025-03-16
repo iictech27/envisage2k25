@@ -1,13 +1,14 @@
 import express, { Request, Response, NextFunction } from "express";
+import session from "express-session";
+import createHttpError, { isHttpError } from "http-errors";
+import cors from "cors";
 
 import validatedEnv from "../util/validatedEnv.js";
+import httpCodes from "../util/httpCodes.js";
 import { log, logErr, startHttpReqLogging } from "../util/logger.js";
 import usersRouter from "./routes/users.js";
 import rootRouter from "./routes/root.js";
-import httpCodes from "../util/httpCodes.js";
 import registrationRouter from "./routes/registration.js";
-import createHttpError, { isHttpError } from "http-errors";
-import session from "express-session";
 import { mongoStore } from "../db/db.js";
 
 const server = express();
@@ -21,6 +22,12 @@ function startServer() : void {
     server.listen(port, () => {
         log("Listening at port " + port);
     });
+
+    // cors middleware
+    server.use(cors({
+        origin: validatedEnv.CLIENT_LINK,
+        credentials: true,
+    }));
 
     // log http requests
     startHttpReqLogging(server);
@@ -59,15 +66,15 @@ function startServer() : void {
     // NOTE : keep error handling endpoint last
     // error handling
     server.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
-        logErr(error, "server.ts");
+        logErr(error);
 
         if(isHttpError(error)) {
             res.status(error.statusCode);
-            res.send(error.message);
+            res.json({ error: error.message });
             return;
         }
         res.status(httpCodes["500"].code);
-        res.send(error instanceof Error ? error.message : "Unknown Error");
+        res.json({ error: error instanceof Error ? error.message : "Unknown Error"});
     });
 
 }

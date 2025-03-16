@@ -6,5 +6,6 @@ export default cleanEnv(process.env, {
     PORT: port(),
     LOG: bool(),
     SESSION_SECRET: str(),
-    HASH_NUM: num()
+    HASH_NUM: num(),
+    CLIENT_LINK: str()
 });

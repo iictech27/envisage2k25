@@ -10,26 +10,23 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-	  unique: true,
-	  select: false
+        unique: true,
+        select: false
     },
     hashedPassword: {
         type: String,
         required: true,
-	  select: false
+        select: false
+    },
+    registeredEvents: {
+        type: [Schema.Types.ObjectId], // this is a array type
+        select: false
     }
 }, {
     timestamps: true
 });
 
-interface UserBody {
-    fullName?: string,
-    email?: string,
-    password?: string
-}
-
 type User = InferSchemaType<typeof userSchema>; // Create a User type based on the Schema
 const UserModel = model<User>(dbCollections.usersCollection, userSchema); // Create User model and define its Collection and Schema
 
 export default UserModel;
-export { UserBody };

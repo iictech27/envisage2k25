@@ -5,7 +5,19 @@ import dbCollections from "../collections.js";
 const registrationSchema = new Schema({
     userID: {
         type: Schema.Types.ObjectId,
-        require: true
+        required: true
+    },
+    department: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    events: {
+        type: [Schema.Types.ObjectId],
+        required: true
     },
     additionalInfo:{
         type: String
