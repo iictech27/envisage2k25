@@ -72,6 +72,8 @@ const SignUpPage = () => {
     }, 1500);
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <>
       <Header />
@@ -136,13 +138,19 @@ const SignUpPage = () => {
 
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Password"
                 className="w-full bg-gray-900 text-white border border-neon/50 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50 font-futuristic"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-2 top-1.5 text-purple-300/60 hover:text-purple-200 transition-colors">
+                {showPassword ? "(o)" : "(x)"}
+              </button>
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
               )}
@@ -152,7 +160,7 @@ const SignUpPage = () => {
 
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}

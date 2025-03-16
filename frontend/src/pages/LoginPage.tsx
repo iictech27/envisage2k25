@@ -60,6 +60,8 @@ const LoginPage = () => {
     }, 1500);
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <>
       <Header />
@@ -108,7 +110,7 @@ const LoginPage = () => {
 
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -118,6 +120,13 @@ const LoginPage = () => {
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
               )}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-2 top-1.5 text-purple-300/60 hover:text-purple-200 transition-colors">
+                {showPassword ? "(o)" : "(x)"}
+              </button>
+
               <div className="absolute -bottom-1 -right-1 w-3 h-3 border-r border-b border-neon"></div>
               <div className="absolute -top-1 -left-1 w-3 h-3 border-l border-t border-neon"></div>
             </div>
