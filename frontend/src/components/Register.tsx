@@ -25,22 +25,34 @@ interface Event {
   mode: string;
 }
 
-// Define QR Code Modal Props
-interface QRCodeModalProps {
+// Define PaymentModal Props
+interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   totalFees: number;
   onPaymentComplete: () => void;
 }
 
-// QR Code Modal Component
-const QRCodeModal = ({
+// Payment Modal Component
+const PaymentModal = ({
   isOpen,
   onClose,
   totalFees,
   onPaymentComplete,
-}: QRCodeModalProps) => {
+  selectedEvents,
+}: PaymentModalProps & { selectedEvents: Event[] }) => {
   if (!isOpen) return null;
+
+  const handleConfirmPayment = () => {
+    // Log the payment details
+    console.log("Payment confirmed for:", {
+      totalFees,
+      selectedEvents,
+    });
+
+    // Complete the payment process
+    onPaymentComplete();
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
@@ -55,21 +67,44 @@ const QRCodeModal = ({
           <span className="text-neon mr-2">PAYMENT</span>{" "}
           <span className="text-accent">₹{totalFees}</span>
         </h3>
-        <div className="bg-gray-900 p-4 rounded-lg mb-4 flex justify-center border border-neon">
-          {/* Futuristic QR code placeholder */}
-          <div className="w-48 h-48 bg-black relative overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
-            <div className="absolute inset-2 border border-neon opacity-80"></div>
-            <div className="absolute inset-6 border border-accent opacity-60"></div>
-            <div className="absolute inset-10 border border-purple-500 opacity-40"></div>
-            <span className="text-neon font-cyber text-sm relative z-10">
-              QR CODE
-            </span>
+
+        <div className="bg-gray-900 p-4 rounded-lg mb-4 border border-neon">
+          <p className="text-neon font-cyber text-center mb-2">
+            SELECTED EVENTS
+          </p>
+          <div className="space-y-2 text-white max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+            {selectedEvents.map((event) => (
+              <div
+                key={event.id}
+                className="flex justify-between items-center border-b border-gray-800 pb-2"
+              >
+                <div>
+                  <p className="text-white font-cyber text-sm">{event.name}</p>
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded-full ${
+                      event.mode === "Virtual"
+                        ? "bg-cyan-900/50 text-cyan-300 border border-cyan-700"
+                        : event.mode === "On Campus"
+                        ? "bg-purple-900/50 text-purple-300 border border-purple-700"
+                        : "bg-amber-900/50 text-amber-300 border border-amber-700"
+                    }`}
+                  >
+                    {event.mode}
+                  </span>
+                </div>
+                <span className="text-accent font-cyber">₹{event.fee}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 pt-2 border-t border-gray-800 flex justify-between">
+            <span className="text-gray-400">Total:</span>
+            <span className="text-accent font-cyber">₹{totalFees}</span>
           </div>
         </div>
+
         <p className="text-sm text-neon mb-4 font-futuristic">
-          Scan this QR code to complete your payment. After payment, click the
-          button below to confirm.
+          Please review your selected events and confirm to proceed with
+          payment.
         </p>
         <div className="flex justify-between">
           <button
@@ -79,7 +114,7 @@ const QRCodeModal = ({
             CANCEL
           </button>
           <button
-            onClick={onPaymentComplete}
+            onClick={handleConfirmPayment}
             className="px-4 py-2 bg-gradient-to-r from-purple-600 to-cyan-400 text-white rounded hover:opacity-90 font-cyber text-sm relative overflow-hidden group"
           >
             <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
@@ -192,38 +227,6 @@ const FormInput = ({
             style={{ borderColor: color }}
           ></div>
         </div>
-      ) : type === "file" ? (
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="file"
-            className="hidden"
-            onChange={onChange}
-            name={name}
-            required={required}
-            accept={accept}
-          />
-          <button
-            type="button"
-            onClick={handleFileButtonClick}
-            className="w-full bg-gray-900 text-white border border-opacity-50 rounded-md py-2 px-3 focus:outline-none hover:bg-gray-800 transition-all duration-300 text-left font-futuristic flex items-center"
-            style={{ borderColor: color, boxShadow: `0 0 10px ${color}40` }}
-          >
-            <span className="mr-2" style={{ color }}>
-              ⬆
-            </span>
-            <span>Choose File</span>
-          </button>
-          {/* Decorative corner */}
-          <div
-            className="absolute -bottom-1 -right-1 w-3 h-3 border-r border-b"
-            style={{ borderColor: color }}
-          ></div>
-          <div
-            className="absolute -top-1 -left-1 w-3 h-3 border-l border-t"
-            style={{ borderColor: color }}
-          ></div>
-        </div>
       ) : (
         <div className="relative">
           <input
@@ -271,9 +274,8 @@ const Register = ({ onClose }: RegisterProps) => {
   // Additional state
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [totalFees, setTotalFees] = useState(0);
-  const [showQRCode, setShowQRCode] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
-  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
 
   // Handle form input changes
   const handleChange = (
@@ -313,17 +315,10 @@ const Register = ({ onClose }: RegisterProps) => {
     }
   };
 
-  // Handle file upload
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setPaymentScreenshot(e.target.files[0]);
-    }
-  };
-
   // Handle payment completion
   const handlePaymentComplete = () => {
     setPaymentComplete(true);
-    setShowQRCode(false);
+    setShowPaymentModal(false);
   };
 
   // Handle form submission
@@ -582,7 +577,7 @@ const Register = ({ onClose }: RegisterProps) => {
                     <div className="mt-4">
                       <button
                         type="button"
-                        onClick={() => setShowQRCode(true)}
+                        onClick={() => setShowPaymentModal(true)}
                         className="w-full py-3 bg-gradient-to-r from-purple-600 to-cyan-400 text-white font-cyber rounded-md hover:opacity-90 transition-opacity relative overflow-hidden group"
                         disabled={totalFees === 0}
                       >
@@ -601,30 +596,6 @@ const Register = ({ onClose }: RegisterProps) => {
                   </div>
                 </div>
 
-                {paymentComplete && (
-                  <div className="form-element mt-6">
-                    <FormInput
-                      label="UPLOAD PAYMENT VERIFICATION"
-                      type="file"
-                      onChange={handleFileChange}
-                      required={true}
-                      color="#10b981"
-                      name="paymentScreenshot"
-                      accept="image/*"
-                      placeholder=""
-                      value=""
-                    />
-                    {paymentScreenshot && (
-                      <p className="text-xs text-green-400 mt-2 font-cyber flex items-center">
-                        <span className="inline-block w-4 h-4 border border-green-400 rounded-full mr-2 flex items-center justify-center">
-                          ✓
-                        </span>
-                        PAYMENT PROOF UPLOADED
-                      </p>
-                    )}
-                  </div>
-                )}
-
                 <div className="form-element mt-6">
                   <FormInput
                     label="ADDITIONAL DATA"
@@ -642,7 +613,7 @@ const Register = ({ onClose }: RegisterProps) => {
                   <button
                     type="submit"
                     className="cyber-button text-lg px-10 py-4 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={!paymentComplete || !paymentScreenshot}
+                    disabled={!paymentComplete}
                   >
                     {/* Button styling with fancy effects */}
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 z-0"></div>
@@ -694,12 +665,13 @@ const Register = ({ onClose }: RegisterProps) => {
           </div>
         </div>
 
-        {/* QR Code Modal */}
-        <QRCodeModal
-          isOpen={showQRCode}
-          onClose={() => setShowQRCode(false)}
+        {/* Payment Modal */}
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
           totalFees={totalFees}
           onPaymentComplete={handlePaymentComplete}
+          selectedEvents={selectedEvents}
         />
       </section>
       <Footer />
