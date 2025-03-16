@@ -83,10 +83,12 @@ export const colors = {
 export const typography = {
   // Font families
   fontFamily: {
-    cyber: "'Orbitron', sans-serif",
+    cyber: " 'Orbitron', sans-serif",
+    rovelink: "Rovelink",
+    karnivor: "'KARNOVOR', monospace",
     futuristic: "'Rajdhani', sans-serif",
     digital: "'Share Tech Mono', monospace",
-    base: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+    base: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',Poppins, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
   },
 
   // Font weights

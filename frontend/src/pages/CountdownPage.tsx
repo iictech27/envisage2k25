@@ -470,7 +470,7 @@ const Countdown = () => {
 
         {/* Event Info Section - Positioned below countdown with clear separation */}
         <motion.div
-          className="event-info text-center mt-8 pt-8 border-t border-gray-800 relative bg-primary/50 backdrop-blur-sm rounded-lg p-6"
+          className="event-info text-center mt-8 pt-8 border border-black relative bg-primary/50 backdrop-blur-sm rounded-lg p-6"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}

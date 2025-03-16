@@ -361,14 +361,20 @@ const NeonHero3D = ({ onRegisterClick }: NeonHero3DProps) => {
       {/* Content */}
       <div className="container mx-auto px-4 z-20 text-center hero-text-visible">
         <div ref={textRef} className="mb-12 hero-text-visible">
-          <h2 className="gsap-text neon-text text-neon font-cyber text-xl md:text-2xl mb-6 tracking-widest hero-text-visible">
+          <h2
+            className="gsap-text neon-text text-neon font-karnivor text-xl md:text-2xl mb-6 tracking-widest hero-text-visible"
+            style={{ fontFamily: "'Karnivor', 'Orbitron', sans-serif" }}
+          >
             WELCOME TO THE FUTURE
           </h2>
 
           <div className="gsap-text relative inline-block mb-8 hero-text-visible">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-cyber font-bold">
-              <span className="text-white">ENVISAGE</span>
-              <span className="text-accent"> 2025</span>
+            <h1
+              className="text-4xl md:text-6xl lg:text-7xl font-bold"
+              style={{ letterSpacing: "0.05em" }}
+            >
+              <span className="text-white font-rovelink">ENVISAGE</span>
+              <span className="text-accent font-karnivor"> 25</span>
             </h1>
           </div>
 
