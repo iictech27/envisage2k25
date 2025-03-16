@@ -19,7 +19,8 @@ const userSchema = new Schema({
         select: false
     },
     registeredEvents: {
-        type: [Schema.Types.ObjectId], // this is a array type
+        type: [Number], // event enum number array
+        unique: true,
         select: false
     }
 }, {

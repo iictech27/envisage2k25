@@ -95,7 +95,11 @@ export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> =
         });
 
         res.status(httpCodes["201"].code);
-        res.json({ message: "New User with email '"+ newUser.email +"' Signed Up Successfully! "  });
+        res.json({
+            fullname: newUser.fullName,
+            email: newUser.email,
+            message: "Successfully created new user account!"
+        });
 
     } catch(error) {
         next(error);
@@ -142,13 +146,19 @@ export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = a
             throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid credentials!");
         }
 
+        // create and save session token which is the hashed mongo uid
+        req.session.hashedUserID = await bcrypt.hash(user._id.toString(), hashNum);
+
         if(rememberUser) {
-            // create and save session token which is the hashed mongo uid
-            req.session.hashedUserID = await bcrypt.hash(user._id.toString(), hashNum);
+            req.session.cookie.maxAge = validatedEnv.SESSION_EXP_MAX_HR * 60 * 60 * 1000;
         }
 
         res.status(httpCodes["201"].code);
-        res.json({ message: "User with email '" + user.email + "'Logged In Succesfully!" });
+        res.json({
+            fullname: user.fullName,
+            email: user.email,
+            message: "Successfully logged in to user account!"
+        });
 
     } catch(error) {
         next(error);

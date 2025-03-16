@@ -7,5 +7,7 @@ export default cleanEnv(process.env, {
     LOG: bool(),
     SESSION_SECRET: str(),
     HASH_NUM: num(),
-    CLIENT_LINK: str()
+    CLIENT_LINK: str(),
+    SESSION_EXP_MIN_M: num(),
+    SESSION_EXP_MAX_HR: num()
 });
