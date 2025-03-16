@@ -56,6 +56,8 @@ export default {
       },
       fontFamily: {
         cyber: ["'Orbitron'", "sans-serif"],
+        rovelink: ["'Rovelink'", "'Orbitron'", "sans-serif"],
+        karnivor: ["'Karnivor'", "'Orbitron'", "sans-serif"],
         futuristic: ["'Rajdhani'", "sans-serif"],
         digital: ["'Share Tech Mono'", "monospace"],
       },
