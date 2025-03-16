@@ -928,7 +928,7 @@ const FeaturedEvents = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-cyber mb-4 cyber-text-3d">
+          <h2 className="text-3xl md:text-4xl font-rovelink mb-4">
             <span className="text-white">UPCOMING</span>{" "}
             <span className="text-neon">FEATURED</span>{" "}
             <span className="text-accent">EVENTS</span>

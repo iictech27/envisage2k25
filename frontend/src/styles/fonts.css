@@ -1,0 +1,64 @@
+/**
+ * fonts.css
+ * 
+ * This file contains all font definitions for the application.
+ * Add all custom fonts here and they will be available throughout the application.
+ */
+
+/* ===== FONT DECLARATIONS ===== */
+
+/* Rovelink Font */
+@font-face {
+  font-family: "Rovelink";
+  src: url("/fonts/Rovelink.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Karnivor Font */
+@font-face {
+  font-family: "Karnivor";
+  src: url("/fonts/KARNIVOR.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Add more fonts here following the same pattern */
+/* Example:
+@font-face {
+  font-family: "YourNewFont";
+  src: url("/fonts/YourNewFont.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+/* ===== UTILITY CLASSES ===== */
+/* These classes can be used directly in your HTML/JSX */
+
+.font-rovelink {
+  font-family: "Rovelink", "Orbitron", sans-serif !important;
+}
+
+.font-karnivor {
+  font-family: "Karnivor", "Orbitron", sans-serif !important;
+}
+
+/* Add more utility classes for new fonts here */
+/* Example:
+.font-your-new-font {
+  font-family: "YourNewFont", sans-serif !important;
+}
+*/
+
+/* ===== CSS VARIABLES ===== */
+/* These variables can be used in your CSS */
+
+:root {
+  --font-rovelink: "Rovelink", "Orbitron", sans-serif;
+  --font-karnivor: "Karnivor", "Orbitron", sans-serif;
+  /* Add more font variables here */
+}
