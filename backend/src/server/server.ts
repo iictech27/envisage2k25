@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
 import createHttpError, { isHttpError } from "http-errors";
+import cors from "cors";
 
 import validatedEnv from "../util/validatedEnv.js";
 import httpCodes from "../util/httpCodes.js";
@@ -21,6 +22,12 @@ function startServer() : void {
     server.listen(port, () => {
         log("Listening at port " + port);
     });
+
+    // cors middleware
+    server.use(cors({
+        origin: validatedEnv.CLIENT_LINK,
+        credentials: true,
+    }));
 
     // log http requests
     startHttpReqLogging(server);
@@ -59,7 +66,7 @@ function startServer() : void {
     // NOTE : keep error handling endpoint last
     // error handling
     server.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
-        logErr(error, "server.ts");
+        logErr(error);
 
         if(isHttpError(error)) {
             res.status(error.statusCode);
