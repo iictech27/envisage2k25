@@ -1,13 +1,14 @@
 interface UserSignupBody {
 	fullName?: string,
 	email?: string,
-	password?: string
+	password?: string,
+    confirmPassword?: string
 }
 
 interface UserLoginBody {
-    fullName?: string,
     email?: string,
-    password?: string
+    password?: string,
+    rememberUser?: boolean
 }
 
 

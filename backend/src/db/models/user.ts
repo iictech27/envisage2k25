@@ -10,13 +10,17 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-	  unique: true,
-	  select: false
+        unique: true,
+        select: false
     },
     hashedPassword: {
         type: String,
         required: true,
-	  select: false
+        select: false
+    },
+    registeredEvents: {
+        type: [Schema.Types.ObjectId], // this is a array type
+        select: false
     }
 }, {
     timestamps: true
