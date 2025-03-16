@@ -1,17 +1,37 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
 // Event data with fees and mode of conduction
 const eventOptions = [
-  { id: 1, name: "VR Hackathon", fee: 500, mode: "Virtual" },
-  { id: 2, name: "Metaverse Art Gallery", fee: 300, mode: "Virtual" },
-  { id: 3, name: "Crypto Conference", fee: 750, mode: "On Campus" },
-  { id: 4, name: "Gaming Tournament", fee: 400, mode: "Hybrid" },
-  { id: 5, name: "AI Workshop", fee: 600, mode: "On Campus" },
-  { id: 6, name: "Digital Fashion Show", fee: 350, mode: "Virtual" },
-  { id: 7, name: "Web3 Development", fee: 800, mode: "Hybrid" },
-  { id: 8, name: "NFT Creation Workshop", fee: 450, mode: "Virtual" },
+  {
+    id: 1,
+    name: "Stockify",
+    fee: 50,
+    mode: "Virtual - Individual Participation",
+  },
+  {
+    id: 2,
+    name: "Promote It",
+    fee: 30,
+    mode: "offline - Individual Participation",
+  },
+  { id: 3, name: "Hack-Ur-Way", fee: 200, mode: "Hybrid - Team of 5" },
+  { id: 4, name: "B-Plan", fee: 150, mode: "on-camous- Team of 4" },
+  { id: 5, name: "Case Study", fee: 60, mode: "On Campus -Team of 4" },
+  { id: 6, name: "BizzQuiz", fee: 50, mode: "on Campus - Team of 2" },
+  {
+    id: 7,
+    name: "Tweeters",
+    fee: 30,
+    mode: "On Campus - Individual Participation",
+  },
+  {
+    id: 8,
+    name: "Startup-Bid Auction",
+    fee: 200,
+    mode: "On Campus - Team of 4",
+  },
 ];
 
 // Year options for dropdown
@@ -151,15 +171,15 @@ const FormInput = ({
   options = [],
   color = "#22d3ee",
   name,
-  accept,
-}: FormInputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+}: // accept,
+FormInputProps) => {
+  // const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileButtonClick = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
-  };
+  // const handleFileButtonClick = () => {
+  //   if (inputRef.current) {
+  //     inputRef.current.click();
+  //   }
+  // };
 
   return (
     <div className="mb-4 relative">
@@ -288,6 +308,23 @@ const Register = ({ onClose }: RegisterProps) => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleInitiatePayment = () => {
+    if (
+      !selectedEvents.length ||
+      !formData.name ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.college ||
+      !formData.year ||
+      !formData.paymentMethod
+    ) {
+      alert("Please fill all the fields to proceed");
+      console.log(paymentComplete);
+      return;
+    }
+    setShowPaymentModal(true);
   };
 
   // Handle event selection
@@ -558,7 +595,18 @@ const Register = ({ onClose }: RegisterProps) => {
                     ))}
                   </div>
                 </div>
-
+                <div className="form-element mt-6">
+                  <FormInput
+                    label="ADDITIONAL DATA"
+                    type="textarea"
+                    placeholder="Enter any supplementary information for your profile..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    color="#8b5cf6"
+                    name="message"
+                    accept=""
+                  />
+                </div>
                 <div className="form-element mt-8 p-6 bg-gray-900/80 rounded-md border border-neon/30 relative overflow-hidden">
                   {/* Animated background for payment section */}
                   <div className="absolute inset-0">
@@ -574,10 +622,11 @@ const Register = ({ onClose }: RegisterProps) => {
                         ₹{totalFees}
                       </span>
                     </div>
+
                     <div className="mt-4">
                       <button
                         type="button"
-                        onClick={() => setShowPaymentModal(true)}
+                        onClick={handleInitiatePayment}
                         className="w-full py-3 bg-gradient-to-r from-purple-600 to-cyan-400 text-white font-cyber rounded-md hover:opacity-90 transition-opacity relative overflow-hidden group"
                         disabled={totalFees === 0}
                       >
@@ -596,34 +645,21 @@ const Register = ({ onClose }: RegisterProps) => {
                   </div>
                 </div>
 
-                <div className="form-element mt-6">
-                  <FormInput
-                    label="ADDITIONAL DATA"
-                    type="textarea"
-                    placeholder="Enter any supplementary information for your profile..."
-                    value={formData.message}
-                    onChange={handleChange}
-                    color="#8b5cf6"
-                    name="message"
-                    accept=""
-                  />
-                </div>
-
-                <div className="form-element mt-8 text-center">
+                {/* <div className="form-element mt-8 text-center">
                   <button
                     type="submit"
                     className="cyber-button text-lg px-10 py-4 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={!paymentComplete}
                   >
-                    {/* Button styling with fancy effects */}
+                    
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 z-0"></div>
                     <div className="absolute inset-px bg-gray-900 z-10 group-hover:bg-opacity-0 transition-all duration-300"></div>
                     <div className="absolute inset-0 bg-grid-pattern opacity-20 z-20"></div>
 
-                    {/* Animated borders on hover */}
+                    
                     <div className="absolute inset-0 border-2 border-transparent group-hover:border-neon transition-all duration-500 z-20"></div>
 
-                    {/* Corners */}
+                  
                     <div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-neon z-30"></div>
                     <div className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-accent z-30"></div>
                     <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-accent z-30"></div>
@@ -638,7 +674,7 @@ const Register = ({ onClose }: RegisterProps) => {
                       //SYSTEM: Complete payment protocol to unlock registration
                     </p>
                   )}
-                </div>
+                </div> */}
               </form>
             </div>
 
