@@ -4,8 +4,7 @@ import { getAuthenticatedUser, getUsers, logIn, logOut, signUp } from "../contro
 
 const usersRouter = Router();
 
-usersRouter.get("/users/getall", getUsers);
-usersRouter.post("/users/getauth", getAuthenticatedUser);
+usersRouter.post("/users/get", getAuthenticatedUser);
 usersRouter.post("/users/signup", signUp);
 usersRouter.post("/users/login", logIn);
 usersRouter.post("/users/logout", logOut);
