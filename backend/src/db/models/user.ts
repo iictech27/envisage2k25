@@ -22,14 +22,7 @@ const userSchema = new Schema({
     timestamps: true
 });
 
-interface UserBody {
-    fullName?: string,
-    email?: string,
-    password?: string
-}
-
 type User = InferSchemaType<typeof userSchema>; // Create a User type based on the Schema
 const UserModel = model<User>(dbCollections.usersCollection, userSchema); // Create User model and define its Collection and Schema
 
 export default UserModel;
-export { UserBody };

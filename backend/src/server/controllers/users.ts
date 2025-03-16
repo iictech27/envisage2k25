@@ -2,9 +2,10 @@ import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
 
-import UserModel, { UserBody } from "../../db/models/user.js";
+import UserModel from "../../db/models/user.js";
 import httpCodes from "../../util/httpCodes.js";
 import validatedEnv from "../../util/validatedEnv.js";
+import { UserLoginBody, UserSignupBody } from "../requestBodies/userBody.js";
 
 const hashNum = validatedEnv.HASH_NUM;
 
@@ -48,8 +49,9 @@ export const getAuthenticatedUser: RequestHandler = async(req, res, next) => {
     }
 }
 
+
 // endpoint to add/signup a user
-export const signUp: RequestHandler<unknown, unknown, UserBody, unknown> = async (req, res, next) => {
+export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> = async (req, res, next) => {
     const fullName = req.body.fullName;
     const email = req.body.email;
     const password = req.body.password;
@@ -88,7 +90,7 @@ export const signUp: RequestHandler<unknown, unknown, UserBody, unknown> = async
 };
 
 // endpoint to login to a user
-export const logIn: RequestHandler<unknown, unknown, UserBody, unknown> = async (req, res, next) => {
+export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
