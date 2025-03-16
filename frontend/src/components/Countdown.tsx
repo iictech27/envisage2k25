@@ -290,8 +290,8 @@ const Countdown = () => {
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
-    // Set the event date (April 15, 2025)
-    const eventDate = new Date("April 15, 2025 00:00:00").getTime();
+    // Set the event date (April 19, 2025)
+    const eventDate = new Date("April 19, 2025 00:00:00").getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -388,10 +388,10 @@ const Countdown = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.7 }}
-            style={{ color: "#22d3ee" }}
+            style={{}}
           >
             <span className="text-white">EVENT</span>
-            <span className="text-accent"> COUNTDOWN</span>
+            <span className=""> COUNTDOWN</span>
           </motion.h2>
 
           <motion.div
@@ -483,8 +483,8 @@ const Countdown = () => {
           <div className="inline-block bg-gradient-to-r from-purple-600 to-cyan-400 p-[2px] rounded-lg animate-enhanced-pulse mb-10">
             <div className="bg-primary px-8 py-4 rounded-lg">
               <p className="font-cyber text-white text-xl">
-                APRIL 15-17, 2025 •{" "}
-                <span className="text-neon">VIRTUAL & ON CAMPUS</span>
+                APRIL 18-23, 2025 •{" "}
+                <span className="text-white">VIRTUAL & ON CAMPUS</span>
               </p>
             </div>
           </div>

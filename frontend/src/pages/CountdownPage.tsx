@@ -12,6 +12,7 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
+import AnimatedHeading from "../components/AnimatedHeading";
 
 type TimeLeft = {
   days: number;
@@ -166,42 +167,42 @@ const CountdownBackground = ({ timeLeft }: { timeLeft: TimeLeft }) => {
 
       <BackgroundElements />
       <OrbitingParticles />
-      <PulsingRings />
+      {/* <PulsingRings /> */}
 
       {/* 3D Digital Clock - Adjusted positions for better alignment */}
       <group position={[0, 0, 0]}>
         {/* Using negative half of text width to center each element */}
-        <DigitalNumber
+        {/* <DigitalNumber
           value={timeLeft.days}
           position={[-8, 0, 0]}
           color="#7c3aed"
-        />
-        <DigitalNumber
+        /> */}
+        {/* <DigitalNumber
           value={timeLeft.hours}
           position={[-2.5, 0, 0]}
           color="#22d3ee"
-        />
-        <DigitalNumber
+        /> */}
+        {/* <DigitalNumber
           value={timeLeft.minutes}
           position={[3, 0, 0]}
           color="#ec4899"
-        />
-        <DigitalNumber
+        /> */}
+        {/* <DigitalNumber
           value={timeLeft.seconds}
           position={[8.5, 0, 0]}
           color="#f97316"
-        />
+        /> */}
 
         {/* Separators - Adjusted positions */}
         <group position={[-4.5, 0, 0]}>
-          <Text3D font="/fonts/Orbitron_Bold.json" size={1.2} height={0.2}>
+          {/* <Text3D font="/fonts/Orbitron_Bold.json" size={1.2} height={0.2}>
             :
             <meshStandardMaterial
               color="#ffffff"
               emissive="#ffffff"
               emissiveIntensity={0.5}
             />
-          </Text3D>
+          </Text3D> */}
         </group>
 
         <group position={[0.5, 0, 0]}>
@@ -291,7 +292,7 @@ const Countdown = () => {
 
   useEffect(() => {
     // Set the event date (April 15, 2025)
-    const eventDate = new Date("April 15, 2025 00:00:00").getTime();
+    const eventDate = new Date("April 19, 2025 00:00:00").getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -360,42 +361,38 @@ const Countdown = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-20 relative overflow-hidden min-h-screen flex flex-col justify-center"
-      id="countdown-section"
+      className="py-16 md:py-24 relative overflow-hidden"
+      style={{ minHeight: "80vh" }}
     >
-      {/* 3D Canvas Background - lowest z-index */}
-      <div className="absolute inset-0 z-0 opacity-70">
-        <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 15], fov: 45 }}>
+      {/* 3D Background */}
+      <div className="absolute inset-0 z-0">
+        <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
           <CountdownBackground timeLeft={timeLeft} />
           <OrbitControls
             enableZoom={false}
             enablePan={false}
-            rotateSpeed={0.2}
+            rotateSpeed={0.5}
             maxPolarAngle={Math.PI / 2}
             minPolarAngle={Math.PI / 3}
           />
         </Canvas>
       </div>
 
-      {/* Overlay gradient for better text contrast - middle layer */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/80 z-1"></div>
-
-      {/* Content - top layer with higher z-index */}
-      <div className="container mx-auto px-4 relative z-20">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="text-4xl md:text-5xl font-rovelink font-bold mb-4 tracking-wider animate-enhanced-glow"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.7 }}
-            style={{ color: "#22d3ee" }}
-          >
-            <span className="text-white">EVENT</span>
-            <span className="text-accent"> COUNTDOWN</span>
-          </motion.h2>
+      {/* Content overlay */}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-12">
+          <AnimatedHeading
+            text="EVENT COUNTDOWN"
+            animation="typewriter"
+            tag="h2"
+            className="text-4xl md:text-5xl font-rovelink mb-4"
+            colorWords={["#7c3aed", "#22d3ee"]} // Purple for "EVENT", Cyan for "COUNTDOWN"
+            once={false}
+            threshold={0.1}
+          />
 
           <motion.div
-            className="w-32 h-1 bg-gradient-to-r from-accent to-neon mx-auto mb-6 animate-enhanced-glow"
+            className="w-24 h-1 bg-neon mx-auto mb-6"
             initial={{ width: 0 }}
             animate={isInView ? { width: 128 } : { width: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -483,24 +480,24 @@ const Countdown = () => {
           <div className="inline-block bg-gradient-to-r from-purple-600 to-cyan-400 p-[2px] rounded-lg animate-enhanced-pulse mb-10">
             <div className="bg-primary px-8 py-4 rounded-lg">
               <p className="font-cyber text-white text-xl">
-                APRIL 15-17, 2025 •{" "}
-                <span className="text-neon">VIRTUAL & ON CAMPUS</span>
+                APRIL 19-23, 2025 •{" "}
+                <span className="text-white">VIRTUAL & ON CAMPUS</span>
               </p>
             </div>
           </div>
 
           <div className="mt-10 flex flex-col md:flex-row justify-center gap-4 md:gap-6">
-            <motion.button
+            {/* <motion.button
               className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-enhanced-glow"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <span className="relative z-10">Add to Calendar</span>
               <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-            </motion.button>
+            </motion.button> */}
 
             <motion.button
-              className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-enhanced-glow"
+              className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-enhanced-glow hover:cursor-pointer"
               style={{
                 background: "linear-gradient(45deg, #ec4899, #f97316)",
                 boxShadow:

@@ -9,6 +9,7 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
+import AnimatedHeading from "./AnimatedHeading";
 
 // Neon colors
 const neonColors = {
@@ -317,10 +318,16 @@ const Speakers = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-5xl md:text-5xl font-rovelink font-bold mb-4 neon-text">
-            <span className="text-white">FEATURED</span>
-            <span className="text-accent"> SPEAKERS</span>
-          </h2>
+          <AnimatedHeading
+            text="FEATURED SPEAKERS"
+            animation="wave"
+            tag="h2"
+            className="text-5xl md:text-5xl font-rovelink font-bold mb-4 neon-text"
+            colorWords={["#22d3ee", "#ec4899"]}
+            once={false}
+            threshold={0.1}
+          />
+
           <div className="w-24 h-1 bg-neon mx-auto mb-6 animate-glow"></div>
           <p className="text-gray-300 max-w-2xl mx-auto font-futuristic">
             Learn from industry leaders and visionaries who are shaping the
