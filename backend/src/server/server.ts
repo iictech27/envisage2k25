@@ -1,13 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
+import session from "express-session";
+import createHttpError, { isHttpError } from "http-errors";
 
 import validatedEnv from "../util/validatedEnv.js";
+import httpCodes from "../util/httpCodes.js";
 import { log, logErr, startHttpReqLogging } from "../util/logger.js";
 import usersRouter from "./routes/users.js";
 import rootRouter from "./routes/root.js";
-import httpCodes from "../util/httpCodes.js";
 import registrationRouter from "./routes/registration.js";
-import createHttpError, { isHttpError } from "http-errors";
-import session from "express-session";
 import { mongoStore } from "../db/db.js";
 
 const server = express();
@@ -63,11 +63,11 @@ function startServer() : void {
 
         if(isHttpError(error)) {
             res.status(error.statusCode);
-            res.send(error.message);
+            res.json({ error: error.message });
             return;
         }
         res.status(httpCodes["500"].code);
-        res.send(error instanceof Error ? error.message : "Unknown Error");
+        res.json({ error: error instanceof Error ? error.message : "Unknown Error"});
     });
 
 }

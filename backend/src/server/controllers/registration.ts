@@ -6,7 +6,8 @@ import httpCodes from "../../util/httpCodes.js";
 export const getRegistrations: RequestHandler = async (_req, res, next) => {
     try {
         const registrations = await RegistrationModel.find().exec();
-        res.status(httpCodes["200"].code).json(registrations);
+        res.status(httpCodes["200"].code);
+        res.json(registrations);
     } catch(error) {
         next(error);
     }

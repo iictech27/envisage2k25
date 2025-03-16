@@ -5,19 +5,9 @@ import bcrypt from "bcryptjs";
 import UserModel from "../../db/models/user.js";
 import httpCodes from "../../util/httpCodes.js";
 import validatedEnv from "../../util/validatedEnv.js";
-import { UserLoginBody, UserSignupBody } from "../requestBodies/userBody.js";
+import { UserLoginBody, UserSignupBody } from "../requestBodies/user.js";
 
 const hashNum = validatedEnv.HASH_NUM;
-
-// endpoint to retrieve users
-export const getUsers: RequestHandler = async (_req, res, next) => {
-    try {
-        const users = await UserModel.find().exec();
-        res.status(httpCodes["200"].code).json(users);
-    } catch(error) {
-        next(error);
-    }
-};
 
 // endpoint to retrieve data of currently logged in user
 export const getAuthenticatedUser: RequestHandler = async(req, res, next) => {
@@ -37,7 +27,8 @@ export const getAuthenticatedUser: RequestHandler = async(req, res, next) => {
         for await (const user of users) {
             const matchedUserID = await bcrypt.compare(user._id.toString(), hashedAuthUserID);
             if(matchedUserID) {
-                res.status(httpCodes["200"].code).json(user);
+                res.status(httpCodes["200"].code);
+                res.json(user);
                 return;
             }
         }
@@ -82,12 +73,13 @@ export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> =
     // create and save session token which is the hashed mongo uid
     req.session.hashedUserID = await bcrypt.hash(newUser._id.toString(), hashNum);
 
-    res.status(httpCodes["201"].code).json(newUser);
+    res.status(httpCodes["201"].code);
+    res.json(newUser);
 
     } catch(error) {
         next(error);
     }
-};
+}
 
 // endpoint to login to a user
 export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = async (req, res, next) => {
@@ -118,12 +110,13 @@ export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = a
         // create and save session token which is the hashed mongo uid
         req.session.hashedUserID = await bcrypt.hash(user._id.toString(), hashNum);
 
-        res.status(httpCodes["201"].code).json(user);
+        res.status(httpCodes["201"].code);
+        res.json(user);
 
     } catch(error) {
         next(error);
     }
-};
+}
 
 // endpoint ot logout of a user
 export const logOut: RequestHandler = (req, res, next) => {
