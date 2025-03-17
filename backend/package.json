@@ -3,10 +3,10 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-    "start": "dotenvx run --env-file=.env.local --env-file=.env --overload -- tsx watch src",
-    "dev": "npm start",
-    "build": "dotenvx run --env-file=.env.local --env-file=.env --overload -- tsc src/index.ts",
-    "build_run": "npm run build && node build/index.js",
+    "start": "dotenvx run --env-file=.env.production -- tsx watch src",
+    "dev": "dotenvx run --env-file=.env -- tsx watch src",
+    "build": "dotenvx run --env-file=.env.production -- tsc",
+    "build_dev": "dotenvx run --env-file=.env -- tsc",
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {

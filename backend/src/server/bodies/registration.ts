@@ -1,5 +1,3 @@
-import { EventStructure } from "../../util/events.js"
-
 export interface ReqRegistrationBody {
     department?: string,
     year?: number,
@@ -16,12 +14,5 @@ export interface ResRegistrationBody {
     userEmail: string,
     userRegisteredEventIDs: number[],
     price: number,
-    details: string
-}
-
-export interface ResUserRegistrationsBody {
-    status: number,
-    message: string,
-    events: EventStructure[],
     details: string
 }
