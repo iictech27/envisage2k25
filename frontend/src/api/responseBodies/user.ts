@@ -1,7 +1,6 @@
-interface ReturnedUserBody {
+export interface ReturnedUserBody {
   fullName: string,
-  email: string,
-  message: string
+  email?: string,
+  registeredEvents?: [number],
+  message: string,
 }
-
-export type { ReturnedUserBody };
