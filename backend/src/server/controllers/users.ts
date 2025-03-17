@@ -5,8 +5,7 @@ import bcrypt from "bcryptjs";
 import UserModel from "../../db/models/user.js";
 import httpCodes from "../../util/httpCodes.js";
 import validatedEnv from "../../util/validatedEnv.js";
-import { UserLoginBody, UserSignupBody } from "../requestBodies/user.js";
-import { ReturnedUserBody } from "../responseBodies/user.js";
+import { ReqLoginBody, ReqSignupBody, ResUserBody } from "../bodies/user.js";
 
 const hashNum = validatedEnv.HASH_NUM;
 
@@ -15,14 +14,14 @@ export const getAuthenticatedUser: RequestHandler = async(req, res, next) => {
     try {
 
         // get user with id from session token
-        const user = await UserModel.findById(req.session.sessionToken).select("+email +registeredEvents").exec();
+        const user = await UserModel.findById(req.session.sessionToken).select("+email +registeredEventIDs").exec();
 
-        const response: ReturnedUserBody = {
+        const response: ResUserBody = {
             status: httpCodes["200"].code,
             message: httpCodes["200"].message,
             fullName: user!.fullName, // user wont be null as checked by middleware
             email: user!.email,
-            registeredEvents: user!.registeredEvents,
+            registeredEventIDs: user!.registeredEventIDs,
             details: "Successfully retrieved authenticated user!"
         }
 
@@ -36,7 +35,7 @@ export const getAuthenticatedUser: RequestHandler = async(req, res, next) => {
 
 
 // endpoint to add/signup a user
-export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> = async (req, res, next) => {
+export const signUp: RequestHandler<unknown, unknown, ReqSignupBody, unknown> = async (req, res, next) => {
     const fullName = req.body.fullName?.trim();
     const email = req.body.email?.trim();
     const password = req.body.password?.trim();
@@ -78,7 +77,7 @@ export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> =
         });
 
         // create a response to sent to client
-        const response: ReturnedUserBody = {
+        const response: ResUserBody = {
             status: httpCodes["201"].code,
             message: httpCodes["201"].message,
             fullName: newUser.fullName,
@@ -95,7 +94,7 @@ export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> =
 }
 
 // endpoint to login to a user
-export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = async (req, res, next) => {
+export const logIn: RequestHandler<unknown, unknown, ReqLoginBody, unknown> = async (req, res, next) => {
     const email = req.body.email?.trim();
     const password = req.body.password?.trim();
     const rememberUser = req.body.rememberUser;
@@ -113,7 +112,7 @@ export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = a
         }
 
         // fetch user with given credentials
-        const user = await UserModel.findById(req.session.sessionToken).select("+hashedPassword +email").exec();
+        const user = await UserModel.findOne({ email: email }).select("+hashedPassword +email").exec();
 
         // make sure user with credentials exists
         if(!user) {
@@ -132,7 +131,7 @@ export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = a
             req.session.cookie.maxAge = validatedEnv.SESSION_EXP_MAX_HR * 60 * 60 * 1000;
         }
 
-        const response: ReturnedUserBody = {
+        const response: ResUserBody = {
             status: httpCodes["201"].code,
             message: httpCodes["201"].message,
             fullName: user.fullName,
@@ -156,6 +155,7 @@ export const logOut: RequestHandler = (req, res, next) => {
             return;
         }
 
-        res.sendStatus(httpCodes["200"].code);
+        res.status(httpCodes["200"].code);
+        res.send("User logged out successfully!");
     });
 }
