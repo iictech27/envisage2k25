@@ -1,16 +1,17 @@
-import validatedEnv from "./validatedEnv";
+import validatedEnv from "./utils/validatedEnv";
 
-import { ReturnedUserBody } from "./responseBodies/user";
-import { UserSignInCredBody, UserLogInCredBody } from "./requestBodies/user";
-import { RegistrationBody } from "./requestBodies/registration";
+import { ReqRegistrationBody, ResRegistrationBody } from "./bodies/registration";
+import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
+import { ResEventsBody } from "./bodies/events";
 
 const reqTypes = {
   GET: "GET",
   POST: "POST",
 }
 
-const apiServerLink = import.meta.env.VITE_SERVER_LINK;
+const apiServerLink = validatedEnv.VITE_SERVER_LINK;
 
+// send request to server and fetch data
 async function fetchData(input: RequestInfo, init?: RequestInit) {
   const response = await fetch(apiServerLink + "/api" + input, init);
 
@@ -23,16 +24,37 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
   }
 }
 
-// user api connections
-export async function getLoggedInUser(): Promise<ReturnedUserBody> {
+// check if server is online
+export async function reqServerStatus() {
+  const response = await fetchData("/", {
+    method: reqTypes.GET,
+    credentials: "include"
+  })
+
+  return response;
+}
+
+// send request to get events info
+export async function reqEvents(): Promise<ResEventsBody> {
+  const response = await fetchData("/events", {
+    method: reqTypes.GET,
+    credentials: "include"
+  });
+
+  return response.json();
+}
+
+// send request for let logged-in user info
+export async function reqAuthUserData(): Promise<ResUserBody> {
   const response = await fetchData("/users/get", {
     method: reqTypes.GET,
     credentials: "include"
   });
+
   return response.json();
 }
 
-export async function postUserSignIn(credentials: UserSignInCredBody): Promise<ReturnedUserBody> {
+export async function reqNewUserSignIn(credentials: ReqSignupBody): Promise<ResUserBody> {
   const response = await fetchData("/users/signup", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
@@ -43,7 +65,7 @@ export async function postUserSignIn(credentials: UserSignInCredBody): Promise<R
   return response.json();
 }
 
-export async function postUserLogIn(credentials: UserLogInCredBody): Promise<ReturnedUserBody> {
+export async function reqUserLogIn(credentials: ReqLoginBody): Promise<ResUserBody> {
   const response = await fetchData("/users/login", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
@@ -54,11 +76,11 @@ export async function postUserLogIn(credentials: UserLogInCredBody): Promise<Ret
   return response.json();
 }
 
-export async function postUserLogOut() {
+export async function reqUserLogout() {
   await fetchData("/users/logout", { method: reqTypes.POST });
 }
 
-export async function postRegistratinRequest(info: RegistrationBody): Promise<RegistrationBody> {
+export async function reqNewRegistration(info: ReqRegistrationBody): Promise<ResRegistrationBody> {
   const response = await fetchData("/reg/new", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },

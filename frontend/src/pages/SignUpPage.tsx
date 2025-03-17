@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
-import { postUserSignIn } from "../api/fetch";
+import { reqNewUserSignIn } from "../api/fetch";
+import { ResErrorBody } from "../api/bodies/error";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -67,25 +68,25 @@ const SignUpPage = () => {
 
     try {
 
-      const userSignUpMessage = await postUserSignIn({
+      const resUserSignup = await reqNewUserSignIn({
         fullName: formData.name,
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.confirmPassword
       });
 
-      setIsLoading(false);
-      console.log(userSignUpMessage);
+      console.log(resUserSignup);
       navigate("/login");
 
     } catch(error) {
       console.log(error);
 
       setErrors({
-        api: error instanceof Error ? error.message : "An error occurred!"
+        api: error instanceof Error ? error.message : "An unknown error occurred!"
       });
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
   };
 
   const [showPassword, setShowPassword] = useState(false);

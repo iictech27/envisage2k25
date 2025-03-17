@@ -1,7 +1,17 @@
 import { useState, useEffect, useRef, RefObject } from "react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../styles/ThemeProvider";
+import { reqAuthUserData, reqServerStatus } from "../api/fetch";
 import * as utils from "../styles/utils";
+
+let serverStatus = null;
+let authUser = null;
+try {
+  serverStatus = await reqServerStatus();
+  authUser = await reqAuthUserData();
+} catch(error) {
+  console.error(error);
+}
 
 const Header = () => {
   const theme = useTheme();
@@ -54,6 +64,7 @@ const Header = () => {
     boxShadow: theme.shadows.lg,
   };
 
+
   return (
     <div className="relative">
       {/* Header */}
@@ -105,29 +116,65 @@ const Header = () => {
             </ul>
           </nav>
 
-          <div className="hidden md:flex space-x-4 items-center">
-            <NavLink
-              to="/login"
-              className="font-cyber text-sm uppercase tracking-wider text-white hover:text-neon transition-colors duration-300"
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/signup"
-              className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
-              style={{
-                ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
-                backgroundColor: theme.colors.dark.purple,
-                padding: `${theme.spacing["2"]} ${theme.spacing["4"]}`,
-                borderRadius: theme.borders.radius.md,
-                fontFamily: theme.typography.fontFamily.cyber,
-                textTransform: "uppercase",
-                letterSpacing: "1px",
-              }}
-            >
-              Sign Up
-            </NavLink>
-          </div>
+          {(serverStatus == null) && (
+            <div className="hidden md:flex space-x-4 items-center">
+              <NavLink
+                to="/"
+                className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                style={{
+                  ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
+                  backgroundColor: theme.colors.dark.purple,
+                  padding: `${theme.spacing["2"]} ${theme.spacing["4"]}`,
+                  borderRadius: theme.borders.radius.md,
+                  fontFamily: theme.typography.fontFamily.cyber,
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+              >
+                Soon...
+              </NavLink>
+            </div>
+          )}
+
+          {(authUser != null) && (
+            <div className="hidden md:flex space-x-4 items-center">
+              <NavLink
+                to="/"
+                className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                style={{
+                  ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
+                  backgroundColor: theme.colors.dark.purple,
+                  padding: `${theme.spacing["2"]} ${theme.spacing["4"]}`,
+                  borderRadius: theme.borders.radius.md,
+                  fontFamily: theme.typography.fontFamily.cyber,
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+              >
+                Profile
+              </NavLink>
+            </div>
+          )}
+
+          {(serverStatus != null && authUser == null) && (
+            <div className="hidden md:flex space-x-4 items-center">
+              <NavLink
+                to="/login"
+                className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                style={{
+                  ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
+                  backgroundColor: theme.colors.dark.purple,
+                  padding: `${theme.spacing["2"]} ${theme.spacing["4"]}`,
+                  borderRadius: theme.borders.radius.md,
+                  fontFamily: theme.typography.fontFamily.cyber,
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+              >
+                Login
+              </NavLink>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
