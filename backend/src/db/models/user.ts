@@ -18,8 +18,8 @@ const userSchema = new Schema({
         required: true,
         select: false
     },
-    registeredEvents: {
-        type: [Number], // event enum number array
+    registeredEventIDs: {
+        type: [Number], // events array
         unique: true,
         select: false
     }

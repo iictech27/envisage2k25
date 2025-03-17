@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
+
 import httpCodes from "../../util/httpCodes.js";
 import UserModel from "../../db/models/user.js";
 

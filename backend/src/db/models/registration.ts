@@ -15,7 +15,7 @@ const registrationSchema = new Schema({
         type: Number,
         required: true
     },
-    events: {
+    eventIDs: {
         type: [Number], // event enum number array
         required: true
     },

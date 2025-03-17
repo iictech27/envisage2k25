@@ -10,6 +10,7 @@ import usersRouter from "./routes/users.js";
 import rootRouter from "./routes/root.js";
 import registrationRouter from "./routes/registration.js";
 import { mongoStore } from "../db/db.js";
+import eventsRouter from "./routes/events.js";
 
 const server = express();
 const port = validatedEnv.PORT;
@@ -55,8 +56,10 @@ function startServer() : void {
 
     // different routes/endpoints
     server.use("/", rootRouter);
-    server.use("/api/", usersRouter);
-    server.use("/api/", registrationRouter);
+    server.use("/api", rootRouter);
+    server.use("/api", usersRouter);
+    server.use("/api", registrationRouter);
+    server.use("/api", eventsRouter);
 
     // non-existent endpoint handler
     server.use((_req: Request, _res: Response, next: NextFunction) => {
@@ -68,13 +71,18 @@ function startServer() : void {
     server.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
         logErr(error);
 
-        if(isHttpError(error)) {
-            res.status(error.statusCode);
-            res.json({ error: error.message });
-            return;
+        let errorResponse = {
+            code: httpCodes["500"].code,
+            error: "[" + httpCodes["500"].code + "] " + httpCodes["500"].message + ": An unknown error has occured!",
         }
-        res.status(httpCodes["500"].code);
-        res.json({ error: error instanceof Error ? error.message : "Unknown Error"});
+
+        if(isHttpError(error)) {
+            errorResponse.code = error.statusCode;
+            errorResponse.error = "[" + error.statusCode + "] " + error.message;
+        }
+
+        res.status(errorResponse.code);
+        res.json(errorResponse);
     });
 
 }
