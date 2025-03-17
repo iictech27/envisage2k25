@@ -1,27 +1,21 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import bcrypt from "bcryptjs";
 
 import RegistrationModel from "../../db/models/registration.js";
 import httpCodes from "../../util/httpCodes.js";
 import { RegistrationBody } from "../requestBodies/registration.js";
 import { Events, EventsEnum } from "../../util/eventsEnum.js";
 import UserModel from "../../db/models/user.js";
+import { ReturnedRegistrationBody } from "../responseBodies/registration.js";
 
 // endpoint to create a registration
 export const createRegistration: RequestHandler<unknown, unknown, RegistrationBody, unknown> = async (req, res, next) => {
-    const department = req.body.department;
+    const department = req.body.department?.trim();
     const year = req.body.year;
     const events = req.body.events;
-    const additionalInfo = req.body.additionalInfo;
-    const hashedAuthUserID = req.session.hashedUserID;
+    const additionalInfo = req.body.additionalInfo?.trim();
 
     try {
-
-        // check if the user is authenticated i.e. the session token exists
-        if(!hashedAuthUserID) {
-            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": User not authenticated!");
-        }
 
         // make sure all parameters are received
         if(!department || !year || !events ) {
@@ -38,7 +32,7 @@ export const createRegistration: RequestHandler<unknown, unknown, RegistrationBo
             throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid parameters!");
         }
 
-        // make sure events are valid
+        // make sure events are valid and calculate price
         let price = 0;
         for(const event in events) {
             if(!Object.values(EventsEnum).includes(event)) {
@@ -48,27 +42,11 @@ export const createRegistration: RequestHandler<unknown, unknown, RegistrationBo
             price += Events[event].priceInr;
         }
 
-
-        // retrieve all users
-        const users = await UserModel.find().select("+email +registeredEvents").exec();
-
-        // loop through all users and match the userID with the hashed version
-        let user;
-        for await (const u of users) {
-            const matchedUserID = await bcrypt.compare(u._id.toString(), hashedAuthUserID);
-            if(matchedUserID) {
-                user = u;
-                break;
-            }
-        }
-
-        // user not found
-        if(!user) {
-            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": User not authenticated!");
-        }
+        // retrieve authenticated user
+        const user = await UserModel.findById(req.session.sessionToken).select("+email +registeredEvents").exec();
 
         // check if user already registered in event
-        const userRegisteredEvents = user.registeredEvents;
+        const userRegisteredEvents = user!.registeredEvents; // user will definitely exist as checked by middleware
         for(const event in events) {
             if(userRegisteredEvents.includes(Number(event))) {
                 throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid parameters!");
@@ -77,7 +55,7 @@ export const createRegistration: RequestHandler<unknown, unknown, RegistrationBo
 
         // create new user with given data
         const newRegistration = await RegistrationModel.create({
-            userID: user._id,
+            userID: user!._id,
             department: department,
             year: year,
             events: events,
@@ -86,26 +64,31 @@ export const createRegistration: RequestHandler<unknown, unknown, RegistrationBo
             confirmed: false,
         });
 
-        // add new registrations to user
-        user.registeredEvents = [...userRegisteredEvents, ...events];
-        user.save();
-
         // additional info
         if(additionalInfo) {
             newRegistration.additionalInfo = additionalInfo;
             newRegistration.save();
         }
 
-        res.status(httpCodes["201"].code);
-        res.json({
-            fullName: user.fullName,
-            email: user.email,
-            department: department,
-            year: year,
-            events: events,
+        // add new registrations to user
+        user!.registeredEvents = [...userRegisteredEvents, ...events];
+        user!.save();
+
+        // create response
+        const response: ReturnedRegistrationBody = {
+            status: httpCodes["201"].code,
+            message: httpCodes["201"].message,
+            userFullName: user!.fullName,
+            userDept: department,
+            userYear: year,
+            userEmail: user!.email,
+            userRegisteredEvents:events,
             price: price,
-            message: "Succesfully registered user to event."
-        });
+            details: "Successfully registered user to event(s)!"
+        }
+
+        res.status(response.status);
+        res.json(response);
 
     } catch(error) {
         next(error);

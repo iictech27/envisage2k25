@@ -6,34 +6,28 @@ import UserModel from "../../db/models/user.js";
 import httpCodes from "../../util/httpCodes.js";
 import validatedEnv from "../../util/validatedEnv.js";
 import { UserLoginBody, UserSignupBody } from "../requestBodies/user.js";
+import { ReturnedUserBody } from "../responseBodies/user.js";
 
 const hashNum = validatedEnv.HASH_NUM;
 
 // endpoint to retrieve data of currently logged in user
 export const getAuthenticatedUser: RequestHandler = async(req, res, next) => {
-    const hashedAuthUserID = req.session.hashedUserID;
-
     try {
 
-        // check if the user is authenticated i.e. the session token exists
-        if(!hashedAuthUserID) {
-            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": User not authenticated!");
+        // get user with id from session token
+        const user = await UserModel.findById(req.session.sessionToken).select("+email +registeredEvents").exec();
+
+        const response: ReturnedUserBody = {
+            status: httpCodes["200"].code,
+            message: httpCodes["200"].message,
+            fullName: user!.fullName, // user wont be null as checked by middleware
+            email: user!.email,
+            registeredEvents: user!.registeredEvents,
+            details: "Successfully retrieved authenticated user!"
         }
 
-        // retrieve all users
-        const users = await UserModel.find().select("+email").exec();
-
-        // loop through all users and match the userID with the hashed version
-        for await (const user of users) {
-            const matchedUserID = await bcrypt.compare(user._id.toString(), hashedAuthUserID);
-            if(matchedUserID) {
-                res.status(httpCodes["200"].code);
-                res.json(user);
-                return;
-            }
-        }
-
-        throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": User not authenticated!");
+        res.status(response.status);
+        res.json(response);
 
     } catch(error) {
         next(error);
@@ -43,18 +37,12 @@ export const getAuthenticatedUser: RequestHandler = async(req, res, next) => {
 
 // endpoint to add/signup a user
 export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> = async (req, res, next) => {
-    const fullName = req.body.fullName;
-    const email = req.body.email;
-    const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
-    const hashedAuthUserID = req.session.hashedUserID;
+    const fullName = req.body.fullName?.trim();
+    const email = req.body.email?.trim();
+    const password = req.body.password?.trim();
+    const confirmPassword = req.body.confirmPassword?.trim();
 
     try {
-
-        // check if the user is authenticated i.e. the session token exists
-        if(hashedAuthUserID) {
-            throw createHttpError(httpCodes["403"].code, httpCodes["403"].message + ": User already logged in!");
-        }
 
         // make sure all parameters are received
         if(!fullName || !email || !password || !confirmPassword) {
@@ -62,44 +50,44 @@ export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> =
         }
 
         // validate email
-        if (!email.trim()) {
-            throw createHttpError(httpCodes["400"].code, httpCodes["400"].message + ": Parameters missing!");
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid credentials!");
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Enter a valid email!");
         }
 
         // make sure password is atleast 6 letter long
-        if(password.trim().length < 6) {
-            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid credentials!");
+        if(password.length < 6) {
+            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Password should be atleast 6 characters long!");
         }
 
         // make sure both password and confirmation are same
-        if(password.trim() !== confirmPassword.trim()) {
-            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid credentials!");
+        if(password !== confirmPassword) {
+            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Password and Confirm Password do not match!");
         }
 
         // check if account with email exists
-        const existingEmail = await UserModel.findOne({ email: email }).exec();
-        if(existingEmail) {
+        const userWithEmail = await UserModel.findOne({ email: email }).exec();
+        if(userWithEmail) {
             throw createHttpError(httpCodes["409"].code, httpCodes["409"].message + ": Account with e-mail already exists! Try logging in instead.");
         }
-
-        // hash the password
-        const hashedPassword = await bcrypt.hash(password.trim(), hashNum);
 
         // create new user with given data
         const newUser = await UserModel.create({
             fullName: fullName,
             email: email,
-            hashedPassword: hashedPassword
+            hashedPassword: await bcrypt.hash(password, hashNum)
         });
 
-        res.status(httpCodes["201"].code);
-        res.json({
-            fullname: newUser.fullName,
+        // create a response to sent to client
+        const response: ReturnedUserBody = {
+            status: httpCodes["201"].code,
+            message: httpCodes["201"].message,
+            fullName: newUser.fullName,
             email: newUser.email,
-            message: "Successfully created new user account!"
-        });
+            details: "Successfully created new user account!"
+        };
+
+        res.status(response.status);
+        res.json(response);
 
     } catch(error) {
         next(error);
@@ -108,17 +96,11 @@ export const signUp: RequestHandler<unknown, unknown, UserSignupBody, unknown> =
 
 // endpoint to login to a user
 export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = async (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const email = req.body.email?.trim();
+    const password = req.body.password?.trim();
     const rememberUser = req.body.rememberUser;
-    const hashedAuthUserID = req.session.hashedUserID;
 
     try {
-
-        // check if the user is authenticated i.e. the session token exists
-        if(hashedAuthUserID) {
-            throw createHttpError(httpCodes["403"].code, httpCodes["403"].message + ": User already logged in!");
-        }
 
         // make sure all parameters are received
         if(!email || !password) {
@@ -126,16 +108,14 @@ export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = a
         }
 
         // validate email
-        if (!email.trim()) {
-            throw createHttpError(httpCodes["400"].code, httpCodes["400"].message + ": Parameters missing!");
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
+        if (!/\S+@\S+\.\S+/.test(email)) {
             throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid credentials!");
         }
 
         // fetch user with given credentials
-        const user = await UserModel.findOne({ email: email }).select("+hashedPassword +email").exec();
+        const user = await UserModel.findById(req.session.sessionToken).select("+hashedPassword +email").exec();
 
-        // check if user with credentials exists
+        // make sure user with credentials exists
         if(!user) {
             throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Invalid credentials!");
         }
@@ -147,18 +127,21 @@ export const logIn: RequestHandler<unknown, unknown, UserLoginBody, unknown> = a
         }
 
         // create and save session token which is the hashed mongo uid
-        req.session.hashedUserID = await bcrypt.hash(user._id.toString(), hashNum);
-
+        req.session.sessionToken = user._id;
         if(rememberUser) {
             req.session.cookie.maxAge = validatedEnv.SESSION_EXP_MAX_HR * 60 * 60 * 1000;
         }
 
-        res.status(httpCodes["201"].code);
-        res.json({
-            fullname: user.fullName,
+        const response: ReturnedUserBody = {
+            status: httpCodes["201"].code,
+            message: httpCodes["201"].message,
+            fullName: user.fullName,
             email: user.email,
-            message: "Successfully logged in to user account!"
-        });
+            details: "Successfully logged in to user account!"
+        };
+
+        res.status(response.status);
+        res.json(response);
 
     } catch(error) {
         next(error);
