@@ -388,7 +388,7 @@ const Events = () => {
       <div className="container mx-auto px-4 relative z-10 flex justify-center items-center">
         <h2
           ref={headingRef}
-          className="text-3xl md:text-5xl font-cyber font-bold mb-4 tracking-wider text-center"
+          className="text-3xl md:text-5xl font-rovelink font-bold mb-4 tracking-wider text-center"
         >
           <span className="text-white">FEATURED</span>
           <span className="text-accent ml-3">EVENTS</span>

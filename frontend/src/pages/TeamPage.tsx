@@ -20,7 +20,7 @@ interface TeamMember {
 const TeamPage = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [animatedMembers, setAnimatedMembers] = useState<TeamMember[]>([]);
-  
+
   // Sample team data - replace with your actual team members
   const teamMembers: TeamMember[] = [
     {
@@ -366,7 +366,6 @@ const TeamPage = () => {
         linkedin: "https://linkedin.com",
       },
     },
-
   ];
 
   // Filter categories
@@ -382,7 +381,7 @@ const TeamPage = () => {
     { id: "socialMedia", label: "Social Media Wing" },
     { id: "sponsorship", label: "Sponsorship Wing" },
     { id: "startup", label: "Start-up Wing" },
-    { id: "content", label: "Content Wing" }
+    { id: "content", label: "Content Wing" },
   ];
 
   // Filter team members based on active filter
@@ -390,17 +389,34 @@ const TeamPage = () => {
     if (activeFilter === "all") return teamMembers;
 
     const filterMap: Record<string, string[]> = {
-      leadership: ["Convenor", "Convenor of External Affairs", "Co-Convenor", "Campus Director HULT Prize"],
+      leadership: [
+        "Convenor",
+        "Convenor of External Affairs",
+        "Co-Convenor",
+        "Campus Director HULT Prize",
+      ],
       tech: ["Head of Tech wing", "Co-Head of Tech wing"],
-      management: ["Head of Management and Resource wing", "Co-head of Management wing"],
+      management: [
+        "Head of Management and Resource wing",
+        "Co-head of Management wing",
+      ],
       graphics: ["Head of Graphics wing", "Co-Head of Graphics wing"],
-      resource: ["Head of Management and Resource wing","Co-head of Resource wing"],
-      press:["Head of Press wing","Co-head of Press wing"],
-      publicRelations:["Head of Public Relations wing","Co-head of Public Relations wing"],
-      socialMedia:["Head of Social Media wing","Co-head of Social Media wing"],
-      sponsorship:["Head of Sponsorship wing","Co-head of Sponsorship wing"],
-      startup:["Head of Start-Up wing","Co-head of Start-Up wing"],
-      content:["Head of Content Wing","Co-head of Content Wing"],
+      resource: [
+        "Head of Management and Resource wing",
+        "Co-head of Resource wing",
+      ],
+      press: ["Head of Press wing", "Co-head of Press wing"],
+      publicRelations: [
+        "Head of Public Relations wing",
+        "Co-head of Public Relations wing",
+      ],
+      socialMedia: [
+        "Head of Social Media wing",
+        "Co-head of Social Media wing",
+      ],
+      sponsorship: ["Head of Sponsorship wing", "Co-head of Sponsorship wing"],
+      startup: ["Head of Start-Up wing", "Co-head of Start-Up wing"],
+      content: ["Head of Content Wing", "Co-head of Content Wing"],
     };
 
     return teamMembers.filter((member) =>
@@ -426,7 +442,6 @@ const TeamPage = () => {
     });
   }, [activeFilter]);
 
-
   return (
     <>
       <Header />
@@ -446,7 +461,7 @@ const TeamPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           {/* Page Title */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-cyber mb-4">
+            <h1 className="text-4xl md:text-5xl font-rovelink mb-4">
               <span className="text-neon">OUR</span>{" "}
               <span className="text-accent">TEAM</span>
             </h1>
@@ -459,16 +474,17 @@ const TeamPage = () => {
           </div>
 
           {/* Filters */}
-          <div className="flex space-x-6 overflow-x-auto scrollbar-hide px-4 py-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 px-4 py-2">
             {filters.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setActiveFilter(filter.id)}
-                className={`px-6 py-3 rounded-lg font-cyber text-sm transition-all duration-300 transform whitespace-nowrap ${
-                  activeFilter === filter.id
-                    ? "bg-gradient-to-r from-neon to-accent text-white scale-105 shadow-lg"
-                    : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30 hover:scale-105"
-                }`}
+                className={`px-6 py-3 rounded-lg font-cyber text-sm transition-all duration-300 transform whitespace-nowrap 
+        ${
+          activeFilter === filter.id
+            ? "bg-gradient-to-r from-neon to-accent text-white scale-105 shadow-lg"
+            : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30 hover:scale-105"
+        }`}
               >
                 {filter.label}
               </button>
@@ -508,7 +524,7 @@ const TeamPage = () => {
                   <p className="text-neon font-futuristic text-sm mb-3">
                     {member.role}
                   </p>
-                  <p className="text-gray-300 text-sm mb-4">{member.bio}</p>
+                  {/* <p className="text-gray-300 text-sm mb-4">{member.bio}</p> */}
 
                   {/* Social Links */}
                   <div className="flex space-x-3">
@@ -592,6 +608,4 @@ const TeamPage = () => {
   );
 };
 
-
 export default TeamPage;
-
