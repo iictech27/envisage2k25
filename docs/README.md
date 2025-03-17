@@ -1,54 +1,46 @@
-# React + TypeScript + Vite
+# Setup Instructions
+Setup for local testing
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Backend
+* Create .env in the backend folder (for local testing)
+* Create .env.production before publishing the project
+* Follow .env.example to setup env files
+* `npm start` - runs in production mode (using .env.production file)
+* `npm run dev` - runs in dev mode (using .env file)
+* `npm run build` - builds the project in the ./build directory using production env vars
+* `npm run build_dev` - builds the project in the ./build directory
+* `npm run lint` - checks the project for errors using eslint
 
-Currently, two official plugins are available:
+### Set up mongo db for local testing
+* In the minimum, install mongo server, mongo shell (follow respective docs)
+* Mongo Compass is usefull for visually tracking the database
+* Mongod can sometimes run in the background, kill it using task manager (search mongod)
+* Run mongod using the command `mongod --dppath temp\path\where\db\should\be\stored --logpath \path\to\a\log\file\to\store\logs\mongod.log --port 27017 --auth`
+                                                                   ^                          ^                                                             ^
+    this is the path where databse related files will be stored ---|                          |                                                             |
+        this is the path where logs will be stored -------------------------------------------|                                                             |
+            this makes sure all clients are authenticated before connecting --------------------------------------------------------------------------------|
+* Run the mongo shell command `mongosh --port 27017`
+* Create user admin by running the following commands in the shell (https://www.mongodb.com/docs/upcoming/tutorial/configure-scram-client-authentication/)
+    * `use admin`
+    * `db.createUser(user: "admin", pwd: "12345678", roles: [{role:"readWriteAnyDatabase",db:"admin"}, {role:"userAdminAnyDatabase",db:"admin"}])`
+    * `db.adminCommand( { shutdown: 1 } )`
+    * `exit`
+* Restart mongod using the command 2 steps before
+* Now you can connect to the mongodb using mongosh as `mongosh --port 27017 --authenticationDatabase "admin" -u "admin" -p "12345678"`
+* If you are using Mongo Compass instead of monogsh then connect to the uri `mongodb://admin:*****@localhost:27017/?authMechanism=DEFAULT&authSource=admin`
+                                                                                                                   ^
+* This is the same uri used in the .env with one change (the database name is added here --------------------------| (btw / and ?)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Setup project for local testing
+* Go to the backend folder of the project
+* Make sure all packages are installed - `npm install`
+* Run using `npm run dev`
+* Run in productin using `npm start`
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Frontend
+* Create .env in the backend folder (for local testing)
+* Create .env.production before publishing the project
+* Follow .env.example to setup env files
+* NOTE: if you keep both, .env.production will override .env (thats how vite works)
+* `npm run dev` - run vite server
