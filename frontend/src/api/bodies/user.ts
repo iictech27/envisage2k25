@@ -1,3 +1,5 @@
+import { EventStructure } from "../utils/eventStructure"
+
 export interface ReqSignupBody {
     fullName: string,
     email: string,
@@ -20,3 +22,9 @@ export interface ResUserBody {
     details: string
 }
 
+export interface ResUserRegEventsBody {
+    status: number,
+    message: string,
+    events: EventStructure[],
+    details: string
+}
