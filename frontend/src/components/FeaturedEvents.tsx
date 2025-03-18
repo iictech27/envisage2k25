@@ -477,6 +477,7 @@ const FeaturedEvents = () => {
                         className="w-full h-full object-cover"
                         loading="lazy"
                         onError={() => handleImageError(index)}
+                        style={{ filter: "blur(1.5px) brightness(0.6)" }} // Adjust blur & brightness
                       />
 
                       {/* Scanline effect */}
@@ -1109,6 +1110,7 @@ const FeaturedEvents = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
+
             {/* Featured event image with overlay */}
             <div className="absolute inset-0 z-0">
               {events.map((event, index) => (
@@ -1134,6 +1136,7 @@ const FeaturedEvents = () => {
                     className="w-full h-full object-cover"
                     loading={index === 0 ? "eager" : "lazy"}
                     onError={() => handleImageError(index)}
+                    style={{ filter: "blur(3px) brightness(0.6)" }} // Adjust blur & brightness
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/70 to-transparent"></div>
 
