@@ -1,69 +1,37 @@
 import { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { reqEvents } from "../api/fetch";
 
 // Event data with fees and mode of conduction
-let resEvents;
-try {
-  const resEventData = await reqEvents();
-  resEvents = resEventData.events;
-} catch(error) {
-  console.log(error);
-}
-
-// WARN: Uncomment and delete dulplicate before production
-
-// const eventOptions = resEvents ? resEvents : [];
-const eventOptions = resEvents ? resEvents : [
-    {
-        id: 0,
-        name: "Test_Event_0",
-        fee: 50,
-        mode: "Virtual - Individual Participation",
-    },
-    {
-        id: 1,
-        name: "Test_Event_1",
-        fee: 30,
-        mode: "Offline - Individual Participation",
-    },
-    {
-        id: 2,
-        name: "Test_Event_2",
-        fee: 200,
-        mode: "Hybrid - Team of 5"
-    },
-    {
-        id: 3,
-        name: "Test_Event_3",
-        fee: 150,
-        mode: "On Campus - Team of 4"
-    },
-    {
-        id: 4,
-        name: "Test_Event_4",
-        fee: 60,
-        mode: "On Campus - Team of 4"
-    },
-    {
-        id: 5,
-        name: "Test_Event_5",
-        fee: 50,
-        mode: "On Campus - Team of 2"
-    },
-    {
-        id: 6,
-        name: "Test_Event_6",
-        fee: 30,
-        mode: "On Campus - Individual Participation",
-    },
-    {
-        id: 7,
-        name: "Test_Event_7",
-        fee: 200,
-        mode: "On Campus - Team of 4",
-    }
+const eventOptions = [
+  {
+    id: 1,
+    name: "Stockify",
+    fee: 50,
+    mode: "Virtual - Individual Participation",
+  },
+  {
+    id: 2,
+    name: "Promote It",
+    fee: 30,
+    mode: "offline - Individual Participation",
+  },
+  { id: 3, name: "Hack-Ur-Way", fee: 200, mode: "Hybrid - Team of 5" },
+  { id: 4, name: "B-Plan", fee: 150, mode: "on-camous- Team of 4" },
+  { id: 5, name: "Case Study", fee: 60, mode: "On Campus -Team of 4" },
+  { id: 6, name: "BizzQuiz", fee: 50, mode: "on Campus - Team of 2" },
+  {
+    id: 7,
+    name: "Tweeters",
+    fee: 30,
+    mode: "On Campus - Individual Participation",
+  },
+  {
+    id: 8,
+    name: "Startup-Bid Auction",
+    fee: 200,
+    mode: "On Campus - Team of 4",
+  },
 ];
 
 // Year options for dropdown
@@ -584,9 +552,6 @@ const Register = ({ onClose }: RegisterProps) => {
                     SELECT EXPERIENCES <span className="text-red-500">*</span>
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {eventOptions.length <= 0 && (
-                      <p className="text-red-500 text-l mt-1 mb-1">Sorry for the inconvenience! Events will be updated shortly!</p>
-                    )}
                     {eventOptions.map((event) => (
                       <div key={event.id} className="relative group">
                         <div className="absolute inset-0 bg-gradient-to-r from-neon/20 to-accent/20 rounded-md blur-sm group-hover:blur-none transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
