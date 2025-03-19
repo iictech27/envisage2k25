@@ -25,9 +25,9 @@ Setup for local testing
     * `db.createUser(user: "admin", pwd: "12345678", roles: [{role:"readWriteAnyDatabase",db:"admin"}, {role:"userAdminAnyDatabase",db:"admin"}])`
     * `db.adminCommand( { shutdown: 1 } )`
     * `exit`
-* Restart mongod using the command 2 steps before
+* Restart mongod using the command 2 steps before (`mongod --port 21...`)
 * Now you can connect to the mongodb using mongosh as `mongosh --port 27017 --authenticationDatabase "admin" -u "admin" -p "12345678"`
-* If you are using Mongo Compass instead of monogsh then connect to the uri `mongodb://admin:*****@localhost:27017/?authMechanism=DEFAULT&authSource=admin`
+* If you are using Mongo Compass instead of monogsh then connect to the uri `mongodb://admin:12345678@localhost:27017/?authMechanism=DEFAULT&authSource=admin`
     * This is the same uri used in the .env with one change (the database name is added here between `...27017/` and `?authMe...`
 
 ### Setup project for local testing
