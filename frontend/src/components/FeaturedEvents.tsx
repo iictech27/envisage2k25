@@ -662,7 +662,7 @@ const FeaturedEvents = () => {
             {/* View All button with cyberpunk style */}
             <div className="mt-8 relative">
               <Link
-                to="/gallery"
+                to="/events"
                 className="block relative py-3 text-center font-cyber text-white border border-neon/50 bg-primary/80 overflow-hidden"
               >
                 {/* Animated background */}
@@ -1356,7 +1356,7 @@ const FeaturedEvents = () => {
 
             {/* View all events button */}
             <Link
-              to="/gallery"
+              to="/events"
               className="block text-center py-3 px-4 border border-neon/50 rounded-lg font-cyber text-white hover:bg-neon/10 hover:text-neon transition-all duration-300 mt-6"
             >
               VIEW ALL EVENTS
