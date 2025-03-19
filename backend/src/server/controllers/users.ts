@@ -22,7 +22,7 @@ export const getAuthUser: RequestHandler = async(req, res, next) => {
             message: httpCodes["200"].message,
             fullName: user!.fullName, // user wont be null as checked by middleware
             email: user!.email,
-            registeredEventIDs: user!.registeredEventIDs,
+           registeredEventIDs: user!.registeredEventIDs,
             details: "Successfully retrieved authenticated user!"
         }
 
@@ -167,13 +167,14 @@ export const getRegEvents: RequestHandler = async (req, res, next) => {
 
         // find user using user id from session token
         const user = await UserModel.findById(req.session.sessionToken).select("+registeredEventIDs").exec();
-        let events: EventStructure[] = [];
+	  const userRegisteredEventIDs = user!.registeredEventIDs; // user will always be available as ensured by middleware
+        let eventsDetails: EventStructure[] = [];
 
         // user will definitely exist from middleware
-        for(const eventID in user!.registeredEventIDs) {
+        for(let i = 0; i < userRegisteredEventIDs.length; i++) {
 
             // filter events with id (should return only one)
-            const event = Events.filter((event) => event.id.toString() == eventID);
+            const event = Events.filter((event) => event.id == userRegisteredEventIDs[i]);
 
             // check only one event is returned
             if(event.length > 1) {
@@ -181,14 +182,14 @@ export const getRegEvents: RequestHandler = async (req, res, next) => {
             }
 
             // add event to list
-            events.push(event[0]);
+            eventsDetails.push(event[0]);
 
         }
 
         const response: ResUserRegEventsBody = {
             status: httpCodes["201"].code,
             message: httpCodes["201"].message,
-            events: events,
+            events: eventsDetails,
             details: "Successfully retrieved user registrations!"
         }
 
