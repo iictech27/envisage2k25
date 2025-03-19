@@ -262,7 +262,7 @@ const Events = () => {
       image:
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#22d3ee", // neon
-      category: "Art",
+      category: "Auction",
     },
     {
       title: "STOCKIFY",
@@ -282,7 +282,7 @@ const Events = () => {
       image:
         "https://plus.unsplash.com/premium_photo-1661313688756-2e38d59fb9f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#ec4899", // pink
-      category: "Gaming",
+      category: "Business",
     },
     {
       title: "Startup Expo",
@@ -302,7 +302,7 @@ const Events = () => {
       image:
         "https://images.stockcake.com/public/f/3/b/f3b1548d-a98b-4d1a-a855-6c208225c08f_medium/debate-night-intensity-stockcake.jpg",
       color: "#f97316", // orange
-      category: "Fashion",
+      category: "Debate",
     },
     {
       title: "B-PLAN",
@@ -312,7 +312,7 @@ const Events = () => {
       image:
         "https://www.betterup.com/hubfs/A-young-happy-male-pitching-an-idea-in-front-of-a-teamhow-to-pitch-ideas.jpg",
       color: "#06b6d4", // cyan
-      category: "Fashion",
+      category: "Business",
     },
     {
       title: "BIZZQUIZ",
@@ -322,7 +322,7 @@ const Events = () => {
       image:
         "https://pbs.twimg.com/media/ExqzzWwW8AYGO-f.jpg:large",
       color: "#c084fc", // Soft Lavender
-      category: "Fashion",
+      category: "Quiz",
     },
     {
       title: "HYPE IT UP",
@@ -332,7 +332,7 @@ const Events = () => {
       image:
         "https://plus.unsplash.com/premium_photo-1684179641331-e89c6320b6a9?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#ff2400", // Scarlet Orange
-      category: "Fashion",
+      category: "Promotion",
     },
 
   ];
