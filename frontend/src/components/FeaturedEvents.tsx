@@ -9,11 +9,111 @@ import {
   Float,
   PerformanceMonitor,
 } from "@react-three/drei";
+import { motion as FramerMotion } from "framer-motion";
+import AnimatedHeading from "./AnimatedHeading";
 
 // Lazy load motion components for better performance
 const motion = lazy(() =>
   import("framer-motion").then((mod) => ({ default: mod.motion })),
 );
+
+// Text animation variants
+const textCharacterAnimation = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.05,
+      duration: 0.7,
+      ease: [0.2, 0.65, 0.3, 0.9],
+    },
+  }),
+};
+
+const textWordAnimation = {
+  hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      delay: i * 0.1,
+      duration: 0.8,
+      ease: [0.2, 0.65, 0.3, 0.9],
+    },
+  }),
+};
+
+const textRevealAnimation = {
+  hidden: { width: "0%" },
+  visible: {
+    width: "100%",
+    transition: {
+      duration: 0.8,
+      ease: [0.2, 0.65, 0.3, 0.9],
+    },
+  },
+};
+
+// Text animation component with proper TypeScript types
+interface AnimatedTextProps {
+  text: string;
+  animation?: "character" | "word";
+  className?: string;
+  wordClassName?: string;
+}
+
+const AnimatedText = ({
+  text,
+  animation = "character",
+  className = "",
+  wordClassName = "",
+}: AnimatedTextProps) => {
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.1,
+  });
+
+  if (animation === "word") {
+    return (
+      <div ref={ref} className={`flex flex-wrap ${className}`}>
+        {text.split(" ").map((word: string, index: number) => (
+          <div key={index} className="overflow-hidden mr-2 mb-1">
+            <Suspense fallback={<span className={wordClassName}>{word}</span>}>
+              <FramerMotion.span
+                className={wordClassName}
+                custom={index}
+                variants={textWordAnimation}
+                initial="hidden"
+                animate={inView ? "visible" : "hidden"}
+              >
+                {word}
+              </FramerMotion.span>
+            </Suspense>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={ref} className={className}>
+      {text.split("").map((char: string, index: number) => (
+        <Suspense key={index} fallback={<span>{char}</span>}>
+          <FramerMotion.span
+            custom={index}
+            variants={textCharacterAnimation}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+          >
+            {char === " " ? "\u00A0" : char}
+          </FramerMotion.span>
+        </Suspense>
+      ))}
+    </div>
+  );
+};
 
 // Event interface
 interface Event {
@@ -291,10 +391,31 @@ const FeaturedEvents = () => {
         <div className="container mx-auto px-4 relative z-10">
           {/* Section header with enhanced glitch effect */}
           <div className="relative mb-8 overflow-hidden">
-            <h2 className="text-2xl font-cyber text-center relative z-10 cyber-glitch-text">
-              <span className="text-white">UPCOMING</span>{" "}
-              <span className="text-neon">EVENTS</span>
-            </h2>
+            <div className="text-2xl font-cyber text-center relative z-10">
+              <Suspense
+                fallback={
+                  <h2 className="cyber-glitch-text">
+                    <span className="text-white">UPCOMING</span>{" "}
+                    <span className="text-neon">EVENTS</span>
+                  </h2>
+                }
+              >
+                <FramerMotion.div
+                  initial={{ opacity: 0 }}
+                  animate={isLoaded ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <AnimatedHeading
+                    text="UPCOMING EVENTS"
+                    animation="glitch"
+                    className="cyber-glitch-text text-2xl font-cyber text-center"
+                    colorWords={["#ffffff", "#22d3ee"]}
+                    once={false}
+                    threshold={0.1}
+                  />
+                </FramerMotion.div>
+              </Suspense>
+            </div>
 
             {/* Enhanced animated underline */}
             <div className="w-40 h-[2px] bg-neon mx-auto relative">
@@ -356,6 +477,7 @@ const FeaturedEvents = () => {
                         className="w-full h-full object-cover"
                         loading="lazy"
                         onError={() => handleImageError(index)}
+                        style={{ filter: "blur(1.5px) brightness(0.6)" }} // Adjust blur & brightness
                       />
 
                       {/* Scanline effect */}
@@ -928,17 +1050,56 @@ const FeaturedEvents = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-rovelink mb-4">
-            <span className="text-white">UPCOMING</span>{" "}
-            <span className="text-neon">FEATURED</span>{" "}
-            <span className="text-accent">EVENTS</span>
-          </h2>
+          <Suspense
+            fallback={
+              <h2 className="text-3xl md:text-4xl font-rovelink mb-4">
+                <span className="text-white">UPCOMING</span>{" "}
+                <span className="text-neon">FEATURED</span>{" "}
+                <span className="text-accent">EVENTS</span>
+              </h2>
+            }
+          >
+            <FramerMotion.div
+              initial={{ opacity: 0 }}
+              animate={isLoaded ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-4"
+            >
+              <AnimatedHeading
+                text="UPCOMING FEATURED EVENTS"
+                animation="word-stagger"
+                tag="h2"
+                className="text-3xl md:text-4xl font-rovelink mb-4"
+                colorWords={["#ffffff", "#22d3ee", "#7c3aed"]}
+                once={false}
+                threshold={0.1}
+              />
+            </FramerMotion.div>
+          </Suspense>
+
           <div className="w-24 h-1 bg-gradient-to-r from-neon to-accent mx-auto mb-6 glow-line"></div>
-          <p className="text-gray-300 font-futuristic max-w-2xl mx-auto">
-            Join us for our upcoming metaverse experiences and be part of the
-            digital revolution. Connect with pioneers, creators, and enthusiasts
-            in our virtual events.
-          </p>
+
+          <Suspense
+            fallback={
+              <p className="text-gray-300 font-futuristic max-w-2xl mx-auto">
+                Join us for our upcoming metaverse experiences and be part of
+                the digital revolution. Connect with pioneers, creators, and
+                enthusiasts in our virtual events.
+              </p>
+            }
+          >
+            <FramerMotion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              <p className="text-gray-300 font-futuristic max-w-2xl mx-auto">
+                Join us for our upcoming metaverse experiences and be part of
+                the digital revolution. Connect with pioneers, creators, and
+                enthusiasts in our virtual events.
+              </p>
+            </FramerMotion.div>
+          </Suspense>
         </div>
 
         {/* Featured events showcase */}
@@ -949,6 +1110,7 @@ const FeaturedEvents = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
+
             {/* Featured event image with overlay */}
             <div className="absolute inset-0 z-0">
               {events.map((event, index) => (
@@ -974,6 +1136,7 @@ const FeaturedEvents = () => {
                     className="w-full h-full object-cover"
                     loading={index === 0 ? "eager" : "lazy"}
                     onError={() => handleImageError(index)}
+                    style={{ filter: "blur(3px) brightness(0.6)" }} // Adjust blur & brightness
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/70 to-transparent"></div>
 
@@ -1002,16 +1165,36 @@ const FeaturedEvents = () => {
                   {activeEvent === index && (
                     <>
                       <div className="mb-2">
-                        <span className="text-xs font-cyber  text-neon bg-primary/80 px-2 py-1 rounded">
+                        <span className="text-xs font-cyber text-neon bg-primary/80 px-2 py-1 rounded">
                           {event.category.toUpperCase()}
                         </span>
                         <span className="text-xs font-futuristic text-white/80 ml-2">
                           {event.date}
                         </span>
                       </div>
-                      <h3 className="text-3xl font-cyber text-white mb-3 group-hover:text-neon transition-colors">
-                        {event.title}
-                      </h3>
+                      <Suspense
+                        fallback={
+                          <h3 className="text-3xl font-cyber text-white mb-3 group-hover:text-neon transition-colors">
+                            {event.title}
+                          </h3>
+                        }
+                      >
+                        <FramerMotion.div
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                          <AnimatedHeading
+                            text={event.title}
+                            animation="character-slide"
+                            tag="h3"
+                            className="text-3xl font-cyber mb-3 group-hover:text-neon transition-colors"
+                            color="white"
+                            once={false}
+                            threshold={0.1}
+                          />
+                        </FramerMotion.div>
+                      </Suspense>
                       <p className="text-gray-300 font-futuristic mb-6">
                         <span className="text-neon">Location:</span>{" "}
                         {event.location}

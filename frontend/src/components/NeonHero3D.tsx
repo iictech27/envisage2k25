@@ -394,7 +394,7 @@ const NeonHero3D = ({ onRegisterClick }: NeonHero3DProps) => {
             className="gsap-button cyber-button text-lg px-10 py-4 relative overflow-hidden group z-20 hover:scale-105 active:scale-95 transition-transform hero-text-visible"
             onClick={onRegisterClick}
           >
-            <span className="relative z-10 font-bold text-white text-xl">
+            <span className="relative z-10 font-bold text-white text-xl hover:cursor-pointer">
               REGISTER NOW
             </span>
             <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>

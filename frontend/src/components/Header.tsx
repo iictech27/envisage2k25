@@ -237,7 +237,7 @@ const Header = () => {
           }}
         >
           <div className="flex justify-between items-center p-4 border-b border-border-light">
-            <div className="text-xl font-cyber text-white">Menu</div>
+            {/* <div className="text-xl font-cyber text-white">Menu</div> */}
             <button
               onClick={closeMenu}
               className="text-white p-2"
