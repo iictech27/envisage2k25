@@ -272,61 +272,6 @@ const FeaturedEvents = () => {
       featured: true,
       registrationUrl: "/events/cyberpunk-music-festival",
     },
-    { 
-    id: 5,
-    title: "Startup Expo",
-    date: "APR 23, 2025",
-    location: "Ground & G-Series",
-      imageUrl:
-       "https://images.unsplash.com/photo-1576085898274-069be5a26c58?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-       category: "Tech",
-      featured: true,
-      registrationUrl: "/events/cyberpunk-music-festival",
-    },
-    { 
-      id: 6,
-      title: "TWEETERS",
-      date: "APR 21, 2025",
-      location: "G-Series",
-      imageUrl:
-        "https://images.stockcake.com/public/f/3/b/f3b1548d-a98b-4d1a-a855-6c208225c08f_medium/debate-night-intensity-stockcake.jpg",
-        category: "Debate",
-      featured: true,
-      registrationUrl: "/events/cyberpunk-music-festival",
-    },
-    { 
-      id: 7,
-      title: "B-PLAN",
-      date: "APR 19, 2025",
-      location: "G-Series",
-      imageUrl:
-        "https://www.betterup.com/hubfs/A-young-happy-male-pitching-an-idea-in-front-of-a-teamhow-to-pitch-ideas.jpg",
-        category: "Business",
-      featured: true,
-      registrationUrl: "/events/cyberpunk-music-festival",
-    },
-    { 
-      id: 8,
-      title: "BIZZQUIZ",
-      date: "APR 21, 2025",
-      location: "G-Series",
-      imageUrl:
-        "https://pbs.twimg.com/media/ExqzzWwW8AYGO-f.jpg:large",
-        category: "Quiz",
-      featured: true,
-      registrationUrl: "/events/cyberpunk-music-festival",
-    },
-    { 
-      id: 9,
-      title: "HYPE IT UP",
-      date: "APR 20-22, 2025",
-      location: "Online",
-      imageUrl:
-        "https://plus.unsplash.com/premium_photo-1684179641331-e89c6320b6a9?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        category: "Promotion",
-      featured: true,
-      registrationUrl: "/events/cyberpunk-music-festival",
-    },
   ];
 
   // Check if device is mobile
