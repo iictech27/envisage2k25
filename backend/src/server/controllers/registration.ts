@@ -33,10 +33,10 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqRegistratio
 
         // make sure events are valid and calculate price
         let price = 0;
-        for(const eventID in eventIDs) {
+        for(let i = 0; i < eventIDs.length; i++) {
 
             // filter events with id (should return only one)
-            const event = Events.filter((event) => event.id.toString() == eventID);
+            const event = Events.filter((event) => event.id == eventIDs[i]);
 
             // check if the eventID exists in list
             if(event.length <= 0) {
@@ -57,8 +57,8 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqRegistratio
 
         // check if user already registered in event
         const userRegisteredEventIDs = user!.registeredEventIDs; // user will definitely exist as checked by middleware
-        for(const event in eventIDs) {
-            if(userRegisteredEventIDs.includes(Number(event))) {
+        for(let i = 0; i < eventIDs.length; i++) {
+            if(userRegisteredEventIDs.includes(Number(eventIDs[i]))) {
                 throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": User already registered in one or more events!");
             }
         }
