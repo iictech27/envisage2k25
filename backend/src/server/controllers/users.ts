@@ -162,7 +162,7 @@ export const logOut: RequestHandler = (req, res, next) => {
 }
 
 // endpoint to get registered events of a user
-export const getRegEvent: RequestHandler = async (req, res, next) => {
+export const getRegEvents: RequestHandler = async (req, res, next) => {
     try {
 
         // find user using user id from session token
