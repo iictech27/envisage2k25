@@ -245,67 +245,98 @@ const Events = () => {
   // Event data with more details
   const events = [
     {
-      title: "VR Hackathon",
-      date: "APR 15-17, 2025",
+      title: "HACK-UR-WAY ",
+      date: "APR 19-20, 2025",
       description:
-        "Build innovative VR applications in this 24-hour coding marathon. Collaborate with fellow developers and designers to create groundbreaking metaverse experiences.",
+        "The Ultimate Metaverse Hackathon. Step into the future. Code the impossible. Dominate the digital realm. Are you ready to hack beyond reality? ",
       image:
         "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
       color: "#7c3aed", // accent
       category: "Tech",
     },
     {
-      title: "Metaverse Art Gallery",
-      date: "APR 18-20, 2025",
+      title: "VENTURE VAULT",
+      date: "APR 22, 2025",
       description:
-        "Showcase your digital art in our virtual reality exhibition space. Experience immersive installations and interactive sculptures in ways impossible in the physical world.",
+        "The Ultimate Venture Auction War. Ever dreamed of building your own empire with the most promising ventures? Now’s your chance!",
       image:
-        "https://images.unsplash.com/photo-1617802690992-15d93263d3a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#22d3ee", // neon
       category: "Art",
     },
     {
-      title: "Crypto Conference",
-      date: "APR 21-22, 2025",
+      title: "STOCKIFY",
+      date: "APR 15-22, 2025",
       description:
-        "Learn about blockchain, NFTs, and the future of digital ownership. Connect with industry leaders and discover how crypto is shaping the metaverse economy.",
+        "Do you have what it takes to conquer the stock market? If you believe in the mantra “Risk hai to ishq hai”, then STOCKIFY is the ultimate battleground for you!",
       image:
-        "https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+        "https://plus.unsplash.com/premium_photo-1681487769650-a0c3fbaed85a?q=80&w=2155&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#10b981", // highlight
       category: "Finance",
     },
     {
-      title: "Gaming Tournament",
-      date: "APR 23-25, 2025",
+      title: "CXO’s Insights",
+      date: "APR 19, 2025",
       description:
-        "Compete in our esports arena for glory and amazing prizes. Experience next-gen gaming with full-body haptic feedback and neural interface controllers.",
+        "Do you have what it takes to think like a CXO? Step in the shoes of a top executive and tackle real-world business challenges in CXO's Insights, a thrilling case study competition.",
       image:
-        "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+        "https://plus.unsplash.com/premium_photo-1661313688756-2e38d59fb9f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#ec4899", // pink
       category: "Gaming",
     },
     {
-      title: "AI Workshop",
-      date: "APR 26-27, 2025",
+      title: "Startup Expo",
+      date: "APR 23, 2025",
       description:
-        "Hands-on session on artificial intelligence and machine learning. Learn how AI is powering the next generation of metaverse experiences and digital beings.",
+        "IIC TMSL presents Startup Expo, a flagship event, where groundbreaking startups, visionary entrepreneurs, and industry leaders come together to connect, collaborate, and innovate.",
       image:
-        "https://images.unsplash.com/photo-1677442135136-760c813028c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1576085898274-069be5a26c58?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#8b5cf6", // purple
       category: "Tech",
     },
     {
-      title: "Digital Fashion Show",
-      date: "APR 28-30, 2025",
+      title: "TWEETERS",
+      date: "APR 21, 2025",
       description:
-        "Experience the future of fashion with digital wearables and NFT clothing. See how designers are pushing boundaries with physics-defying garments and dynamic textures.",
+        "The Ultimate Business Debate. Unleash the Power of Persuasion! The ultimate battleground where intellect meets eloquence and business minds collide in a war of words.",
       image:
-        "https://images.unsplash.com/photo-1633536726481-9b4a245151e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+        "https://images.stockcake.com/public/f/3/b/f3b1548d-a98b-4d1a-a855-6c208225c08f_medium/debate-night-intensity-stockcake.jpg",
       color: "#f97316", // orange
       category: "Fashion",
     },
-  ];
+    {
+      title: "B-PLAN",
+      date: "APR 19, 2025",
+      description:
+        "The Ultimate Business Idea Pitching Competition. Got a game-changing idea? It’s time to turn it into reality!",
+      image:
+        "https://www.betterup.com/hubfs/A-young-happy-male-pitching-an-idea-in-front-of-a-teamhow-to-pitch-ideas.jpg",
+      color: "#06b6d4", // cyan
+      category: "Fashion",
+    },
+    {
+      title: "BIZZQUIZ",
+      date: "APR 21, 2025",
+      description:
+        "Are you someone who thrives on intellectual challenges? Do you have a passion for quizzes that test not just your knowledge but your ability to think critically? If yes, then we have just the right platform for you!",
+      image:
+        "https://pbs.twimg.com/media/ExqzzWwW8AYGO-f.jpg:large",
+      color: "#c084fc", // Soft Lavender
+      category: "Fashion",
+    },
+    {
+      title: "HYPE IT UP",
+      date: "APR 20-22, 2025",
+      description:
+        "Do you have what it takes to create the next viral sensation? If you believe in the power of memes, reels, and marketing genius, then HYPE IT UP is the perfect Battlefield for you! ",
+      image:
+        "https://plus.unsplash.com/premium_photo-1684179641331-e89c6320b6a9?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      color: "#ff2400", // Scarlet Orange
+      category: "Fashion",
+    },
 
+  ];
+    
   // Get unique categories
   const categories = ["all", ...new Set(events.map((event) => event.category))];
 
