@@ -15,19 +15,36 @@ Setup for local testing
 * In the minimum, install mongo server, mongo shell (follow respective docs)
 * Mongo Compass is usefull for visually tracking the database
 * Mongod can sometimes run in the background, kill it using task manager (search mongod)
-* Run mongod using the command `mongod --dppath temp\path\where\db\should\be\stored --logpath \path\to\a\log\file\to\store\logs\mongod.log --port 27017 --auth`
+* Run mongod using the command
+  ```
+  mongod --dppath temp\path\where\db\should\be\stored --logpath \path\to\a\log\file\to\store\logs\mongod.log --port 27017 --auth
+  ```
     * `--dbpath` - this is the path where databse related files will be stored
     * `--logpath` - this is the path where logs will be stored
     * `--auth` - this makes sure all clients are authenticated before connecting
 * Run the mongo shell command `mongosh --port 27017`
 * Create user admin by running the following commands in the shell (https://www.mongodb.com/docs/upcoming/tutorial/configure-scram-client-authentication/)
-    * `use admin`
-    * `db.createUser(user: "admin", pwd: "12345678", roles: [{role:"readWriteAnyDatabase",db:"admin"}, {role:"userAdminAnyDatabase",db:"admin"}])`
-    * `db.adminCommand( { shutdown: 1 } )`
-    * `exit`
+    * ```
+      use admin
+      ```
+    * ```
+      db.createUser(user: "admin", pwd: "12345678", roles: [{role:"readWriteAnyDatabase",db:"admin"}, {role:"userAdminAnyDatabase",db:"admin"}])
+      ```
+    * ```
+      db.adminCommand( { shutdown: 1 } )
+      ```
+    * ```
+      exit
+      ```
 * Restart mongod using the command 2 steps before (`mongod --port 21...`)
-* Now you can connect to the mongodb using mongosh as `mongosh --port 27017 --authenticationDatabase "admin" -u "admin" -p "12345678"`
-* If you are using Mongo Compass instead of monogsh then connect to the uri `mongodb://admin:12345678@localhost:27017/?authMechanism=DEFAULT&authSource=admin`
+* Now you can connect to the mongodb using mongosh as
+  ```
+  mongosh --port 27017 --authenticationDatabase "admin" -u "admin" -p "12345678"
+  ```
+* If you are using Mongo Compass instead of monogsh then connect to the uri
+  ```
+  mongodb://admin:12345678@localhost:27017/?authMechanism=DEFAULT&authSource=admin
+  ```
     * This is the same uri used in the .env with one change (the database name is added here between `...27017/` and `?authMe...`
 
 ### Setup project for local testing
