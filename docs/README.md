@@ -1,5 +1,5 @@
 # Setup Instructions
-Setup for local testing
+Setup for local testing  
 
 ## Backend
 * Create .env in the backend folder (for local testing)
@@ -14,7 +14,7 @@ Setup for local testing
 ### Routes
 Send requests to: \<Base URL\>/\<API Route\>/\<Reqd Route\>
 
-Base Local Testing URL: http:/localhost:5000/
+Base Local Testing URL: http:/localhost:5000/  
 Api Route: /api
 
 User:
@@ -39,11 +39,13 @@ Registrations:
   ```
   mongod --dppath temp\path\where\db\should\be\stored --logpath \path\to\a\log\file\to\store\logs\mongod.log --port 27017 --auth
   ```
+    
     * `--dbpath` - this is the path where databse related files will be stored
     * `--logpath` - this is the path where logs will be stored
     * `--auth` - this makes sure all clients are authenticated before connecting
 * Run the mongo shell command `mongosh --port 27017`
-* Create user admin by running the following commands in the shell (https://www.mongodb.com/docs/upcoming/tutorial/configure-scram-client-authentication/)
+* Create user admin by running the following commands in the shell (https://www.mongodb.com/docs/upcoming/tutorial/configure-scram-client-authentication/)  
+    
     * ```
       use admin
       ```
@@ -55,13 +57,15 @@ Registrations:
       ```
     * ```
       exit
-      ```
+      ```  
 * Restart mongod using the command 2 steps before (`mongod --port 21...`)
 * Now you can connect to the mongodb using mongosh as
+   
   ```
   mongosh --port 27017 --authenticationDatabase "admin" -u "admin" -p "12345678"
   ```
 * If you are using Mongo Compass instead of monogsh then connect to the uri
+  
   ```
   mongodb://admin:12345678@localhost:27017/?authMechanism=DEFAULT&authSource=admin
   ```
