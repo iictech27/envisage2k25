@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 
-import { ResEventsBody } from "../bodies/events.js";
-import httpCodes from "../../util/httpCodes.js";
 import { Events } from "../../util/events.js";
+import { httpCodes } from "../../util/httpCodes.js";
+import { ResEventsBody } from "../bodies/events.js";
 
 export const getEvents: RequestHandler = async(_req, res, next) => {
     try {

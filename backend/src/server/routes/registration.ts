@@ -1,10 +1,11 @@
 import { Router } from "express";
 
-import { createRegistration } from "../controllers/registration.js";
 import { requireAuthUser } from "../middleware/user.js";
+import { createRegistrationOrder, verifyRegistrationOrder } from "../controllers/registration.js";
 
 const registrationRouter = Router();
 
-registrationRouter.post("/reg/new", requireAuthUser, createRegistration); // new registration
+registrationRouter.post("/reg/new", requireAuthUser, createRegistrationOrder);
+registrationRouter.post("/reg/verify", requireAuthUser, verifyRegistrationOrder);
 
 export default registrationRouter;

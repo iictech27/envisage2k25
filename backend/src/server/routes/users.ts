@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { getAuthUser, getRegEvents, logIn, logOut, signUp } from "../controllers/users.js";
 import { requireAuthUser, requireUnauthUser } from "../middleware/user.js";
+import { getAuthUser, getRegEvents, logIn, logOut, signUp } from "../controllers/users.js";
 
 const usersRouter = Router();
 
