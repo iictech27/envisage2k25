@@ -18,18 +18,18 @@ Base Local Testing URL: http:/localhost:5000/
 Api Route: /api
 
 User:
-* /users/get - Get the current auth user
-* /users/signup - Create a new user account
-* /users/login - Login an existing user
-* /users/logout - Logout from authenticated user
-* /users/regevnt - Get all the events the auth user is registered to
+* `/users/get` - Get the current auth user
+* `/users/signup` - Create a new user account
+* `/users/login` - Login an existing user
+* `/users/logout` - Logout from authenticated user
+* `/users/regevnt` - Get all the events the auth user is registered to
 
 Events:
-* /events - Get all available events to register into
+* `/events` - Get all available events to register into
 
 Registrations:
-* /reg/new - Create a new registration for auth user
-* /reg/pay - Create a new razorpay order
+* `/reg/new` - Create a new registration request for auth user
+* `/reg/verify` - Verify payment status for registration and update registration
 
 ### Set up mongo db for local testing
 * In the minimum, install mongo server, mongo shell (follow respective docs)
@@ -79,3 +79,9 @@ Registrations:
 * Follow .env.example to setup env files
 * NOTE: if you keep both, .env.production will override .env (thats how vite works)
 * `npm run dev` - run vite server
+
+### Other Docs
+* [HERO_ENHANCEMENT_PLAN](./HERO_ENHANCEMENT_PLAN.md)
+* [HERO_REDESIGN](./HERO_REDESIGN.md)
+* [NEON_ENHANCEMENTS](./NEON_ENHANCEMENTS.md)
+* [SCROLLSTORY_ENHANCEMENTS](./SCROLLSTORY_ENHANCEMENTS.md)
