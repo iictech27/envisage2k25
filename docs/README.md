@@ -12,7 +12,7 @@ Setup for local testing
 * `npm run lint` - checks the project for errors using eslint
 
 ### Routes
-Send requests to: <Base URL>/<API Route>/<Reqd Route>
+Send requests to: \<Base URL\>/\<API Route\>/\<Reqd Route\>
 
 Base Local Testing URL: http:/localhost:5000/
 Api Route: /api
