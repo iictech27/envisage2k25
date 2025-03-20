@@ -230,45 +230,45 @@ const FeaturedEvents = () => {
   const events: Event[] = [
     {
       id: 1,
-      title: "Metaverse Summit 2024",
-      date: "August 15-17, 2024",
-      location: "Virtual & San Francisco",
+      title: "HACK-UR-WAY ",
+      date: "APR 19-20, 2025",
+      location: "TMSL Labs",
       imageUrl:
-        "https://images.unsplash.com/photo-1492044715545-15ddedd84e5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      category: "Conference",
+        "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+        category: "Tech",
       featured: true,
       registrationUrl: "/events/metaverse-summit-2024",
     },
     {
       id: 2,
-      title: "Digital Art Exhibition",
-      date: "September 5-12, 2024",
-      location: "Virtual Gallery",
+      title: "VENTURE VAULT",
+      date: "APR 22, 2025",
+      location: "G-Series",
       imageUrl:
-        "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      category: "Exhibition",
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        category: "Auction",
       featured: true,
       registrationUrl: "/events/digital-art-exhibition",
     },
     {
       id: 3,
-      title: "Blockchain & NFT Workshop",
-      date: "July 28, 2024",
-      location: "Virtual",
+      title: "STOCKIFY",
+      date: "APR 15-22, 2025",
+      location: "Online",
       imageUrl:
-        "https://images.unsplash.com/photo-1639322537231-2f206e06af84?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      category: "Workshop",
+        "https://plus.unsplash.com/premium_photo-1681487769650-a0c3fbaed85a?q=80&w=2155&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        category: "Finance",
       featured: true,
       registrationUrl: "/events/blockchain-nft-workshop",
     },
     {
       id: 4,
-      title: "Cyberpunk Music Festival",
-      date: "October 10-11, 2024",
-      location: "Virtual Concert Hall",
+      title: "CXO’s Insights",
+      date: "APR 19, 2025",
+      location: "G-Series",
       imageUrl:
-        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      category: "Entertainment",
+        "https://plus.unsplash.com/premium_photo-1661313688756-2e38d59fb9f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        category: "Business",
       featured: true,
       registrationUrl: "/events/cyberpunk-music-festival",
     },
@@ -607,7 +607,7 @@ const FeaturedEvents = () => {
             {/* View All button with cyberpunk style */}
             <div className="mt-8 relative">
               <Link
-                to="/gallery"
+                to="/events"
                 className="block relative py-3 text-center font-cyber text-white border border-neon/50 bg-primary/80 overflow-hidden"
               >
                 {/* Animated background */}
@@ -1301,7 +1301,7 @@ const FeaturedEvents = () => {
 
             {/* View all events button */}
             <Link
-              to="/gallery"
+              to="/events"
               className="block text-center py-3 px-4 border border-neon/50 rounded-lg font-cyber text-white hover:bg-neon/10 hover:text-neon transition-all duration-300 mt-6"
             >
               VIEW ALL EVENTS
