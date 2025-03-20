@@ -1,8 +1,13 @@
 export interface ReqRegistrationBody {
+    phone?: string,
+    college?: string,
     department?: string,
     year?: number,
     eventIDs?: number[],
     additionalInfo?: string
+}
+
+export interface ReqRegistrationPaymentBody {
 }
 
 export interface ResRegistrationBody {
@@ -12,6 +17,8 @@ export interface ResRegistrationBody {
     userDept: string,
     userYear: number,
     userEmail: string,
+    userPhone: string,
+    userCollege: string,
     userRegisteredEventIDs: number[],
     price: number,
     details: string
