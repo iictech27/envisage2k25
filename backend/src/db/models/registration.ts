@@ -15,6 +15,14 @@ const registrationSchema = new Schema({
         type: Number,
         required: true
     },
+    phone: {
+        type: String,
+        required: true
+    },
+    college: {
+        type: String,
+        required: true
+    },
     eventIDs: {
         type: [Number], // event enum number array
         required: true
@@ -23,13 +31,10 @@ const registrationSchema = new Schema({
         type: Number,
         requried: true
     },
-
-    // FIX : Figure out
-    paymentScreenshot: {
-        type: String,
+    rzpPaymentID: {
+        type: Number,
         required: true
     },
-
     confirmed: {
         type: Boolean,
         required: true

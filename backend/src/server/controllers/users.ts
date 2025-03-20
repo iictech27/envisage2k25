@@ -66,28 +66,28 @@ export const signUp: RequestHandler<unknown, unknown, ReqSignupBody, unknown> = 
 
         // check if account with email exists
         const userWithEmail = await UserModel.findOne({ email: email }).exec();
-        if(userWithEmail) {
-            throw createHttpError(httpCodes["409"].code, httpCodes["409"].message + ": Account with e-mail already exists! Try logging in instead.");
-        }
+    if(userWithEmail) {
+        throw createHttpError(httpCodes["409"].code, httpCodes["409"].message + ": Account with e-mail already exists! Try logging in instead.");
+    }
 
-        // create new user with given data
-        const newUser = await UserModel.create({
-            fullName: fullName,
-            email: email,
-            hashedPassword: await bcrypt.hash(password, hashNum)
-        });
+    // create new user with given data
+    const newUser = await UserModel.create({
+        fullName: fullName,
+        email: email,
+        hashedPassword: await bcrypt.hash(password, hashNum)
+    });
 
-        // create a response to sent to client
-        const response: ResUserBody = {
-            status: httpCodes["201"].code,
-            message: httpCodes["201"].message,
-            fullName: newUser.fullName,
-            email: newUser.email,
-            details: "Successfully created new user account!"
-        };
+    // create a response to sent to client
+    const response: ResUserBody = {
+        status: httpCodes["201"].code,
+        message: httpCodes["201"].message,
+        fullName: newUser.fullName,
+        email: newUser.email,
+        details: "Successfully created new user account!"
+    };
 
-        res.status(response.status);
-        res.json(response);
+    res.status(response.status);
+    res.json(response);
 
     } catch(error) {
         next(error);
@@ -167,13 +167,14 @@ export const getRegEvents: RequestHandler = async (req, res, next) => {
 
         // find user using user id from session token
         const user = await UserModel.findById(req.session.sessionToken).select("+registeredEventIDs").exec();
-        let events: EventStructure[] = [];
+        const userRegisteredEventIDs = user!.registeredEventIDs; // user will always be available as ensured by middleware
+        let eventsDetails: EventStructure[] = [];
 
         // user will definitely exist from middleware
-        for(const eventID in user!.registeredEventIDs) {
+        for(let i = 0; i < userRegisteredEventIDs.length; i++) {
 
             // filter events with id (should return only one)
-            const event = Events.filter((event) => event.id.toString() == eventID);
+            const event = Events.filter((event) => event.id == userRegisteredEventIDs[i]);
 
             // check only one event is returned
             if(event.length > 1) {
@@ -181,14 +182,14 @@ export const getRegEvents: RequestHandler = async (req, res, next) => {
             }
 
             // add event to list
-            events.push(event[0]);
+            eventsDetails.push(event[0]);
 
         }
 
         const response: ResUserRegEventsBody = {
             status: httpCodes["201"].code,
             message: httpCodes["201"].message,
-            events: events,
+            events: eventsDetails,
             details: "Successfully retrieved user registrations!"
         }
 

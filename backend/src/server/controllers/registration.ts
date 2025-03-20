@@ -4,26 +4,33 @@ import createHttpError from "http-errors";
 import RegistrationModel from "../../db/models/registration.js";
 import httpCodes from "../../util/httpCodes.js";
 import UserModel from "../../db/models/user.js";
-import { ReqRegistrationBody, ResRegistrationBody } from "../bodies/registration.js";
+import { ReqRegistrationBody, ReqRegistrationPaymentBody, ResRegistrationBody } from "../bodies/registration.js";
 import { Events } from "../../util/events.js";
 
 // endpoint to create a registration
 export const createRegistration: RequestHandler<unknown, unknown, ReqRegistrationBody, unknown> = async (req, res, next) => {
     const department = req.body.department?.trim();
     const year = req.body.year;
+    const phone = req.body.phone;
+    const college = req.body.college;
     const eventIDs = req.body.eventIDs;
     const additionalInfo = req.body.additionalInfo?.trim();
 
     try {
 
         // make sure all parameters are received
-        if(!department || !year || !eventIDs ) {
+        if(!department || !year || !eventIDs || !phone || !college) {
             throw createHttpError(httpCodes["400"].code, httpCodes["400"].message + ": Parameters missing!");
         }
 
         // validate year
         if (year != 1 && year != 2 && year != 3 && year != 4) {
             throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Enter valid year!");
+        }
+
+        // phone number validation
+        if(!/^[6-9]{1}[0-9]{9}$/.test(phone)) {
+            throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": Enter a valid 10 digit phone number without country code!");
         }
 
         // make sure no duplicate events are present
@@ -33,10 +40,10 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqRegistratio
 
         // make sure events are valid and calculate price
         let price = 0;
-        for(const eventID in eventIDs) {
+        for(let i = 0; i < eventIDs.length; i++) {
 
             // filter events with id (should return only one)
-            const event = Events.filter((event) => event.id.toString() == eventID);
+            const event = Events.filter((event) => event.id == eventIDs[i]);
 
             // check if the eventID exists in list
             if(event.length <= 0) {
@@ -57,8 +64,8 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqRegistratio
 
         // check if user already registered in event
         const userRegisteredEventIDs = user!.registeredEventIDs; // user will definitely exist as checked by middleware
-        for(const event in eventIDs) {
-            if(userRegisteredEventIDs.includes(Number(event))) {
+        for(let i = 0; i < eventIDs.length; i++) {
+            if(userRegisteredEventIDs.includes(Number(eventIDs[i]))) {
                 throw createHttpError(httpCodes["401"].code, httpCodes["401"].message + ": User already registered in one or more events!");
             }
         }
@@ -92,6 +99,8 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqRegistratio
             userDept: department,
             userYear: year,
             userEmail: user!.email,
+            userPhone: phone,
+            userCollege: college,
             userRegisteredEventIDs: eventIDs,
             price: price,
             details: "Successfully registered user to event(s)!"
@@ -103,4 +112,8 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqRegistratio
     } catch(error) {
         next(error);
     }
+}
+
+export const createRegistrationOrder: RequestHandler<unknown, unknown, ReqRegistrationPaymentBody, unknown> = async (req, res, next) => {
+
 }

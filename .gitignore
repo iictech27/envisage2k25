@@ -1,3 +1,6 @@
+# bruno api client
+bruno_api/
+
 # Logs
 logs
 *.log
