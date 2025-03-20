@@ -19,6 +19,7 @@ const sessionTimeLimitMs = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
 
 function startServer() : void {
 
+
     // listen to requests
     server.listen(port, () => {
         log("Listening at port " + port);
@@ -85,5 +86,4 @@ function startServer() : void {
 
 }
 
-export default server;
-export { startServer };
+export default startServer;
