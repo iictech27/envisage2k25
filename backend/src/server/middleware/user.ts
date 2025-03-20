@@ -1,11 +1,11 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 
-import httpCodes from "../../util/httpCodes.js";
+import { httpCodes } from "../../util/httpCodes.js";
 import UserModel from "../../db/models/user.js";
 
 // middleware for requests which require the user to be authenticated (eg registration, profile view)
-export const requireAuthUser: RequestHandler = async(req, _res, next) => {
+export const requireAuthUser: RequestHandler = async (req, _res, next) => {
     const sessionToken = req.session.sessionToken;
 
     // if session token does not exist then user is not authenticated
@@ -22,17 +22,17 @@ export const requireAuthUser: RequestHandler = async(req, _res, next) => {
 }
 
 // middleware for requests which require the user to not be authenticated (eg login, signup)
-export const requireUnauthUser: RequestHandler = async(req, _res, next) => {
+export const requireUnauthUser: RequestHandler = async (req, _res, next) => {
     const sessionToken = req.session.sessionToken;
 
     // if session token exists, then user is authenticated
     if(sessionToken) {
-        next(createHttpError(httpCodes["403"].code, httpCodes["403"].message + ": User already logged in!"));
+        next(createHttpError(httpCodes["403"].code, httpCodes["403"].message + ": User already authenticated!"));
     }
 
     // if session token exists and there is a user with userID given in the token then user is authenticated
     if(await UserModel.findById(sessionToken).exec()) {
-        next(createHttpError(httpCodes["403"].code, httpCodes["403"].message + ": User already logged in!"));
+        next(createHttpError(httpCodes["403"].code, httpCodes["403"].message + ": User already authenticated!"));
     }
 
     next();

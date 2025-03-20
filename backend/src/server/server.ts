@@ -9,7 +9,7 @@ import rootRouter from "./routes/root.js";
 import registrationRouter from "./routes/registration.js";
 import eventsRouter from "./routes/events.js";
 import validatedEnv from "../util/validatedEnv.js";
-import httpCodes from "../util/httpCodes.js";
+import { httpCodes } from "../util/httpCodes.js";
 import { log, logErr, startHttpReqLogging } from "../util/logger.js";
 
 const server = express();
@@ -18,7 +18,6 @@ const sessionSecret = validatedEnv.SESSION_SECRET;
 const sessionTimeLimitMs = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
 
 function startServer() : void {
-
 
     // listen to requests
     server.listen(port, () => {
@@ -37,8 +36,15 @@ function startServer() : void {
     // parse json body
     server.use(express.json());
 
-    // NOTE : should be called after setting up json parsing and before declaring routes
+    // parse form submissions encoded in url
+    server.use(express.urlencoded({
+        extended: true, // allows parsing of nested objects and arrays
+        limit: "1mb", // restrict max size of request body to 1mb for security
+        parameterLimit: 100, // limit number of form fields to 100 to prevent DoS attacks
+    }));
+
     // setup session management
+    // NOTE : should be called after setting up json parsing and before declaring routes
     server.use(session({
         secret: sessionSecret,
         resave: false,
@@ -70,11 +76,13 @@ function startServer() : void {
     server.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
         logErr(error);
 
+        // default error
         let errorResponse = {
             code: httpCodes["500"].code,
             error: "[" + httpCodes["500"].code + "] " + httpCodes["500"].message + ": An unknown error has occured!",
         }
 
+        // parse errors
         if(isHttpError(error)) {
             errorResponse.code = error.statusCode;
             errorResponse.error = "[" + error.statusCode + "] " + error.message;

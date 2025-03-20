@@ -1,16 +1,25 @@
-export interface ReqRegistrationBody {
-    phone?: string,
-    college?: string,
+import { Orders } from "razorpay/dist/types/orders.js";
+
+// request bodies
+
+export interface ReqRegistrationOrderBody {
     department?: string,
     year?: number,
+    phone?: string,
+    college?: string,
     eventIDs?: number[],
     additionalInfo?: string
 }
 
-export interface ReqRegistrationPaymentBody {
+export interface ReqRegistrationVerifyBody {
+    rzpOrderID?: string,
+    rzpPaymentID?: string,
+    rzpSignature?: string,
 }
 
-export interface ResRegistrationBody {
+// response bodies
+
+export interface ResRegistrationVerifiedBody {
     status: number,
     message: string,
     userFullName: string,
@@ -19,7 +28,18 @@ export interface ResRegistrationBody {
     userEmail: string,
     userPhone: string,
     userCollege: string,
-    userRegisteredEventIDs: number[],
+    newRegisteredEventIDs: number[],
+    price: number,
+    paymentID: string,
+    details: string
+}
+
+export interface ResRegistrationOrderBody {
+    status: number,
+    message: string,
+    userFullName: string,
+    userEmail: string,
+    order: Orders.RazorpayOrder,
     price: number,
     details: string
 }

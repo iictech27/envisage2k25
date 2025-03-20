@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import httpCodes from "../../util/httpCodes.js";
+
+import { httpCodes } from "../../util/httpCodes.js";
 
 // root "/" get endpoint
 export const getServerStatus: RequestHandler = (_req, res, next) => {

@@ -1,5 +1,7 @@
 import { EventStructure } from "../../util/events.js";
 
+// request bodies
+
 export interface ReqSignupBody {
     fullName?: string,
     email?: string,
@@ -12,6 +14,8 @@ export interface ReqLoginBody {
     password?: string,
     rememberUser?: boolean
 }
+
+// response bodies
 
 export interface ResUserBody {
     status: number,

@@ -3,10 +3,10 @@ import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
 
 import UserModel from "../../db/models/user.js";
-import httpCodes from "../../util/httpCodes.js";
+import { httpCodes } from "../../util/httpCodes.js";
 import validatedEnv from "../../util/validatedEnv.js";
-import { ReqLoginBody, ReqSignupBody, ResUserBody, ResUserRegEventsBody } from "../bodies/user.js";
 import { Events, EventStructure } from "../../util/events.js";
+import { ReqLoginBody, ReqSignupBody, ResUserBody, ResUserRegEventsBody } from "../bodies/user.js";
 
 const hashNum = validatedEnv.HASH_NUM;
 
@@ -33,7 +33,6 @@ export const getAuthUser: RequestHandler = async(req, res, next) => {
         next(error);
     }
 }
-
 
 // endpoint to add/signup a user
 export const signUp: RequestHandler<unknown, unknown, ReqSignupBody, unknown> = async (req, res, next) => {
