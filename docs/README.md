@@ -11,6 +11,26 @@ Setup for local testing
 * `npm run build_dev` - builds the project in the ./build directory
 * `npm run lint` - checks the project for errors using eslint
 
+### Routes
+Send requests to: <Base URL>/<API Route>/<Reqd Route>
+
+Base Local Testing URL: http:/localhost:5000/
+Api Route: /api
+
+User:
+* /users/get - Get the current auth user
+* /users/signup - Create a new user account
+* /users/login - Login an existing user
+* /users/logout - Logout from authenticated user
+* /users/regevnt - Get all the events the auth user is registered to
+
+Events:
+* /events - Get all available events to register into
+
+Registrations:
+* /reg/new - Create a new registration for auth user
+* /reg/pay - Create a new razorpay order
+
 ### Set up mongo db for local testing
 * In the minimum, install mongo server, mongo shell (follow respective docs)
 * Mongo Compass is usefull for visually tracking the database
