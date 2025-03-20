@@ -69,7 +69,7 @@ Registrations:
   ```
   mongodb://admin:12345678@localhost:27017/?authMechanism=DEFAULT&authSource=admin
   ```
-    * This is the same uri used in the .env with one change (the database name is added here between `...27017/` and `?authMe...`
+    * This is the same uri used in the .env with one change (the database name is added here between `...27017/` and `?authMe...` e.g. `...27017/envisage_db?authMe...`)
 
 ### Setup project for local testing
 * Go to the backend folder of the project
