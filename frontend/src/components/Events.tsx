@@ -443,7 +443,7 @@ const Events = () => {
           </p>
 
           {/* Category filters */}
-          <div className="flex flex-wrap justify-center gap-3 mt-8">
+          <div className="flex lg:justify-center lg:overflow-x-hidden py-2 overflow-x-scroll gap-3 mt-8">
             {categories.map((category) => (
               <motion.button
                 key={category}

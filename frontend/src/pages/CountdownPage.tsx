@@ -13,6 +13,7 @@ import {
 import * as THREE from "three";
 import gsap from "gsap";
 import AnimatedHeading from "../components/AnimatedHeading";
+import { NavLink } from "react-router-dom";
 
 type TimeLeft = {
   days: number;
@@ -409,7 +410,7 @@ const Countdown = () => {
         </div>
 
         {/* Mobile/Tablet Countdown Display - Using enhanced CSS classes */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto lg:hidden mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto  mb-16">
           {countdownItems.map((item) => (
             <motion.div
               key={item.label}
@@ -506,7 +507,7 @@ const Countdown = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="relative z-10">Register Now</span>
+              <NavLink to={"/register"} className="relative z-10">Register Now</NavLink>
               <span className="absolute inset-0 bg-gradient-to-r from-pink-600 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </motion.button>
           </div>

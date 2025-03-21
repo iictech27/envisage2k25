@@ -2,11 +2,11 @@ import { motion } from "framer-motion";
 
 const Footer = () => {
   const socialLinks = [
-    { name: "Twitter", icon: "twitter", url: "#" },
-    { name: "Instagram", icon: "instagram", url: "#" },
-    { name: "Facebook", icon: "facebook", url: "#" },
-    { name: "LinkedIn", icon: "linkedin", url: "#" },
-    { name: "YouTube", icon: "youtube", url: "#" },
+    { name: "Twitter", icon: "twitter", url: "https://x.com/iictmsl" },
+    { name: "Instagram", icon: "instagram", url: "https://www.instagram.com/iictmsl/" },
+    { name: "Facebook", icon: "facebook", url: "https://www.facebook.com/iictmsl" },
+    { name: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/company/iictmsl/posts/?feedView=all" },
+    { name: "YouTube", icon: "youtube", url: "https://youtube.com/@iictmsl6826?si=h9IRg9fs48fh2gK2" },
   ];
 
   const footerLinks = [
@@ -105,24 +105,24 @@ const Footer = () => {
             <div className="space-y-4 font-futuristic">
               <p className="flex items-start text-gray-400">
                 <span className="mr-2">📍</span>
-                <span>University Campus, Tech Avenue, Innovation City</span>
+                <span>4, TECHNO INDIA, 1, Eastern Metropolitan Bypass, EM Block, Sector V, Bidhannagar, Kolkata, West Bengal 700091</span>
               </p>
               <p className="flex items-start text-gray-400">
                 <span className="mr-2">📧</span>
                 <a
-                  href="mailto:info@envisage2025.com"
+                  href="mailto:iic.tmsl@gmail.com"
                   className="hover:text-neon transition-colors duration-300"
                 >
-                  info@envisage2025.com
+                  iic.tmsl@gmail.com
                 </a>
               </p>
               <p className="flex items-start text-gray-400">
                 <span className="mr-2">📱</span>
                 <a
-                  href="tel:+1234567890"
+                  href="tel:+91 73526 27157"
                   className="hover:text-neon transition-colors duration-300"
                 >
-                  +123 456 7890
+                  +91 73526 27157
                 </a>
               </p>
             </div>
