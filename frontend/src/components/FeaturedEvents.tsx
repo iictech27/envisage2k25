@@ -1204,7 +1204,7 @@ const FeaturedEvents = () => {
                         {event.location}
                       </p>
                       <Link
-                        to={event.registrationUrl}
+                        to={"/register"}
                         className="cyber-button inline-block py-3 px-8 relative overflow-hidden group"
                       >
                         <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
