@@ -67,8 +67,8 @@ const SignUpPage = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      // Redirect to login page after successful signup
-      navigate("/login");
+      // Redirect to email verification page after successful signup
+      navigate("/verify-email");
     }, 1500);
   };
 
