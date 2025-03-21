@@ -250,7 +250,7 @@ const Events = () => {
       description:
         "The Ultimate Metaverse Hackathon. Step into the future. Code the impossible. Dominate the digital realm. Are you ready to hack beyond reality? ",
       image:
-        "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#7c3aed", // accent
       category: "Tech",
     },
@@ -260,7 +260,7 @@ const Events = () => {
       description:
         "The Ultimate Venture Auction War. Ever dreamed of building your own empire with the most promising ventures? Now's your chance!",
       image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#22d3ee", // neon
       category: "Auction",
     },
@@ -270,7 +270,7 @@ const Events = () => {
       description:
         "Do you have what it takes to conquer the stock market? If you believe in the mantra 'Risk hai to ishq hai', then STOCKIFY is the ultimate battleground for you!",
       image:
-        "https://plus.unsplash.com/premium_photo-1681487769650-a0c3fbaed85a?q=80&w=2155&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#10b981", // highlight
       category: "Finance",
     },
@@ -280,7 +280,7 @@ const Events = () => {
       description:
         "Do you have what it takes to think like a CXO? Step in the shoes of a top executive and tackle real-world business challenges in CXO's Insights, a thrilling case study competition.",
       image:
-        "https://plus.unsplash.com/premium_photo-1661313688756-2e38d59fb9f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#ec4899", // pink
       category: "Business",
     },
@@ -290,7 +290,7 @@ const Events = () => {
       description:
         "IIC TMSL presents Startup Expo, a flagship event, where groundbreaking startups, visionary entrepreneurs, and industry leaders come together to connect, collaborate, and innovate.",
       image:
-        "https://images.unsplash.com/photo-1576085898274-069be5a26c58?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#8b5cf6", // purple
       category: "Tech",
     },
@@ -300,7 +300,7 @@ const Events = () => {
       description:
         "The Ultimate Business Debate. Unleash the Power of Persuasion! The ultimate battleground where intellect meets eloquence and business minds collide in a war of words.",
       image:
-        "https://images.stockcake.com/public/f/3/b/f3b1548d-a98b-4d1a-a855-6c208225c08f_medium/debate-night-intensity-stockcake.jpg",
+        "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#f97316", // orange
       category: "Debate",
     },
@@ -310,7 +310,7 @@ const Events = () => {
       description:
         "The Ultimate Business Idea Pitching Competition. Got a game-changing idea? It's time to turn it into reality!",
       image:
-        "https://www.betterup.com/hubfs/A-young-happy-male-pitching-an-idea-in-front-of-a-teamhow-to-pitch-ideas.jpg",
+        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#06b6d4", // cyan
       category: "Business",
     },
@@ -319,7 +319,8 @@ const Events = () => {
       date: "APR 21, 2025",
       description:
         "Are you someone who thrives on intellectual challenges? Do you have a passion for quizzes that test not just your knowledge but your ability to think critically? If yes, then we have just the right platform for you!",
-      image: "https://pbs.twimg.com/media/ExqzzWwW8AYGO-f.jpg:large",
+      image:
+        "https://images.unsplash.com/photo-1606326608690-4e0281b1e588?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#c084fc", // Soft Lavender
       category: "Quiz",
     },
@@ -329,7 +330,7 @@ const Events = () => {
       description:
         "Do you have what it takes to create the next viral sensation? If you believe in the power of memes, reels, and marketing genius, then HYPE IT UP is the perfect Battlefield for you! ",
       image:
-        "https://plus.unsplash.com/premium_photo-1684179641331-e89c6320b6a9?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       color: "#ff2400", // Scarlet Orange
       category: "Promotion",
     },
@@ -497,15 +498,27 @@ const Events = () => {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <button
-            className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-glow"
-            onClick={() => window.open("/brochure.pdf", "_blank")}
-          >
-            <span className="relative z-10 hover:cursor-pointer">
-              Download Brochure
-            </span>
-            <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-          </button>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a
+              href="/events"
+              className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-glow"
+            >
+              <span className="relative z-10 hover:cursor-pointer">
+                VIEW ALL EVENTS
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            </a>
+
+            <button
+              className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-glow"
+              onClick={() => window.open("/brochure.pdf", "_blank")}
+            >
+              <span className="relative z-10 hover:cursor-pointer">
+                DOWNLOAD BROCHURE
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            </button>
+          </div>
         </motion.div>
       </div>
 
