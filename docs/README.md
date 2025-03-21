@@ -1,5 +1,5 @@
 # Setup Instructions
-Setup for local testing
+Setup for local testing  
 
 ## Backend
 * Create .env in the backend folder (for local testing)
@@ -12,24 +12,24 @@ Setup for local testing
 * `npm run lint` - checks the project for errors using eslint
 
 ### Routes
-Send requests to: <Base URL>/<API Route>/<Reqd Route>
+Send requests to: \<Base URL\>/\<API Route\>/\<Reqd Route\>
 
-Base Local Testing URL: http:/localhost:5000/
+Base Local Testing URL: http:/localhost:5000/  
 Api Route: /api
 
 User:
-* /users/get - Get the current auth user
-* /users/signup - Create a new user account
-* /users/login - Login an existing user
-* /users/logout - Logout from authenticated user
-* /users/regevnt - Get all the events the auth user is registered to
+* `/users/get` - Get the current auth user
+* `/users/signup` - Create a new user account
+* `/users/login` - Login an existing user
+* `/users/logout` - Logout from authenticated user
+* `/users/regevnt` - Get all the events the auth user is registered to
 
 Events:
-* /events - Get all available events to register into
+* `/events` - Get all available events to register into
 
 Registrations:
-* /reg/new - Create a new registration for auth user
-* /reg/pay - Create a new razorpay order
+* `/reg/new` - Create a new registration request for auth user
+* `/reg/verify` - Verify payment status for registration and update registration
 
 ### Set up mongo db for local testing
 * In the minimum, install mongo server, mongo shell (follow respective docs)
@@ -39,11 +39,13 @@ Registrations:
   ```
   mongod --dppath temp\path\where\db\should\be\stored --logpath \path\to\a\log\file\to\store\logs\mongod.log --port 27017 --auth
   ```
+    
     * `--dbpath` - this is the path where databse related files will be stored
     * `--logpath` - this is the path where logs will be stored
     * `--auth` - this makes sure all clients are authenticated before connecting
 * Run the mongo shell command `mongosh --port 27017`
-* Create user admin by running the following commands in the shell (https://www.mongodb.com/docs/upcoming/tutorial/configure-scram-client-authentication/)
+* Create user admin by running the following commands in the shell (https://www.mongodb.com/docs/upcoming/tutorial/configure-scram-client-authentication/)  
+    
     * ```
       use admin
       ```
@@ -55,17 +57,19 @@ Registrations:
       ```
     * ```
       exit
-      ```
+      ```  
 * Restart mongod using the command 2 steps before (`mongod --port 21...`)
 * Now you can connect to the mongodb using mongosh as
+   
   ```
   mongosh --port 27017 --authenticationDatabase "admin" -u "admin" -p "12345678"
   ```
 * If you are using Mongo Compass instead of monogsh then connect to the uri
+  
   ```
   mongodb://admin:12345678@localhost:27017/?authMechanism=DEFAULT&authSource=admin
   ```
-    * This is the same uri used in the .env with one change (the database name is added here between `...27017/` and `?authMe...`
+    * This is the same uri used in the .env with one change (the database name is added here between `...27017/` and `?authMe...` e.g. `...27017/envisage_db?authMe...`)
 
 ### Setup project for local testing
 * Go to the backend folder of the project
@@ -79,3 +83,9 @@ Registrations:
 * Follow .env.example to setup env files
 * NOTE: if you keep both, .env.production will override .env (thats how vite works)
 * `npm run dev` - run vite server
+
+### Other Docs
+* [HERO_ENHANCEMENT_PLAN](./HERO_ENHANCEMENT_PLAN.md)
+* [HERO_REDESIGN](./HERO_REDESIGN.md)
+* [NEON_ENHANCEMENTS](./NEON_ENHANCEMENTS.md)
+* [SCROLLSTORY_ENHANCEMENTS](./SCROLLSTORY_ENHANCEMENTS.md)

@@ -118,10 +118,7 @@ const Speaker3D: React.FC<Speaker3DProps> = ({
 };
 
 // 3D Scene for speakers
-const SpeakersScene: React.FC<SpeakersSceneProps> = ({
-  speakers,
-  activeIndex,
-}) => {
+const SpeakersScene: React.FC<SpeakersSceneProps> = () => {
   const colors = [
     neonColors.cyan,
     neonColors.purple,
@@ -131,28 +128,7 @@ const SpeakersScene: React.FC<SpeakersSceneProps> = ({
 
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={0.5} />
-      <pointLight
-        position={[-10, -10, -10]}
-        intensity={0.5}
-        color={neonColors.cyan}
-      />
-
-      {speakers.map((speaker, index) => (
-        <Speaker3D
-          key={index}
-          position={[
-            (index - speakers.length / 2 + 0.5) * 4.5,
-            0,
-            index === activeIndex ? 0 : -3,
-          ]}
-          color={colors[index % colors.length]}
-          name={speaker.name}
-          role={speaker.role}
-          image={speaker.image}
-        />
-      ))}
+      
 
       {/* Background sphere */}
       <mesh position={[0, 0, -10]}>
@@ -190,24 +166,7 @@ const SpeakerCard = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, margin: "-100px" });
 
-  useEffect(() => {
-    if (!cardRef.current) return;
-
-    if (isActive) {
-      gsap.to(cardRef.current, {
-        scale: 1.05,
-        boxShadow:
-          "0 0 30px rgba(124, 58, 237, 0.5), 0 0 50px rgba(34, 211, 238, 0.3)",
-        duration: 0.3,
-      });
-    } else {
-      gsap.to(cardRef.current, {
-        scale: 1,
-        boxShadow: "none",
-        duration: 0.3,
-      });
-    }
-  }, [isActive]);
+  
 
   return (
     <motion.div
@@ -226,9 +185,9 @@ const SpeakerCard = ({
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/70 to-transparent opacity-80"></div>
+        <div className="absolute  inset-0 bg-gradient-to-t from-primary via-primary/70 to-transparent opacity-80"></div>
 
-        <div className="absolute inset-x-0 bottom-0 p-4 text-center">
+        <div className="absolute bg-black inset-x-0 bottom-0 p-4 text-center">
           <h3 className="text-xl font-cyber text-white mb-1 neon-text">
             {name}
           </h3>
@@ -285,15 +244,6 @@ const Speakers = () => {
         "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
     },
   ];
-
-  useEffect(() => {
-    // Auto-rotate through speakers
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % speakers.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [speakers.length]);
 
   return (
     <section

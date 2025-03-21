@@ -1,5 +1,7 @@
 import { useState, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
+
 
 interface EventCardProps {
   title: string;
@@ -128,7 +130,7 @@ const EventCard3D: React.FC<EventCardProps> = ({
           role="button"
           aria-label="Register for event"
         >
-          Register Now
+          <NavLink to={"/register"}>Register Now</NavLink>
         </motion.button>
       </div>
 
