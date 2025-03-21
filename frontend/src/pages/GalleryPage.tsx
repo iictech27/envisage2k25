@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
 
 // Gallery image interface
@@ -24,122 +23,263 @@ const GalleryPage = () => {
   const galleryImages: GalleryImage[] = [
     {
       id: 1,
-      title: "Neon Nexus Summit",
+      title: "Launches redefine possibilities",
       description:
         "Our flagship annual conference bringing together metaverse pioneers and visionaries.",
       category: "conference",
       date: "June 15, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead1.jpg",
     },
     {
       id: 2,
-      title: "Virtual Reality Expo",
+      title: "Immersive futuristic experiences",
       description:
         "Showcasing the latest VR technologies and immersive experiences.",
       category: "expo",
       date: "March 22, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead2.jpg",
     },
     {
       id: 3,
-      title: "Digital Art Showcase",
+      title: "Art inspires creativity",
       description:
         "Exhibition of cutting-edge digital art created for the metaverse.",
       category: "art",
       date: "August 5, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead4.jpg",
     },
+    
     {
       id: 4,
-      title: "Cyberpunk Hackathon",
-      description:
-        "48-hour coding marathon to build innovative metaverse applications.",
-      category: "hackathon",
-      date: "November 12, 2023",
-      imageUrl:
-        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    },
-    {
-      id: 5,
-      title: "Metaverse Music Festival",
+      title: "Experts share knowledge",
       description:
         "Virtual concert featuring top artists performing in our digital world.",
       category: "entertainment",
       date: "July 30, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead7.jpg",
     },
     {
-      id: 6,
-      title: "Blockchain Workshop",
+      id: 5,
+      title: "Workshops enhance skills",
       description:
         "Hands-on session exploring blockchain integration in virtual environments.",
       category: "workshop",
       date: "April 18, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead8.jpg",
     },
     {
-      id: 7,
-      title: "Avatar Fashion Show",
-      description: "Showcasing digital fashion designs for metaverse avatars.",
-      category: "entertainment",
-      date: "September 25, 2023",
-      imageUrl:
-        "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    },
-    {
-      id: 8,
-      title: "Future of Gaming Panel",
+      id: 6,
+      title: "Entertainment captivates audiences",
       description:
         "Industry experts discussing the evolution of gaming in the metaverse.",
       category: "conference",
       date: "October 7, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead16.jpg",
     },
     {
-      id: 9,
-      title: "Virtual Architecture Exhibition",
+      id: 7,
+      title: "Expos showcase talent",
       description:
         "Showcase of innovative digital spaces and metaverse environments.",
       category: "expo",
       date: "February 14, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/estart12.jpg",
     },
     {
-      id: 10,
-      title: "NFT Marketplace Launch",
+      id: 8,
+      title: "Discussions shape ideas",
       description:
         "Celebration of our new platform for trading digital assets.",
       category: "launch",
       date: "May 3, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/estart13.jpg",
     },
     {
-      id: 11,
-      title: "Augmented Reality Demo Day",
+      id: 9,
+      title: "Expert shares insights",
       description: "Live demonstrations of AR applications for the metaverse.",
       category: "expo",
       date: "January 20, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead15.jpg",
     },
     {
-      id: 12,
-      title: "Metaverse Developers Conference",
+      id: 10,
+      title: "Presenting new ideas",
       description:
         "Technical sessions for builders creating the future of virtual worlds.",
       category: "conference",
       date: "December 5, 2023",
       imageUrl:
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "./iic-gallery/ead18.jpg",
     },
+    {
+      id: 11,
+      title: "Conference inspires innovation",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "conference",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/estart14.jpg",
+    },{
+      id: 12,
+      title: " Engaging public speech",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "workshop",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/ead21.jpg",
+    },
+    {
+      id: 13,
+      title: "Presenting insightful data",
+      description:
+        "48-hour coding marathon to build innovative metaverse applications.",
+      category: "hackathon",
+      date: "November 12, 2023",
+      imageUrl: "./iic-gallery/ead5.jpg"
+    },
+    {
+      id: 14,
+      title: "Engaging audience interaction",
+      description: "Showcasing digital fashion designs for metaverse avatars.",
+      category: "entertainment",
+      date: "September 25, 2023",
+      imageUrl:
+        "./iic-gallery/ead9.jpg",
+    },
+    {
+      id: 15,
+      title: "Confidently sharing knowledge",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "launch",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/estart4.jpg",
+    },
+    {
+      id: 16,
+      title: "Professional poised speaker",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "launch",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/33.jpg",
+    },
+    {
+      id: 17,
+      title: "Knowledge drives progress",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "workshop",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/ead20.jpg",
+    },{
+      id: 18,
+      title: "Networking builds opportunities",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "launch",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/ead22.jpg",
+    },{
+      id: 19,
+      title: "Ideas spark change",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "hackathon",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/ead25.jpg",
+    },{
+      id: 20,
+      title: "Collaboration fosters growth",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "entertainment",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/estart1.jpg",
+    },{
+      id: 21,
+      title: "Leaders exchange perspectives",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "hackathon",
+      date: "December 5, 2023",
+      imageUrl: "./iic-gallery/estart2.jpg",
+    },
+    {
+      id: 22,
+      title: "Technology transforms industries",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "expo",
+      date: "December 5, 2023",
+      imageUrl:"./iic-gallery/estart3.jpg",
+    },{
+      id: 23,
+      title: "Speakers motivate audiences",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "entertainment",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/estart4.jpg",
+    },{
+      id: 24,
+      title: "Success requires adaptability",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "workshop",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/11.jpg",
+    },{
+      id: 25,
+      title: "Conversations encourage leadership",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "art",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/estart6.jpg",
+    },{
+      id: 26,
+      title: "Learning fuels excellence",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "art",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/estart8.jpg",
+    },{
+      id: 27,
+      title: "Innovation demands curiosity",
+      description:
+        "Technical sessions for builders creating the future of virtual worlds.",
+      category: "hackathon",
+      date: "December 5, 2023",
+      imageUrl:
+        "./iic-gallery/estart9.jpg",
+    },
+    
+    
+
   ];
 
   // Filter categories
@@ -173,14 +313,19 @@ const GalleryPage = () => {
   // Animate images appearing with staggered effect
   useEffect(() => {
     const filtered = getFilteredImages();
-    setAnimatedImages([]);
-
+    setAnimatedImages([]); // Reset state before animation starts
+  
+    let newImages: GalleryImage[] = [];
+    
     filtered.forEach((image, index) => {
       setTimeout(() => {
-        setAnimatedImages((prev) => [...prev, image]);
+        newImages.push(image);
+        setAnimatedImages([...newImages]); // Update state correctly
       }, index * 100);
     });
+  
   }, [activeFilter, isLoading]);
+  
 
   // Close modal when clicking outside
   useEffect(() => {
@@ -228,7 +373,7 @@ const GalleryPage = () => {
   }, [selectedImage]);
 
   return (
-    <>
+  <>
       <Header />
       <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
         {/* 3D Background */}
@@ -274,25 +419,24 @@ const GalleryPage = () => {
           {!isLoading && (
             <>
               {/* Filters */}
-              <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-4xl mx-auto">
-                {filters.map((filter) => (
-                  <button
-                    key={filter.id}
-                    onClick={() => setActiveFilter(filter.id)}
-                    className={`px-4 py-2 rounded-md font-cyber text-sm transition-all duration-300 ${
-                      activeFilter === filter.id
-                        ? "bg-gradient-to-r from-neon to-accent text-white"
-                        : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30"
-                    }`}
-                  >
-                    {filter.label}
-                  </button>
-                ))}
-              </div>
+              <div className="flex space-x-6 overflow-x-auto scrollbar-hide px-4 py-2">
+            {filters.map((filter) => (
+              <button
+                key={filter.id}
+                onClick={() => setActiveFilter(filter.id)}
+                className={`px-6 py-3 rounded-lg font-cyber text-sm transition-all duration-300 transform whitespace-nowrap ${
+                  activeFilter === filter.id
+                    ? "bg-gradient-to-r from-neon to-accent text-white scale-105 shadow-lg"
+                    : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30 hover:scale-105 cursor-pointer"
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
 
-              {/* Gallery Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {animatedImages.map((image) => (
+              <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 pt-5">
+              {animatedImages.map((image) => (
                   <div
                     key={image.id}
                     className="gallery-item opacity-0 animate-fade-in"
@@ -302,52 +446,50 @@ const GalleryPage = () => {
                     }}
                     onClick={() => setSelectedImage(image)}
                   >
-                    <div className="relative group overflow-hidden rounded-lg border-2 border-neon/30 hover:border-neon/80 transition-all duration-300 cursor-pointer">
-                      {/* Image */}
-                      <div className="aspect-w-16 aspect-h-9 bg-gray-900">
-                        <img
-                          src={image.imageUrl}
-                          alt={image.title}
-                          className="object-cover w-full h-full transform transition-transform duration-700 group-hover:scale-110"
-                        />
-                      </div>
-
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/70 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
-
-                      {/* Glitch Effect on Hover */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-20 pointer-events-none">
-                        <div className="absolute inset-0 bg-neon mix-blend-screen animate-glitch-1"></div>
-                        <div className="absolute inset-0 bg-accent mix-blend-screen animate-glitch-2"></div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-cyber text-neon bg-primary/80 px-2 py-1 rounded">
-                            {image.category.toUpperCase()}
-                          </span>
-                          <span className="text-xs font-futuristic text-white/80">
-                            {image.date}
-                          </span>
+                        <div className="relative group overflow-hidden rounded-lg border-2 border-neon/30 hover:border-neon/80 transition-all duration-300 cursor-pointer">
+                        {/* Image */}
+                        <div className="aspect-w-16 aspect-h-9 bg-gray-900">
+                          <img
+                            src={image.imageUrl}
+                            alt={image.title}
+                            className="object-cover w-full h-full filter brightness-110 transition-all duration-500"
+                          />
                         </div>
-                        <h3 className="text-lg font-cyber text-white group-hover:text-neon transition-colors">
-                          {image.title}
-                        </h3>
-                        <p className="text-white/80 text-sm font-futuristic line-clamp-2 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          {image.description}
-                        </p>
+
+                        {/* Gradient Overlay on Content - Dark at First, Brightens on Hover */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black  to-transparent opacity-80 group-hover:from-purple-900 group-hover:via-primary/50 group-hover:to-transparent group-hover:opacity-100 transition-all duration-500"></div>
+
+                        {/* Content */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-cyber text-neon bg-primary/80 px-2 py-1 rounded">
+                              {image.category.toUpperCase()}
+                            </span>
+                            <span className="text-xs font-futuristic text-white/40 group-hover:text-white transition-colors duration-500">
+                              {image.date}
+                            </span>
+                          </div>
+                          <h3 className="text-lg font-cyber text-white group-hover:text-white transition-colors duration-500">
+                            {image.title}
+                          </h3>
+                          <p className="text-white/80 text-sm font-futuristic line-clamp-2 mt-1 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
+                            {image.description}
+                          </p>
+                        </div>
+
+                        {/* Decorative Corners */}
+                        <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-neon opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-accent opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-accent opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-neon opacity-60 group-hover:opacity-100 transition-opacity"></div>
                       </div>
 
-                      {/* Decorative corners */}
-                      <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-neon opacity-60 group-hover:opacity-100 transition-opacity"></div>
-                      <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-accent opacity-60 group-hover:opacity-100 transition-opacity"></div>
-                      <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-accent opacity-60 group-hover:opacity-100 transition-opacity"></div>
-                      <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-neon opacity-60 group-hover:opacity-100 transition-opacity"></div>
-                    </div>
+
                   </div>
                 ))}
               </div>
+
+
 
               {/* Empty State */}
               {animatedImages.length === 0 && !isLoading && (
@@ -487,54 +629,13 @@ const GalleryPage = () => {
               </svg>
             </button>
 
-            {/* Image */}
-            <div className="flex flex-col md:flex-row h-full">
-              <div className="md:w-2/3 relative bg-black">
-                <img
-                  src={selectedImage.imageUrl}
-                  alt={selectedImage.title}
-                  className="w-full h-full object-contain max-h-[70vh]"
-                />
-
-                {/* Decorative elements */}
-                <div className="absolute top-0 left-0 w-16 h-16 pointer-events-none">
-                  <div className="absolute top-0 left-0 w-full h-full border-t-2 border-l-2 border-neon"></div>
-                </div>
-                <div className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none">
-                  <div className="absolute bottom-0 right-0 w-full h-full border-b-2 border-r-2 border-accent"></div>
-                </div>
-              </div>
-
-              {/* Image Info */}
-              <div className="md:w-1/3 p-6 bg-gray-900/90 flex flex-col">
-                <div className="mb-2">
-                  <span className="text-xs font-cyber text-neon bg-primary/80 px-2 py-1 rounded">
-                    {selectedImage.category.toUpperCase()}
-                  </span>
-                  <span className="text-xs font-futuristic text-white/80 ml-2">
-                    {selectedImage.date}
-                  </span>
-                </div>
-                <h3 className="text-2xl font-cyber text-white mb-4">
-                  {selectedImage.title}
-                </h3>
-                <p className="text-gray-300 font-futuristic mb-6 flex-grow">
-                  {selectedImage.description}
-                </p>
-
-                <div className="mt-auto">
-                  <button className="w-full cyber-button py-2 px-4 relative overflow-hidden group">
-                    <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
-                    <span className="relative z-10">VIEW EVENT DETAILS</span>
-                  </button>
-                </div>
-              </div>
+            
+              
             </div>
           </div>
-        </div>
       )}
 
-      <Footer />
+      
 
       {/* Custom CSS for animations */}
       <style>{`

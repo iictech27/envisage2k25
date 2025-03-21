@@ -365,7 +365,7 @@ const NeonHero3D = ({ onRegisterClick }: NeonHero3DProps) => {
             className="gsap-text neon-text text-neon font-karnivor text-xl md:text-2xl mb-6 tracking-widest hero-text-visible"
             style={{ fontFamily: "'Karnivor', 'Orbitron', sans-serif" }}
           >
-            WELCOME TO THE FUTURE
+            IIC TMSL presents,
           </h2>
 
           <div className="gsap-text relative inline-block mb-8 hero-text-visible">

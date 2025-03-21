@@ -474,23 +474,21 @@ const TeamPage = () => {
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap items-center justify-center gap-2 px-4 py-2">
+          <div className="flex space-x-6 overflow-x-auto scrollbar-hide px-4 py-2">
             {filters.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setActiveFilter(filter.id)}
-                className={`px-6 py-3 rounded-lg font-cyber text-sm transition-all duration-300 transform whitespace-nowrap 
-        ${
-          activeFilter === filter.id
-            ? "bg-gradient-to-r from-neon to-accent text-white scale-105 shadow-lg"
-            : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30 hover:scale-105"
-        }`}
+                className={`px-6 py-3 rounded-lg font-cyber text-sm transition-all duration-300 transform whitespace-nowrap ${
+                  activeFilter === filter.id
+                    ? "bg-gradient-to-r from-neon to-accent text-white scale-105 shadow-lg"
+                    : "bg-gray-900 text-white hover:bg-gray-800 border border-neon/30 hover:scale-105"
+                }`}
               >
                 {filter.label}
               </button>
             ))}
           </div>
-
           {/* Team Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
             {animatedMembers.map((member) => (
