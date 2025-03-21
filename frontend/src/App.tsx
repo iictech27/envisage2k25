@@ -15,6 +15,7 @@ import ThemeDemo from "./components/ThemeDemo";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="team" element={<TeamPage />} />
             <Route path="partner" element={<PartnerPage />} />
             <Route path="gallery" element={<GalleryPage />} />
+            <Route path="about" element={<AboutPage />} />
             <Route path="theme-demo" element={<ThemeDemo />} />
           </Route>
           <Route path="/register" element={<RegisterPage />} />
