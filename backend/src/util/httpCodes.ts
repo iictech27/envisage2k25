@@ -1,4 +1,4 @@
-const httpCodes = {
+export const httpCodes = {
     "1xx": {
         code: "1xx",
         message: "Information",
@@ -450,5 +450,3 @@ const httpCodes = {
         description: "Used by some HTTP proxies to signal a network read timeout behind the proxy to a client in front of the proxy."
     }
 };
-
-export default httpCodes;
