@@ -139,7 +139,7 @@ const LoginPage = () => {
               </div>
 
               <div className="text-neon hover:text-accent transition-colors font-futuristic">
-                <a href="#">Forgot password?</a>
+                <Link to="/forgot-password">Forgot password?</Link>
               </div>
             </div>
 

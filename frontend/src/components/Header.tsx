@@ -37,9 +37,10 @@ const Header = () => {
 
   const navItems = [
     { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
     { path: "/events", label: "Events" },
-    { path: "/countdown", label: "Countdown" },
-    { path: "/speakers", label: "Speakers" },
+    // { path: "/countdown", label: "Countdown" },
+    // { path: "/speakers", label: "Speakers" },
     { path: "/team", label: "Team" },
     { path: "/partner", label: "Partner" },
     // { path: "/theme-demo", label: "Theme" },
@@ -77,31 +78,36 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
-              {navItems.slice(0, 7).map((item) => (
-                <li key={item.label}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      `font-cyber text-sm uppercase tracking-wider transition-all duration-300 relative px-2 py-1 ${
-                        isActive ? "text-neon" : "text-white hover:text-neon"
-                      }`
-                    }
-                    style={({ isActive }) =>
-                      isActive
-                        ? {
-                            textShadow: theme.shadows.neon.sm,
-                            borderBottom: `2px solid ${theme.colors.neon.main}`,
-                            boxShadow: `0 4px 6px -6px ${theme.colors.neon.main}`,
-                          }
-                        : {}
-                    }
-                  >
-                    {item.label}
-                  </NavLink>
-                </li>
-              ))}
+              {navItems
+                .filter(
+                  (item) => item.path !== "/login" && item.path !== "/signup",
+                ) // Remove Login & Signup from desktop nav
+                .map((item) => (
+                  <li key={item.label}>
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `font-cyber text-sm uppercase tracking-wider transition-all duration-300 relative px-2 py-1 ${
+                          isActive ? "text-neon" : "text-white hover:text-neon"
+                        }`
+                      }
+                      style={({ isActive }) =>
+                        isActive
+                          ? {
+                              textShadow: theme.shadows.neon.sm,
+                              borderBottom: `2px solid ${theme.colors.neon.main}`,
+                              boxShadow: `0 4px 6px -6px ${theme.colors.neon.main}`,
+                            }
+                          : {}
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                ))}
             </ul>
           </nav>
 
