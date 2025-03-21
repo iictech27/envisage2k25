@@ -258,7 +258,7 @@ const Events = () => {
       title: "VENTURE VAULT",
       date: "APR 22, 2025",
       description:
-        "The Ultimate Venture Auction War. Ever dreamed of building your own empire with the most promising ventures? Now’s your chance!",
+        "The Ultimate Venture Auction War. Ever dreamed of building your own empire with the most promising ventures? Now's your chance!",
       image:
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#22d3ee", // neon
@@ -268,14 +268,14 @@ const Events = () => {
       title: "STOCKIFY",
       date: "APR 15-22, 2025",
       description:
-        "Do you have what it takes to conquer the stock market? If you believe in the mantra “Risk hai to ishq hai”, then STOCKIFY is the ultimate battleground for you!",
+        "Do you have what it takes to conquer the stock market? If you believe in the mantra 'Risk hai to ishq hai', then STOCKIFY is the ultimate battleground for you!",
       image:
         "https://plus.unsplash.com/premium_photo-1681487769650-a0c3fbaed85a?q=80&w=2155&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       color: "#10b981", // highlight
       category: "Finance",
     },
     {
-      title: "CXO’s Insights",
+      title: "CXO's Insights",
       date: "APR 19, 2025",
       description:
         "Do you have what it takes to think like a CXO? Step in the shoes of a top executive and tackle real-world business challenges in CXO's Insights, a thrilling case study competition.",
@@ -308,7 +308,7 @@ const Events = () => {
       title: "B-PLAN",
       date: "APR 19, 2025",
       description:
-        "The Ultimate Business Idea Pitching Competition. Got a game-changing idea? It’s time to turn it into reality!",
+        "The Ultimate Business Idea Pitching Competition. Got a game-changing idea? It's time to turn it into reality!",
       image:
         "https://www.betterup.com/hubfs/A-young-happy-male-pitching-an-idea-in-front-of-a-teamhow-to-pitch-ideas.jpg",
       color: "#06b6d4", // cyan
@@ -319,8 +319,7 @@ const Events = () => {
       date: "APR 21, 2025",
       description:
         "Are you someone who thrives on intellectual challenges? Do you have a passion for quizzes that test not just your knowledge but your ability to think critically? If yes, then we have just the right platform for you!",
-      image:
-        "https://pbs.twimg.com/media/ExqzzWwW8AYGO-f.jpg:large",
+      image: "https://pbs.twimg.com/media/ExqzzWwW8AYGO-f.jpg:large",
       color: "#c084fc", // Soft Lavender
       category: "Quiz",
     },
@@ -334,9 +333,8 @@ const Events = () => {
       color: "#ff2400", // Scarlet Orange
       category: "Promotion",
     },
-
   ];
-    
+
   // Get unique categories
   const categories = ["all", ...new Set(events.map((event) => event.category))];
 
@@ -499,8 +497,13 @@ const Events = () => {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <button className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-glow">
-            <span className="relative z-10">Explore All Events</span>
+          <button
+            className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-glow"
+            onClick={() => window.open("/brochure.pdf", "_blank")}
+          >
+            <span className="relative z-10 hover:cursor-pointer">
+              Download Brochure
+            </span>
             <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           </button>
         </motion.div>

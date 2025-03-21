@@ -235,7 +235,7 @@ const FeaturedEvents = () => {
       location: "TMSL Labs",
       imageUrl:
         "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-        category: "Tech",
+      category: "Tech",
       featured: true,
       registrationUrl: "/events/metaverse-summit-2024",
     },
@@ -246,7 +246,7 @@ const FeaturedEvents = () => {
       location: "G-Series",
       imageUrl:
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        category: "Auction",
+      category: "Auction",
       featured: true,
       registrationUrl: "/events/digital-art-exhibition",
     },
@@ -257,18 +257,18 @@ const FeaturedEvents = () => {
       location: "Online",
       imageUrl:
         "https://plus.unsplash.com/premium_photo-1681487769650-a0c3fbaed85a?q=80&w=2155&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        category: "Finance",
+      category: "Finance",
       featured: true,
       registrationUrl: "/events/blockchain-nft-workshop",
     },
     {
       id: 4,
-      title: "CXO’s Insights",
+      title: "CXO's Insights",
       date: "APR 19, 2025",
       location: "G-Series",
       imageUrl:
         "https://plus.unsplash.com/premium_photo-1661313688756-2e38d59fb9f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        category: "Business",
+      category: "Business",
       featured: true,
       registrationUrl: "/events/cyberpunk-music-festival",
     },
@@ -604,27 +604,32 @@ const FeaturedEvents = () => {
               </Link>
             ))}
 
-            {/* View All button with cyberpunk style */}
-            <div className="mt-8 relative">
+            {/* View all events and Download brochure buttons */}
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
               <Link
                 to="/events"
-                className="block relative py-3 text-center font-cyber text-white border border-neon/50 bg-primary/80 overflow-hidden"
+                className="cyber-button py-3 px-6 relative overflow-hidden group flex items-center justify-center"
               >
-                {/* Animated background */}
-                <div className="absolute inset-0 opacity-20">
-                  <div className="absolute inset-0 bg-gradient-to-r from-neon via-accent to-neon bg-[length:200%_100%] animate-gradient-x"></div>
-                </div>
-
-                <span className="relative z-10 inline-block glitch-hover">
+                <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
+                <span className="relative z-10 text-center">
                   VIEW ALL EVENTS
                 </span>
-
-                {/* Corner accents */}
-                <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neon"></div>
-                <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-neon"></div>
-                <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-neon"></div>
-                <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-neon"></div>
               </Link>
+
+              <button
+                onClick={() =>
+                  window.open(
+                    `${window.location.origin}/brochure.pdf`,
+                    "_blank",
+                  )
+                }
+                className="cyber-button py-3 px-6 relative overflow-hidden group flex items-center justify-center cursor-pointer"
+              >
+                <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
+                <span className="relative z-10 text-center">
+                  DOWNLOAD BROCHURE
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -1110,7 +1115,6 @@ const FeaturedEvents = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
-
             {/* Featured event image with overlay */}
             <div className="absolute inset-0 z-0">
               {events.map((event, index) => (
@@ -1204,7 +1208,9 @@ const FeaturedEvents = () => {
                         className="cyber-button inline-block py-3 px-8 relative overflow-hidden group"
                       >
                         <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
-                        <NavLink to={"/register"} className="relative z-10">REGISTER NOW</NavLink>
+                        <NavLink to={"/register"} className="relative z-10">
+                          REGISTER NOW
+                        </NavLink>
                       </Link>
                     </>
                   )}
@@ -1299,13 +1305,24 @@ const FeaturedEvents = () => {
               </div>
             ))}
 
-            {/* View all events button */}
-            <Link
-              to="/events"
-              className="block text-center py-3 px-4 border border-neon/50 rounded-lg font-cyber text-white hover:bg-neon/10 hover:text-neon transition-all duration-300 mt-6"
-            >
-              VIEW ALL EVENTS
-            </Link>
+            {/* View all events and Download brochure buttons */}
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+              <Link
+                to="/events"
+                className="cyber-button py-3 px-6 relative overflow-hidden group"
+              >
+                <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
+                <span className="relative z-10">VIEW ALL EVENTS</span>
+              </Link>
+
+              <button
+                onClick={() => window.open("/brochure.pdf", "_blank")}
+                className="cyber-button py-3 px-6 relative overflow-hidden group"
+              >
+                <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
+                <span className="relative z-10">DOWNLOAD BROCHURE</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
