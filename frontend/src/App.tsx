@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
@@ -16,31 +22,52 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AboutPage from "./pages/AboutPage";
+import Preloader from "./components/Preloader";
+import { useState, useEffect } from "react";
+
+// Wrapper component to handle route changes
+function AppContent() {
+  const [key, setKey] = useState(0);
+  const location = useLocation();
+
+  // Reset preloader on location change (navigation)
+  useEffect(() => {
+    // Increment key to force preloader to re-render
+    setKey((prev) => prev + 1);
+  }, [location.pathname]);
+
+  return (
+    <>
+      <Preloader key={key} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="events" element={<EventsPage />} />
+          <Route path="countdown" element={<CountdownPage />} />
+          <Route path="speakers" element={<SpeakersPage />} />
+          <Route path="team" element={<TeamPage />} />
+          <Route path="partner" element={<PartnerPage />} />
+          <Route path="gallery" element={<GalleryPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="theme-demo" element={<ThemeDemo />} />
+        </Route>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/verify-email" element={<EmailVerificationPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
+  );
+}
 
 function App() {
   return (
     <div className="App bg-primary text-white font-futuristic">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="events" element={<EventsPage />} />
-            <Route path="countdown" element={<CountdownPage />} />
-            <Route path="speakers" element={<SpeakersPage />} />
-            <Route path="team" element={<TeamPage />} />
-            <Route path="partner" element={<PartnerPage />} />
-            <Route path="gallery" element={<GalleryPage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="theme-demo" element={<ThemeDemo />} />
-          </Route>
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/verify-email" element={<EmailVerificationPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
     </div>
   );
