@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, RefObject } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../styles/ThemeProvider";
 import * as utils from "../styles/utils";

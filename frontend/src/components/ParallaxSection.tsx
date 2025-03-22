@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 
 interface ParallaxSectionProps {
   children: React.ReactNode;
@@ -14,7 +14,20 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({
   className = "",
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const layerRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  // Set up the refs array for each layer
+  useEffect(() => {
+    layerRefs.current = layerRefs.current.slice(0, layers.length);
+  }, [layers.length]);
+
+  // Create a ref callback using useCallback
+  const setLayerRef = useCallback(
+    (el: HTMLDivElement | null, index: number) => {
+      layerRefs.current[index] = el;
+    },
+    [],
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +66,7 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({
       {layers.map((layer, index) => (
         <div
           key={`layer-${index}`}
-          ref={(el) => (layerRefs.current[index] = el)}
+          ref={(el) => setLayerRef(el, index)}
           className={`parallax-layer parallax-layer-${index}`}
         >
           {layer}

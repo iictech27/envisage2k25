@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from "react";
+import { useState, useEffect,  Suspense } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { Canvas } from "@react-three/fiber";
@@ -12,108 +12,108 @@ import {
 import { motion as FramerMotion } from "framer-motion";
 import AnimatedHeading from "./AnimatedHeading";
 
-// Lazy load motion components for better performance
-const motion = lazy(() =>
-  import("framer-motion").then((mod) => ({ default: mod.motion })),
-);
+// // Lazy load motion components for better performance
+// const motion = lazy(() =>
+//   import("framer-motion").then((mod) => ({ default: mod.motion })),
+// );
 
-// Text animation variants
-const textCharacterAnimation = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.05,
-      duration: 0.7,
-      ease: [0.2, 0.65, 0.3, 0.9],
-    },
-  }),
-};
+// // Text animation variants
+// const textCharacterAnimation = {
+//   hidden: { opacity: 0, y: 20 },
+//   visible: (i: number) => ({
+//     opacity: 1,
+//     y: 0,
+//     transition: {
+//       delay: i * 0.05,
+//       duration: 0.7,
+//       ease: [0.2, 0.65, 0.3, 0.9],
+//     },
+//   }),
+// };
 
-const textWordAnimation = {
-  hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      delay: i * 0.1,
-      duration: 0.8,
-      ease: [0.2, 0.65, 0.3, 0.9],
-    },
-  }),
-};
+// const textWordAnimation = {
+//   hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+//   visible: (i: number) => ({
+//     opacity: 1,
+//     y: 0,
+//     filter: "blur(0px)",
+//     transition: {
+//       delay: i * 0.1,
+//       duration: 0.8,
+//       ease: [0.2, 0.65, 0.3, 0.9],
+//     },
+//   }),
+// };
 
-const textRevealAnimation = {
-  hidden: { width: "0%" },
-  visible: {
-    width: "100%",
-    transition: {
-      duration: 0.8,
-      ease: [0.2, 0.65, 0.3, 0.9],
-    },
-  },
-};
+// const textRevealAnimation = {
+//   hidden: { width: "0%" },
+//   visible: {
+//     width: "100%",
+//     transition: {
+//       duration: 0.8,
+//       ease: [0.2, 0.65, 0.3, 0.9],
+//     },
+//   },
+// };
 
 // Text animation component with proper TypeScript types
-interface AnimatedTextProps {
-  text: string;
-  animation?: "character" | "word";
-  className?: string;
-  wordClassName?: string;
-}
+// interface AnimatedTextProps {
+//   text: string;
+//   animation?: "character" | "word";
+//   className?: string;
+//   wordClassName?: string;
+// }
 
-const AnimatedText = ({
-  text,
-  animation = "character",
-  className = "",
-  wordClassName = "",
-}: AnimatedTextProps) => {
-  const { ref, inView } = useInView({
-    triggerOnce: false,
-    threshold: 0.1,
-  });
+// const AnimatedText = ({
+//   text,
+//   animation = "character",
+//   className = "",
+//   wordClassName = "",
+// }: AnimatedTextProps) => {
+//   const { ref, inView } = useInView({
+//     triggerOnce: false,
+//     threshold: 0.1,
+//   });
 
-  if (animation === "word") {
-    return (
-      <div ref={ref} className={`flex flex-wrap ${className}`}>
-        {text.split(" ").map((word: string, index: number) => (
-          <div key={index} className="overflow-hidden mr-2 mb-1">
-            <Suspense fallback={<span className={wordClassName}>{word}</span>}>
-              <FramerMotion.span
-                className={wordClassName}
-                custom={index}
-                variants={textWordAnimation}
-                initial="hidden"
-                animate={inView ? "visible" : "hidden"}
-              >
-                {word}
-              </FramerMotion.span>
-            </Suspense>
-          </div>
-        ))}
-      </div>
-    );
-  }
+//   if (animation === "word") {
+//     return (
+//       <div ref={ref} className={`flex flex-wrap ${className}`}>
+//         {text.split(" ").map((word: string, index: number) => (
+//           <div key={index} className="overflow-hidden mr-2 mb-1">
+//             <Suspense fallback={<span className={wordClassName}>{word}</span>}>
+//               <FramerMotion.span
+//                 className={wordClassName}
+//                 custom={index}
+//                 variants={textWordAnimation}
+//                 initial="hidden"
+//                 animate={inView ? "visible" : "hidden"}
+//               >
+//                 {word}
+//               </FramerMotion.span>
+//             </Suspense>
+//           </div>
+//         ))}
+//       </div>
+//     );
+//   }
 
-  return (
-    <div ref={ref} className={className}>
-      {text.split("").map((char: string, index: number) => (
-        <Suspense key={index} fallback={<span>{char}</span>}>
-          <FramerMotion.span
-            custom={index}
-            variants={textCharacterAnimation}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-          >
-            {char === " " ? "\u00A0" : char}
-          </FramerMotion.span>
-        </Suspense>
-      ))}
-    </div>
-  );
-};
+//   return (
+//     <div ref={ref} className={className}>
+//       {text.split("").map((char: string, index: number) => (
+//         <Suspense key={index} fallback={<span>{char}</span>}>
+//           <FramerMotion.span
+//             custom={index}
+//             variants={textCharacterAnimation}
+//             initial="hidden"
+//             animate={inView ? "visible" : "hidden"}
+//           >
+//             {char === " " ? "\u00A0" : char}
+//           </FramerMotion.span>
+//         </Suspense>
+//       ))}
+//     </div>
+//   );
+// };
 
 // Event interface
 interface Event {
@@ -128,92 +128,92 @@ interface Event {
 }
 
 // 3D Background component for mobile
-const MobileBackground3D = () => {
-  const isMobile = window.innerWidth < 768;
+// const MobileBackground3D = () => {
+//   const isMobile = window.innerWidth < 768;
 
-  // Floating hexagons around the edges
-  const FloatingHexagons = () => {
-    const hexagons = [];
-    const count = 8; // Reduced count for mobile
+//   // Floating hexagons around the edges
+//   const FloatingHexagons = () => {
+//     const hexagons = [];
+//     const count = 8; // Reduced count for mobile
 
-    for (let i = 0; i < count; i++) {
-      // Position hexagons around the edges, not in the center
-      const posX = Math.random() * 30 - 15;
-      const posY = Math.random() * 30 - 15;
-      const posZ = -5 - Math.random() * 10;
-      const scale = 0.2 + Math.random() * 0.3;
+//     for (let i = 0; i < count; i++) {
+//       // Position hexagons around the edges, not in the center
+//       const posX = Math.random() * 30 - 15;
+//       const posY = Math.random() * 30 - 15;
+//       const posZ = -5 - Math.random() * 10;
+//       const scale = 0.2 + Math.random() * 0.3;
 
-      hexagons.push(
-        <Float
-          key={i}
-          speed={1 + Math.random()}
-          rotationIntensity={0.2}
-          floatIntensity={0.3}
-        >
-          <Torus
-            args={[0.5, 0.2, 6, 6]}
-            position={[posX, posY, posZ]}
-            scale={scale}
-            rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
-          >
-            <meshStandardMaterial
-              color={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
-              emissive={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
-              emissiveIntensity={0.8}
-              wireframe
-            />
-          </Torus>
-        </Float>,
-      );
-    }
+//       hexagons.push(
+//         <Float
+//           key={i}
+//           speed={1 + Math.random()}
+//           rotationIntensity={0.2}
+//           floatIntensity={0.3}
+//         >
+//           <Torus
+//             args={[0.5, 0.2, 6, 6]}
+//             position={[posX, posY, posZ]}
+//             scale={scale}
+//             rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
+//           >
+//             <meshStandardMaterial
+//               color={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
+//               emissive={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
+//               emissiveIntensity={0.8}
+//               wireframe
+//             />
+//           </Torus>
+//         </Float>,
+//       );
+//     }
 
-    return <>{hexagons}</>;
-  };
+//     return <>{hexagons}</>;
+//   };
 
-  // Floating particles system
-  const ParticleSystem = () => {
-    const particles = [];
-    const count = 30; // Reduced for mobile
+//   // Floating particles system
+//   const ParticleSystem = () => {
+//     const particles = [];
+//     const count = 30; // Reduced for mobile
 
-    for (let i = 0; i < count; i++) {
-      // Create a spherical distribution
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const radius = 8 + Math.random() * 10;
+//     for (let i = 0; i < count; i++) {
+//       // Create a spherical distribution
+//       const theta = Math.random() * Math.PI * 2;
+//       const phi = Math.acos(2 * Math.random() - 1);
+//       const radius = 8 + Math.random() * 10;
 
-      const x = radius * Math.sin(phi) * Math.cos(theta);
-      const y = radius * Math.sin(phi) * Math.sin(theta);
-      const z = radius * Math.cos(phi) - 15; // Push back
+//       const x = radius * Math.sin(phi) * Math.cos(theta);
+//       const y = radius * Math.sin(phi) * Math.sin(theta);
+//       const z = radius * Math.cos(phi) - 15; // Push back
 
-      const size = 0.02 + Math.random() * 0.04;
+//       const size = 0.02 + Math.random() * 0.04;
 
-      particles.push(
-        <Sphere key={i} args={[size, 8, 8]} position={[x, y, z]}>
-          <meshBasicMaterial
-            color={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
-            transparent
-            opacity={0.7}
-          />
-        </Sphere>,
-      );
-    }
+//       particles.push(
+//         <Sphere key={i} args={[size, 8, 8]} position={[x, y, z]}>
+//           <meshBasicMaterial
+//             color={Math.random() > 0.5 ? "#7c3aed" : "#22d3ee"}
+//             transparent
+//             opacity={0.7}
+//           />
+//         </Sphere>,
+//       );
+//     }
 
-    const particleGroup = useRef(null);
+//     const particleGroup = useRef(null);
 
-    return <group ref={particleGroup}>{particles}</group>;
-  };
+//     return <group ref={particleGroup}>{particles}</group>;
+//   };
 
-  return (
-    <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[0, 0, -10]} intensity={1} color="#22d3ee" />
-      <pointLight position={[10, 10, -10]} intensity={0.8} color="#7c3aed" />
+//   return (
+//     <>
+//       <ambientLight intensity={0.3} />
+//       <pointLight position={[0, 0, -10]} intensity={1} color="#22d3ee" />
+//       <pointLight position={[10, 10, -10]} intensity={0.8} color="#7c3aed" />
 
-      <FloatingHexagons />
-      <ParticleSystem />
-    </>
-  );
-};
+//       <FloatingHexagons />
+//       <ParticleSystem />
+//     </>
+//   );
+// };
 
 const FeaturedEvents = () => {
   const [activeEvent, setActiveEvent] = useState<number>(0);

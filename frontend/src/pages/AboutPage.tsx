@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Sphere, Sparkles } from "@react-three/drei";
-import * as THREE from "three";
+import { OrbitControls, Sparkles } from "@react-three/drei";
 
 // 3D Background Component
 const Background = () => {
@@ -16,7 +15,14 @@ const Background = () => {
       <pointLight position={[-10, -10, -10]} intensity={0.5} color="#22d3ee" />
 
       {/* Particle system */}
-      <Sparkles count={200} scale={20} size={1} speed={0.3} opacity={0.5} color="#22d3ee" />
+      <Sparkles
+        count={200}
+        scale={20}
+        size={1}
+        speed={0.3}
+        opacity={0.5}
+        color="#22d3ee"
+      />
 
       {/* Grid plane */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -5, -10]}>
@@ -105,12 +111,21 @@ const AboutPage = () => {
           {/* About Section */}
           <motion.div variants={itemVariants} className="mb-16">
             <div className="bg-primary/60 backdrop-blur-sm border border-accent/30 rounded-lg p-8 hover:shadow-glow transition-all duration-300">
-              <h2 className="text-3xl font-bold text-accent mb-6 font-karnivor">EVENT OVERVIEW</h2>
+              <h2 className="text-3xl font-bold text-accent mb-6 font-karnivor">
+                EVENT OVERVIEW
+              </h2>
               <p className="text-lg text-gray-300 mb-6">
-                Envisage is Techno Management Fest, the flagship event of the Innovation and Entrepreneurship Cell (IIC) of Techno Main Salt Lake. It brings together brilliant minds from various colleges and institutions to showcase their technical and managerial skills.
+                Envisage is Techno Management Fest, the flagship event of the
+                Innovation and Entrepreneurship Cell (IIC) of Techno Main Salt
+                Lake. It brings together brilliant minds from various colleges
+                and institutions to showcase their technical and managerial
+                skills.
               </p>
               <p className="text-lg text-gray-300">
-                With a vision to create a platform for students to exhibit their talents, Envisage features a diverse range of events from hackathons and coding competitions to business simulations and entrepreneurial challenges.
+                With a vision to create a platform for students to exhibit their
+                talents, Envisage features a diverse range of events from
+                hackathons and coding competitions to business simulations and
+                entrepreneurial challenges.
               </p>
             </div>
           </motion.div>
@@ -118,12 +133,20 @@ const AboutPage = () => {
           {/* Vision Section */}
           <motion.div variants={itemVariants} className="mb-16">
             <div className="bg-primary/60 backdrop-blur-sm border border-accent/30 rounded-lg p-8 hover:shadow-glow transition-all duration-300">
-              <h2 className="text-3xl font-bold text-accent mb-6 font-karnivor">OUR VISION</h2>
+              <h2 className="text-3xl font-bold text-accent mb-6 font-karnivor">
+                OUR VISION
+              </h2>
               <p className="text-lg text-gray-300 mb-6">
-                At Envisage, we envision creating an ecosystem that fosters innovation, entrepreneurship, and technological advancement. We aim to bridge the gap between academic knowledge and practical application by providing a platform for students to showcase their ideas and solutions to real-world problems.
+                At Envisage, we envision creating an ecosystem that fosters
+                innovation, entrepreneurship, and technological advancement. We
+                aim to bridge the gap between academic knowledge and practical
+                application by providing a platform for students to showcase
+                their ideas and solutions to real-world problems.
               </p>
               <p className="text-lg text-gray-300">
-                Through our diverse range of events and competitions, we strive to nurture the next generation of innovators, entrepreneurs, and leaders who will shape the future of technology and business.
+                Through our diverse range of events and competitions, we strive
+                to nurture the next generation of innovators, entrepreneurs, and
+                leaders who will shape the future of technology and business.
               </p>
             </div>
           </motion.div>
@@ -131,18 +154,30 @@ const AboutPage = () => {
           {/* Organization Section */}
           <motion.div variants={itemVariants} className="mb-16">
             <div className="bg-primary/60 backdrop-blur-sm border border-accent/30 rounded-lg p-8 hover:shadow-glow transition-all duration-300">
-              <h2 className="text-3xl font-bold text-accent mb-6 font-karnivor">THE ORGANIZATION</h2>
+              <h2 className="text-3xl font-bold text-accent mb-6 font-karnivor">
+                THE ORGANIZATION
+              </h2>
               <p className="text-lg text-gray-300 mb-6">
-                Innovation and Entrepreneurship Cell (IIC) of Techno Main Salt Lake is a student-run organization dedicated to fostering the spirit of innovation and entrepreneurship among students. We organize workshops, seminars, and competitions throughout the year to expose students to the latest trends and opportunities in technology and business.
+                Innovation and Entrepreneurship Cell (IIC) of Techno Main Salt
+                Lake is a student-run organization dedicated to fostering the
+                spirit of innovation and entrepreneurship among students. We
+                organize workshops, seminars, and competitions throughout the
+                year to expose students to the latest trends and opportunities
+                in technology and business.
               </p>
               <p className="text-lg text-gray-300">
-                Through our flagship event, Envisage, we aim to bring together students, professionals, and industry experts to create a vibrant ecosystem of innovation and collaboration.
+                Through our flagship event, Envisage, we aim to bring together
+                students, professionals, and industry experts to create a
+                vibrant ecosystem of innovation and collaboration.
               </p>
             </div>
           </motion.div>
 
           {/* Stats Section */}
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+          >
             <div className="bg-primary/60 backdrop-blur-sm border border-accent/30 rounded-lg p-8 text-center hover:shadow-glow transition-all duration-300">
               <h3 className="text-5xl font-bold text-accent mb-2">10+</h3>
               <p className="text-xl text-gray-300">Exciting Events</p>
@@ -159,7 +194,9 @@ const AboutPage = () => {
 
           {/* Join Us Section */}
           <motion.div variants={itemVariants} className="text-center">
-            <h2 className="text-3xl font-bold text-white mb-6">BE PART OF THE INNOVATION</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">
+              BE PART OF THE INNOVATION
+            </h2>
             <a
               href="/register"
               className="cyber-button text-lg px-8 py-3 relative overflow-hidden group z-20 inline-block"
@@ -201,4 +238,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage; 
+export default AboutPage;
