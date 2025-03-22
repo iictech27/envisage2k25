@@ -28,7 +28,7 @@ const TeamPage = () => {
       name: "Aaquib Ahmed",
       role: "Convenor",
       bio: "Visionary metaverse architect with 10+ years experience in virtual reality and blockchain technologies.",
-      image: "./images/Aaquib Ahmad.webp",
+      image: "/images/Aaquib Ahmad.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -40,7 +40,7 @@ const TeamPage = () => {
       name: "Aadarsh Sharma",
       role: "Convenor of External Affairs",
       bio: "AI specialist and full-stack developer with expertise in creating immersive digital experiences.",
-      image: "./images/Aadarsh Sharma.webp",
+      image: "/images/Aadarsh Sharma.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -51,7 +51,7 @@ const TeamPage = () => {
       name: "Manash Goyal",
       role: "Co-Convenor",
       bio: "Award-winning digital artist specializing in cyberpunk aesthetics and futuristic UI/UX design.",
-      image: "./images/Manash-Goyal.webp",
+      image: "/images/Manash-Goyal.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -63,7 +63,7 @@ const TeamPage = () => {
       name: "Payel Chaudhuri",
       role: "Campus Director HULT Prize",
       bio: "Cryptography expert focused on building secure and decentralized metaverse infrastructure.",
-      image: "./images/Payel Chaudhuri.webp",
+      image: "/images/Payel Chaudhuri.webp",
       socialLinks: {
         github: "https://github.com",
         linkedin: "https://linkedin.com",
@@ -74,7 +74,7 @@ const TeamPage = () => {
       name: "Ashhar Ali Ahmed",
       role: "Head of Tech wing",
       bio: "Specializes in creating breathtaking virtual worlds and interactive metaverse environments.",
-      image: "./images/Ashhar Ali Ahmed.webp",
+      image: "/images/Ashhar Ali Ahmed.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -85,7 +85,7 @@ const TeamPage = () => {
       name: "Kumar Aditya",
       role: "Head of Tech wing",
       bio: "Human-computer interaction specialist focused on creating intuitive metaverse experiences.",
-      image: "./images/Kumar Aditya.webp",
+      image: "/images/Kumar Aditya.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -96,7 +96,7 @@ const TeamPage = () => {
       name: "Utsav Tiwari",
       role: "Co-Head of Tech wing",
       bio: "Expert in creating engaging gameplay mechanics and interactive experiences in virtual worlds.",
-      image: "./images/Utsav Tiwari.webp",
+      image: "/images/Utsav Tiwari.webp",
       socialLinks: {
         github: "https://github.com",
         linkedin: "https://linkedin.com",
@@ -107,7 +107,7 @@ const TeamPage = () => {
       name: "Sreejita Mukhopadhyay",
       role: "Head of Graphics wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Sreejita Mukhopadhyay.webp",
+      image: "/images/Sreejita Mukhopadhyay.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -118,7 +118,7 @@ const TeamPage = () => {
       name: "Amit Saha",
       role: "Head of Graphics wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Amit Saha.webp",
+      image: "/images/Amit Saha.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -129,7 +129,7 @@ const TeamPage = () => {
       name: "Atul Kumar Singh",
       role: "Co-Head of Graphics wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Atul Singh.webp",
+      image: "/images/Atul Singh.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -140,7 +140,7 @@ const TeamPage = () => {
       name: "Shubham Keshri",
       role: "Head of Management and Resource wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Shubham Keshri.webp",
+      image: "/images/Shubham Keshri.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -151,7 +151,7 @@ const TeamPage = () => {
       name: "Sachin Sharma",
       role: "Co-head of Management wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Sachin Sharma.webp",
+      image: "/images/Sachin Sharma.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -162,7 +162,7 @@ const TeamPage = () => {
       name: "Sheetal Raj",
       role: "Co-head of Management wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Sheetal Raj.webp",
+      image: "/images/Sheetal Raj.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -173,7 +173,7 @@ const TeamPage = () => {
       name: "Soumyadeep Adhikary",
       role: "Head of Press wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Soumyadeep Adhikary.webp",
+      image: "/images/Soumyadeep Adhikary.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -184,7 +184,7 @@ const TeamPage = () => {
       name: "Akshat Alok",
       role: "Co-head of Press wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Akshat Alok.webp",
+      image: "/images/Akshat Alok.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -195,7 +195,7 @@ const TeamPage = () => {
       name: "Pushpendra Lal",
       role: "Head of Public Relations wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Pushpendra Lal.webp",
+      image: "/images/Pushpendra Lal.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -206,7 +206,7 @@ const TeamPage = () => {
       name: "Shubhankar Banerjee",
       role: "Co-head of Public Relations wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Shubhankar Banerjee.webp",
+      image: "/images/Shubhankar Banerjee.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -217,7 +217,7 @@ const TeamPage = () => {
       name: "Sananda Roy Chowdhury",
       role: "Co-head of Resource wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Sananda Roy Chowdhury.webp",
+      image: "/images/Sananda Roy Chowdhury.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -228,7 +228,7 @@ const TeamPage = () => {
       name: "Vaibhav Anand",
       role: "Co-head of Resource wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Vaibhav Anand.webp",
+      image: "/images/Vaibhav Anand.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -239,7 +239,7 @@ const TeamPage = () => {
       name: "Uddipta Kar",
       role: "Head of Social Media wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Uddipta Kar.webp",
+      image: "/images/Uddipta Kar.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -250,7 +250,7 @@ const TeamPage = () => {
       name: "Pritam Ghosh",
       role: "Co-head of Social Media wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Pritam Ghosh.webp",
+      image: "/images/Pritam Ghosh.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -261,7 +261,7 @@ const TeamPage = () => {
       name: "Srija Chandra",
       role: "Co-head of Social Media wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Srija Chandra.webp",
+      image: "/images/Srija Chandra.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -272,7 +272,7 @@ const TeamPage = () => {
       name: "Arunabha Sengupta",
       role: "Head of Sponsorship wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Arunabha.webp",
+      image: "/images/Arunabha.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -283,7 +283,7 @@ const TeamPage = () => {
       name: "Sarthak Sarkar",
       role: "Co-head of Sponsorship wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Sarthak.webp",
+      image: "/images/Sarthak.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -294,7 +294,7 @@ const TeamPage = () => {
       name: "Makhdhum Hossain",
       role: "Co-head of Sponsorship wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Makhdum Hossain.webp",
+      image: "/images/Makhdum Hossain.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -305,7 +305,7 @@ const TeamPage = () => {
       name: "Abhimanyu Kanjilal",
       role: "Head of Start-Up wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Abhimanyu Kanjilal1.webp",
+      image: "/images/Abhimanyu Kanjilal1.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -316,7 +316,7 @@ const TeamPage = () => {
       name: "Harshankit Raj",
       role: "Co-head of Start-Up wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Harshankit Raj.webp",
+      image: "/images/Harshankit Raj.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -327,7 +327,7 @@ const TeamPage = () => {
       name: "Debabrata Debnath",
       role: "Co-head of Start-Up wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Debabrata Debnath.webp",
+      image: "/images/Debabrata Debnath.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -338,7 +338,7 @@ const TeamPage = () => {
       name: "Ayush Dev",
       role: "Head of Content Wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Ayush Dev.webp",
+      image: "/images/Ayush Dev.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -349,7 +349,7 @@ const TeamPage = () => {
       name: "Aparajita Goswami",
       role: "Co-head of Content Wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Aparajita Goswami.webp",
+      image: "/images/Aparajita Goswami.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
@@ -360,7 +360,7 @@ const TeamPage = () => {
       name: "Rajgopal Kumar",
       role: "Head of UI/UX wing",
       bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
-      image: "./images/Rajgopal Kumar.webp",
+      image: "/images/Rajgopal Kumar.webp",
       socialLinks: {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
