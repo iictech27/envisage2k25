@@ -1,24 +1,21 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import {
-  Float,
-  Text3D,
   OrbitControls,
   MeshDistortMaterial,
 } from "@react-three/drei";
-import * as THREE from "three";
-import gsap from "gsap";
+
 import AnimatedHeading from "./AnimatedHeading";
 
 // Neon colors
-const neonColors = {
-  purple: "#7c3aed",
-  cyan: "#22d3ee",
-  green: "#10b981",
-  pink: "#ec4899",
-  orange: "#f97316",
-};
+// const neonColors = {
+//   purple: "#7c3aed",
+//   cyan: "#22d3ee",
+//   green: "#10b981",
+//   pink: "#ec4899",
+//   orange: "#f97316",
+// };
 
 interface Speaker {
   name: string;
@@ -31,100 +28,100 @@ interface SpeakersSceneProps {
   activeIndex: number;
 }
 
-interface Speaker3DProps {
-  position: [number, number, number];
-  color: string;
-  name: string;
-  role: string;
-  image: string;
-}
+// interface Speaker3DProps {
+//   position: [number, number, number];
+//   color: string;
+//   name: string;
+//   role: string;
+//   image: string;
+// }
 
-// 3D Speaker Card component
-const Speaker3D: React.FC<Speaker3DProps> = ({
-  position,
-  color,
-  name,
-  role,
-  image,
-}) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+// // 3D Speaker Card component
+// const Speaker3D: React.FC<Speaker3DProps> = ({
+//   position,
+//   color,
+//   name,
+//   role,
+//   image,
+// }) => {
+//   const meshRef = useRef<THREE.Mesh>(null);
 
-  useEffect(() => {
-    if (!meshRef.current) return;
+//   useEffect(() => {
+//     if (!meshRef.current) return;
 
-    // Create texture from image
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.load(image, (texture) => {
-      if (meshRef.current && meshRef.current.material) {
-        // Handle material properly
-        const material = meshRef.current.material as THREE.MeshStandardMaterial;
-        if (material.map !== undefined) {
-          material.map = texture;
-          material.needsUpdate = true;
-        }
-      }
-    });
-  }, [image]);
+//     // Create texture from image
+//     const textureLoader = new THREE.TextureLoader();
+//     textureLoader.load(image, (texture) => {
+//       if (meshRef.current && meshRef.current.material) {
+//         // Handle material properly
+//         const material = meshRef.current.material as THREE.MeshStandardMaterial;
+//         if (material.map !== undefined) {
+//           material.map = texture;
+//           material.needsUpdate = true;
+//         }
+//       }
+//     });
+//   }, [image]);
 
-  return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-      <group position={position}>
-        {/* Speaker image on a floating card */}
-        <mesh ref={meshRef} position={[0, 0, 0]} castShadow>
-          <boxGeometry args={[2, 3, 0.1]} />
-          <meshStandardMaterial
-            color={color}
-            emissive={color}
-            emissiveIntensity={0.2}
-            roughness={0.3}
-            metalness={0.7}
-          />
-        </mesh>
+//   return (
+//     <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
+//       <group position={position}>
+//         {/* Speaker image on a floating card */}
+//         <mesh ref={meshRef} position={[0, 0, 0]} castShadow>
+//           <boxGeometry args={[2, 3, 0.1]} />
+//           <meshStandardMaterial
+//             color={color}
+//             emissive={color}
+//             emissiveIntensity={0.2}
+//             roughness={0.3}
+//             metalness={0.7}
+//           />
+//         </mesh>
 
-        {/* Name text */}
-        <Text3D
-          font="/fonts/Orbitron_Bold.json"
-          position={[-0.9, -1.7, 0.1]}
-          size={0.2}
-          height={0.05}
-          curveSegments={12}
-        >
-          {name}
-          <meshStandardMaterial
-            color="#ffffff"
-            emissive="#ffffff"
-            emissiveIntensity={1}
-          />
-        </Text3D>
+//         {/* Name text */}
+//         <Text3D
+//           font="/fonts/Orbitron_Bold.json"
+//           position={[-0.9, -1.7, 0.1]}
+//           size={0.2}
+//           height={0.05}
+//           curveSegments={12}
+//         >
+//           {name}
+//           <meshStandardMaterial
+//             color="#ffffff"
+//             emissive="#ffffff"
+//             emissiveIntensity={1}
+//           />
+//         </Text3D>
 
-        {/* Role text */}
-        <Text3D
-          font="/fonts/Orbitron_Bold.json"
-          position={[-0.9, -2.1, 0.1]}
-          size={0.15}
-          height={0.05}
-          curveSegments={12}
-        >
-          {role}
-          <meshStandardMaterial
-            color={color}
-            emissive={color}
-            emissiveIntensity={1}
-          />
-        </Text3D>
-      </group>
-    </Float>
-  );
-};
+//         {/* Role text */}
+//         <Text3D
+//           font="/fonts/Orbitron_Bold.json"
+//           position={[-0.9, -2.1, 0.1]}
+//           size={0.15}
+//           height={0.05}
+//           curveSegments={12}
+//         >
+//           {role}
+//           <meshStandardMaterial
+//             color={color}
+//             emissive={color}
+//             emissiveIntensity={1}
+//           />
+//         </Text3D>
+//       </group>
+//     </Float>
+//   );
+// };
 
 // 3D Scene for speakers
 const SpeakersScene: React.FC<SpeakersSceneProps> = () => {
-  const colors = [
-    neonColors.cyan,
-    neonColors.purple,
-    neonColors.green,
-    neonColors.pink,
-  ];
+  // const colors = [
+  //   neonColors.cyan,
+  //   neonColors.purple,
+  //   neonColors.green,
+  //   neonColors.pink,
+  // ];
 
   return (
     <>
