@@ -3,10 +3,10 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-    "start": "dotenvx run --env-file=.env -- tsx watch src",
-    "dev": "dotenvx run --env-file=.env -- tsx watch src",
-    "build": "dotenvx run --env-file=.env -- tsc",
-    "build_dev": "dotenvx run --env-file=.env -- tsc",
+    "start": "node build/index.js",
+    "dev": "tsx watch src",
+    "build": "tsc",
+    "build_dev": "tsc",
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
