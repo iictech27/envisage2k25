@@ -12,9 +12,12 @@ export interface Registration {
   events: Event[];
   paymentProof: string;
   verified: boolean;
+  phone?: string;
+  year?: number;
+  college?: string;
 }
 
-interface RegistrationListProps {
+export interface RegistrationListProps {
   registrations: Registration[];
   onVerify: (email: string) => void;
   showPaymentProof?: boolean;

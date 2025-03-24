@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // Event data with fees and mode of conduction
 const eventOptions = [
@@ -276,6 +278,9 @@ interface RegisterProps {
 }
 
 const RegisterWithUPI = ({ onClose }: RegisterProps) => {
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
+  const navigate = useNavigate();
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -299,7 +304,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    >
   ) => {
     const { name, value } = e.target;
     setFormData({
@@ -348,22 +353,41 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Process form submission
-    console.log("Form submitted:", {
-      ...formData,
-      events: selectedEvents,
-      totalFees,
-    });
-    // Show success message or redirect
-    alert("Registration successful! Thank you for registering.");
-    onClose();
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    const form = new FormData();
+    form.append("name", formData.name);
+    form.append("email", formData.email);
+    form.append("phone", formData.phone);
+    form.append("college", formData.college);
+    form.append("year", formData.year);
+    form.append("paymentMethod", formData.paymentMethod);
+    form.append("message", formData.message);
+    // Append selected events as JSON string
+    form.append("events", JSON.stringify(selectedEvents));
+    form.append("totalFees", totalFees.toString());
+    // Append file if uploaded
+    if (paymentScreenshot) {
+      form.append("paymentScreenshot", paymentScreenshot);
+    }
+
+    try {
+      // Call your API handler that accepts FormData
+      // await registerWithUPI(form);
+      alert("Registration successful! Thank you for registering.");
+      onClose();
+    } catch (error) {
+      console.error("Registration failed:", error);
+      alert("Registration failed. Please try again.");
+    }
   };
 
   return (
     <>
       <Header />
-      <section className="min-h-screen  bg-primary relative overflow-hidden">
+      <section className="min-h-screen bg-primary relative overflow-hidden">
         {/* Cyberpunk Grid Background */}
         <div className="absolute inset-0 bg-grid-pattern opacity-10 z-0"></div>
 
@@ -549,7 +573,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
                             id={`event-${event.id}`}
                             value={event.id}
                             checked={selectedEvents.some(
-                              (e) => e.id === event.id,
+                              (e) => e.id === event.id
                             )}
                             onChange={handleEventChange}
                             className="form-checkbox h-5 w-5 text-neon rounded"
