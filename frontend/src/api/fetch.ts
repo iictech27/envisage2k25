@@ -7,7 +7,7 @@ import { ResEventsBody } from "./bodies/events";
 const reqTypes = {
   GET: "GET",
   POST: "POST",
-}
+};
 
 const apiServerLink = validatedEnv.VITE_SERVER_LINK;
 
@@ -15,7 +15,7 @@ const apiServerLink = validatedEnv.VITE_SERVER_LINK;
 async function fetchData(input: RequestInfo, init?: RequestInit) {
   const response = await fetch(apiServerLink + "/api" + input, init);
 
-  if(response.ok) {
+  if (response.ok) {
     return response;
   } else {
     const errorBody = await response.json();
@@ -28,8 +28,8 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 export async function reqServerStatus() {
   const response = await fetchData("/", {
     method: reqTypes.GET,
-    credentials: "include"
-  })
+    credentials: "include",
+  });
 
   return response;
 }
@@ -38,7 +38,7 @@ export async function reqServerStatus() {
 export async function reqEvents(): Promise<ResEventsBody> {
   const response = await fetchData("/events", {
     method: reqTypes.GET,
-    credentials: "include"
+    credentials: "include",
   });
 
   return response.json();
@@ -48,29 +48,33 @@ export async function reqEvents(): Promise<ResEventsBody> {
 export async function reqAuthUserData(): Promise<ResUserBody> {
   const response = await fetchData("/users/get", {
     method: reqTypes.GET,
-    credentials: "include"
+    credentials: "include",
   });
 
   return response.json();
 }
 
-export async function reqNewUserSignIn(credentials: ReqSignupBody): Promise<ResUserBody> {
+export async function reqNewUserSignIn(
+  credentials: ReqSignupBody
+): Promise<ResUserBody> {
   const response = await fetchData("/users/signup", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify(credentials)
+    body: JSON.stringify(credentials),
   });
 
   return response.json();
 }
 
-export async function reqUserLogIn(credentials: ReqLoginBody): Promise<ResUserBody> {
+export async function reqUserLogIn(
+  credentials: ReqLoginBody
+): Promise<ResUserBody> {
   const response = await fetchData("/users/login", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify(credentials)
+    body: JSON.stringify(credentials),
   });
 
   return response.json();
@@ -78,6 +82,16 @@ export async function reqUserLogIn(credentials: ReqLoginBody): Promise<ResUserBo
 
 export async function reqUserLogout() {
   console.log(await fetchData("/users/logout", { method: reqTypes.POST }));
+}
+
+export async function getRegistrations() {
+  const response = await fetchData("/reg", {
+    method: reqTypes.GET,
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+
+  return response.json();
 }
 
 // export async function reqNewRegistration(info: ReqRegistrationBody): Promise<ResRegistrationBody> {
