@@ -278,7 +278,7 @@ interface RegisterProps {
 }
 
 const RegisterWithUPI = ({ onClose }: RegisterProps) => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state:any) => state.user.user);
   console.log(user);
   const navigate = useNavigate();
   // Form state
@@ -353,6 +353,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!user) {
       navigate("/login");
       return;
