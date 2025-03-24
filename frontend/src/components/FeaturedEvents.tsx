@@ -1,4 +1,4 @@
-import { useState, useEffect,  Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import { Canvas } from "@react-three/fiber";
@@ -617,16 +617,18 @@ const FeaturedEvents = () => {
               </Link>
 
               <button
-                onClick={() =>
-                  window.open(
-                    `${window.location.origin}/brochure.pdf`,
-                    "_blank",
-                  )
-                }
-                className="cyber-button py-3 px-6 relative overflow-hidden group flex items-center justify-center cursor-pointer"
+                onClick={() => {
+                  const link = document.createElement("a");
+                  link.href = `${window.location.origin}/brochure/EnviSage2025.pdf`; // Corrected "brichure" to "brochure"
+                  link.download = "EnviSage2025.pdf"; // Set download attribute
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="cyber-button py-3 px-6 relative overflow-hidden group flex items-center justify-center"
               >
                 <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
-                <span className="relative z-10 text-center">
+                <span className="relative z-10 text-center hover:cursor-pointer">
                   DOWNLOAD BROCHURE
                 </span>
               </button>
@@ -1316,11 +1318,20 @@ const FeaturedEvents = () => {
               </Link>
 
               <button
-                onClick={() => window.open("/brochure.pdf", "_blank")}
-                className="cyber-button py-3 px-6 relative overflow-hidden group"
+                onClick={() => {
+                  const link = document.createElement("a");
+                  link.href = `${window.location.origin}/brochure/EnviSage2025.pdf`; // Corrected "brichure" to "brochure"
+                  link.download = "EnviSage2025.pdf"; // Set download attribute
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="cyber-button py-3 px-6 relative overflow-hidden group flex items-center justify-center"
               >
                 <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
-                <span className="relative z-10">DOWNLOAD BROCHURE</span>
+                <span className="relative z-10 text-center hover:cursor-pointer">
+                  DOWNLOAD BROCHURE
+                </span>
               </button>
             </div>
           </div>
