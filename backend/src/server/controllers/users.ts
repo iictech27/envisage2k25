@@ -152,11 +152,10 @@ export const logOut: RequestHandler = (req, res, next) => {
     req.session.destroy(error => {
         if(error) {
             next(error);
-            return;
+        } else {
+          res.status(httpCodes["200"].code);
+          res.send("User logged out successfully!");
         }
-
-        res.status(httpCodes["200"].code);
-        res.send("User logged out successfully!");
     });
 }
 

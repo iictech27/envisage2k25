@@ -1,4 +1,6 @@
-import { EventStructure } from "../utils/eventStructure";
+import { EventStructure } from "../../util/events.js"
+
+// response bodies
 
 export interface ResEventsBody {
     status: number,

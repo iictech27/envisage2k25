@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../styles/ThemeProvider";
 import * as utils from "../styles/utils";
+import { isUserAuthenticated, logOutUser } from "../api/handlers";
+
+const isUserAuth = await isUserAuthenticated();
 
 const Header = () => {
   const theme = useTheme();
@@ -25,6 +28,16 @@ const Header = () => {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  const logoutUser = async () => {
+    const success = await logOutUser();
+
+    if(success) {
+      alert("Logged out successfully");
+    } else {
+      alert("Couldn't log out. Try again later!");
+    }
+  }
 
   useEffect(() => {
     // Disable scrolling when the menu is open
@@ -78,7 +91,6 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
               {navItems
@@ -111,15 +123,9 @@ const Header = () => {
             </ul>
           </nav>
 
-          <div className="hidden md:flex space-x-4 items-center">
-            <NavLink
-              to="/login"
-              className="font-cyber text-sm uppercase tracking-wider text-white hover:text-neon transition-colors duration-300"
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/signup"
+          {isUserAuth && (
+            <button
+              onClick={logoutUser}
               className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
               style={{
                 ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
@@ -131,9 +137,35 @@ const Header = () => {
                 letterSpacing: "1px",
               }}
             >
-              Sign Up
-            </NavLink>
-          </div>
+              Logout
+            </button>
+          )}
+
+          {!isUserAuth && (
+            <div className="hidden md:flex space-x-4 items-center">
+              <NavLink
+                to="/login"
+                className="font-cyber text-sm uppercase tracking-wider text-white hover:text-neon transition-colors duration-300"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/signup"
+                className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+                style={{
+                  ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
+                  backgroundColor: theme.colors.dark.purple,
+                  padding: `${theme.spacing["2"]} ${theme.spacing["4"]}`,
+                  borderRadius: theme.borders.radius.md,
+                  fontFamily: theme.typography.fontFamily.cyber,
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+              >
+                Sign Up
+              </NavLink>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">

@@ -4,13 +4,14 @@ import session from "express-session";
 import createHttpError, { isHttpError } from "http-errors";
 
 import { mongoStore } from "../db/db.js";
-import usersRouter from "./routes/users.js";
-import rootRouter from "./routes/root.js";
-import registrationRouter from "./routes/registration.js";
-import eventsRouter from "./routes/events.js";
-import validatedEnv from "../util/validatedEnv.js";
 import { httpCodes } from "../util/httpCodes.js";
+import validatedEnv from "../util/validatedEnv.js";
 import { log, logErr, startHttpReqLogging } from "../util/logger.js";
+import rootRouter from "./routes/root.js";
+import usersRouter from "./routes/users.js";
+import eventsRouter from "./routes/events.js";
+import registrationRouter from "./routes/registration.js";
+import { ResErrorBody } from "./bodies/errors.js";
 
 const server = express();
 const port = validatedEnv.PORT;
@@ -63,7 +64,7 @@ function startServer() : void {
     server.use("/", rootRouter);
     server.use("/api", rootRouter);
     server.use("/api", usersRouter);
-    server.use("/api", registrationRouter);
+    // server.use("/api", registrationRouter);
     server.use("/api", eventsRouter);
 
     // non-existent endpoint handler
@@ -77,7 +78,7 @@ function startServer() : void {
         logErr(error);
 
         // default error
-        let errorResponse = {
+        let errorResponse: ResErrorBody = {
             code: httpCodes["500"].code,
             error: "[" + httpCodes["500"].code + "] " + httpCodes["500"].message + ": An unknown error has occured!",
         }
