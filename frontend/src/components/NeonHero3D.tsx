@@ -16,15 +16,6 @@ import * as THREE from "three";
 import { Preload } from "@react-three/drei";
 import { PerformanceMonitor } from "@react-three/drei";
 
-<Preload all />;
-
-// Add a style tag to ensure text is visible by default
-// const visibleTextStyle = {
-//   opacity: 1,
-//   visibility: "visible" as const,
-//   transform: "translateY(0)",
-// };
-
 // Enhanced 3D background component
 const Background = () => {
   const isMobile = window.innerWidth < 768;
@@ -347,6 +338,7 @@ const NeonHero3D = ({ onRegisterClick }: NeonHero3DProps) => {
             maxPolarAngle={Math.PI / 2}
             minPolarAngle={Math.PI / 3}
           />
+          <Preload all />
         </Canvas>
       </div>
 

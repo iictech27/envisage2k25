@@ -1,20 +1,13 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  OrbitControls,
-  MeshDistortMaterial,
-  Sparkles,
-  Box,
-  Torus,
-  Float,
-  Text3D,
-} from "@react-three/drei";
-import * as THREE from "three";
+import { useState, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Sphere, Stars, Sparkles } from "@react-three/drei";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import gsap from "gsap";
-import AnimatedHeading from "../components/AnimatedHeading";
 import { NavLink } from "react-router-dom";
+import AnimatedHeading from "../components/AnimatedHeading";
 
+// Define the type for time left
 type TimeLeft = {
   days: number;
   hours: number;
@@ -23,258 +16,69 @@ type TimeLeft = {
 };
 
 // 3D Background component for Countdown section
-const CountdownBackground = ({ timeLeft }: { timeLeft: TimeLeft }) => {
-  // Digital clock numbers in 3D
-  const DigitalNumber = ({
-    value,
-    position,
-    color = "#22d3ee",
-  }: {
-    value: number;
-    position: [number, number, number];
-    color?: string;
-  }) => {
-    const displayValue = value.toString().padStart(2, "0");
-
-    return (
-      <group position={position}>
-        <Text3D
-          font="/fonts/Orbitron_Bold.json"
-          size={1.2}
-          height={0.2}
-          curveSegments={12}
-          bevelEnabled
-          bevelThickness={0.02}
-          bevelSize={0.02}
-          bevelSegments={5}
-        >
-          {displayValue}
-          <meshStandardMaterial
-            color={color}
-            emissive={color}
-            emissiveIntensity={1}
-            toneMapped={false}
-          />
-        </Text3D>
-      </group>
-    );
-  };
-
-  // Floating particles that orbit around the clock
+const CountdownBackground = () => {
+  // Orbiting particles around the countdown clock
   const OrbitingParticles = () => {
     const particles = [];
-    const count = 80;
-    const radius = 12;
-    const groupRef = useRef<THREE.Group>(null);
+    const count = 100;
 
     for (let i = 0; i < count; i++) {
-      const angle = (i / count) * Math.PI * 2;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
-      const z = (Math.random() - 0.5) * 10;
+      const radius = 4 + Math.random() * 8;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
 
-      const size = 0.05 + Math.random() * 0.1;
-      const color =
-        i % 3 === 0 ? "#7c3aed" : i % 3 === 1 ? "#22d3ee" : "#ec4899";
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+
+      const size = 0.02 + Math.random() * 0.05;
 
       particles.push(
-        <Float key={i} speed={1} rotationIntensity={2} floatIntensity={1}>
-          <Box args={[size, size, size]} position={[x, y, z]}>
-            <meshStandardMaterial
-              color={color}
-              emissive={color}
-              emissiveIntensity={1}
-              transparent
-              opacity={0.8}
-            />
-          </Box>
-        </Float>,
+        <Sphere key={i} args={[size, 8, 8]} position={[x, y, z]}>
+          <meshBasicMaterial
+            color={
+              Math.random() > 0.6
+                ? "#7c3aed" // Purple
+                : Math.random() > 0.3
+                ? "#22d3ee" // Cyan
+                : "#ec4899" // Pink
+            }
+            toneMapped={false}
+          />
+        </Sphere>,
       );
     }
 
-    useFrame(({ clock }) => {
-      if (!groupRef.current) return;
-      groupRef.current.rotation.z = clock.getElapsedTime() * 0.05;
-    });
-
-    return <group ref={groupRef}>{particles}</group>;
-  };
-
-  // Pulsing rings that indicate seconds
-  const PulsingRings = () => {
-    const ringRef = useRef<THREE.Mesh>(null);
-
-    useFrame(({ clock }) => {
-      if (!ringRef.current) return;
-      const t = clock.getElapsedTime();
-      const scale = 1 + Math.sin(t * 2) * 0.1;
-      ringRef.current.scale.set(scale, scale, scale);
-    });
-
-    return (
-      <Torus
-        ref={ringRef}
-        args={[8, 0.1, 16, 100]}
-        rotation={[Math.PI / 2, 0, 0]}
-      >
-        <meshStandardMaterial
-          color="#22d3ee"
-          emissive="#22d3ee"
-          emissiveIntensity={1}
-          transparent
-          opacity={0.5}
-        />
-      </Torus>
-    );
-  };
-
-  // Background elements
-  const BackgroundElements = () => {
-    return (
-      <>
-        <mesh position={[0, 0, -20]}>
-          <sphereGeometry args={[15, 32, 32]} />
-          <MeshDistortMaterial
-            color="#0f172a"
-            emissive="#1e293b"
-            emissiveIntensity={0.2}
-            roughness={0.9}
-            metalness={0.2}
-            distort={0.3}
-            speed={1.5}
-          />
-        </mesh>
-
-        <Sparkles
-          count={200}
-          scale={30}
-          size={1}
-          speed={0.3}
-          opacity={0.3}
-          color="white"
-        />
-      </>
-    );
+    return <group>{particles}</group>;
   };
 
   return (
     <>
       <color attach="background" args={["#0f172a"]} />
-      <fog attach="fog" args={["#0f172a", 8, 30]} />
+      <fog attach="fog" args={["#0f172a", 5, 30]} />
 
       <ambientLight intensity={0.2} />
       <pointLight position={[10, 10, 10]} intensity={0.5} />
       <pointLight position={[-10, -10, -10]} intensity={0.5} color="#22d3ee" />
 
-      <BackgroundElements />
       <OrbitingParticles />
-      {/* <PulsingRings /> */}
-
-      {/* 3D Digital Clock - Adjusted positions for better alignment */}
-      <group position={[0, 0, 0]}>
-        {/* Using negative half of text width to center each element */}
-        {/* <DigitalNumber
-          value={timeLeft.days}
-          position={[-8, 0, 0]}
-          color="#7c3aed"
-        /> */}
-        {/* <DigitalNumber
-          value={timeLeft.hours}
-          position={[-2.5, 0, 0]}
-          color="#22d3ee"
-        /> */}
-        {/* <DigitalNumber
-          value={timeLeft.minutes}
-          position={[3, 0, 0]}
-          color="#ec4899"
-        /> */}
-        {/* <DigitalNumber
-          value={timeLeft.seconds}
-          position={[8.5, 0, 0]}
-          color="#f97316"
-        /> */}
-
-        {/* Separators - Adjusted positions */}
-        <group position={[-4.5, 0, 0]}>
-          {/* <Text3D font="/fonts/Orbitron_Bold.json" size={1.2} height={0.2}>
-            :
-            <meshStandardMaterial
-              color="#ffffff"
-              emissive="#ffffff"
-              emissiveIntensity={0.5}
-            />
-          </Text3D> */}
-        </group>
-
-        <group position={[0.5, 0, 0]}>
-          <Text3D font="/fonts/Orbitron_Bold.json" size={1.2} height={0.2}>
-            :
-            <meshStandardMaterial
-              color="#ffffff"
-              emissive="#ffffff"
-              emissiveIntensity={0.5}
-            />
-          </Text3D>
-        </group>
-
-        <group position={[5.5, 0, 0]}>
-          <Text3D font="/fonts/Orbitron_Bold.json" size={1.2} height={0.2}>
-            :
-            <meshStandardMaterial
-              color="#ffffff"
-              emissive="#ffffff"
-              emissiveIntensity={0.5}
-            />
-          </Text3D>
-        </group>
-      </group>
-
-      {/* Labels - Adjusted positions and wrapped in groups for centering */}
-      <group position={[0, -2, 0]}>
-        <group position={[-8, 0, 0]}>
-          <Text3D font="/fonts/Orbitron_Bold.json" size={0.4} height={0.1}>
-            DAYS
-            <meshStandardMaterial
-              color="#7c3aed"
-              emissive="#7c3aed"
-              emissiveIntensity={0.8}
-            />
-          </Text3D>
-        </group>
-
-        <group position={[-2.5, 0, 0]}>
-          <Text3D font="/fonts/Orbitron_Bold.json" size={0.4} height={0.1}>
-            HOURS
-            <meshStandardMaterial
-              color="#22d3ee"
-              emissive="#22d3ee"
-              emissiveIntensity={0.8}
-            />
-          </Text3D>
-        </group>
-
-        <group position={[3, 0, 0]}>
-          <Text3D font="/fonts/Orbitron_Bold.json" size={0.4} height={0.1}>
-            MINUTES
-            <meshStandardMaterial
-              color="#ec4899"
-              emissive="#ec4899"
-              emissiveIntensity={0.8}
-            />
-          </Text3D>
-        </group>
-
-        <group position={[8.5, 0, 0]}>
-          <Text3D font="/fonts/Orbitron_Bold.json" size={0.4} height={0.1}>
-            SECONDS
-            <meshStandardMaterial
-              color="#f97316"
-              emissive="#f97316"
-              emissiveIntensity={0.8}
-            />
-          </Text3D>
-        </group>
-      </group>
+      <Stars
+        radius={100}
+        depth={50}
+        count={5000}
+        factor={4}
+        saturation={0}
+        fade
+        speed={0.5}
+      />
+      <Sparkles
+        count={200}
+        scale={20}
+        size={1}
+        speed={0.3}
+        opacity={0.5}
+        color="#22d3ee"
+      />
     </>
   );
 };
@@ -287,8 +91,11 @@ const Countdown = () => {
     seconds: 0,
   });
 
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
+  const { ref: sectionRef, inView } = useInView({
+    threshold: 0.3,
+    triggerOnce: false,
+  });
+  const isInView = inView;
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
@@ -319,11 +126,11 @@ const Countdown = () => {
 
   // Animate elements when section comes into view
   useEffect(() => {
-    if (isInView && !hasAnimated && sectionRef.current) {
+    if (isInView && !hasAnimated) {
       setHasAnimated(true);
 
       // Animate the countdown cards
-      const cards = sectionRef.current.querySelectorAll(".countdown-card");
+      const cards = document.querySelectorAll(".countdown-card");
       gsap.fromTo(
         cards,
         { y: 100, opacity: 0 },
@@ -337,7 +144,7 @@ const Countdown = () => {
       );
 
       // Animate the event info
-      const eventInfo = sectionRef.current.querySelector(".event-info");
+      const eventInfo = document.querySelector(".event-info");
       gsap.fromTo(
         eventInfo,
         { y: 50, opacity: 0 },
@@ -368,7 +175,7 @@ const Countdown = () => {
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
-          <CountdownBackground timeLeft={timeLeft} />
+          <CountdownBackground />
           <OrbitControls
             enableZoom={false}
             enablePan={false}
@@ -507,7 +314,9 @@ const Countdown = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <NavLink to={"/register"} className="relative z-10">Register Now</NavLink>
+              <NavLink to={"/register"} className="relative z-10">
+                Register Now
+              </NavLink>
               <span className="absolute inset-0 bg-gradient-to-r from-pink-600 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </motion.button>
           </div>
