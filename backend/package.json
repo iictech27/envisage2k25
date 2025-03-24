@@ -3,11 +3,10 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-   "start": "node build/index.js",
-    "dev": "tsx watch src",
-    "build": "tsc && cp -r src/config build/",
-    "build_dev": "tsc",
-    "lint": "eslint . --ext .ts"
+  "start": "npm install && npm run build && node build/index.js",
+  "dev": "tsx watch src",
+  "build": "tsc && cp -r src/config build/",
+  "lint": "eslint . --ext .ts"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.38.5",
