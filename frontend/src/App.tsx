@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import TeamPage from "./pages/TeamPage";
 import PartnerPage from "./pages/PartnerPage";
 import GalleryPage from "./pages/GalleryPage";
+import ProfilePage from "./pages/ProfilePage";
 import ThemeDemo from "./components/ThemeDemo";
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
     <div className="App bg-primary text-white font-futuristic">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Layout />}/>
             <Route index element={<HomePage />} />
             <Route path="events" element={<EventsPage />} />
             <Route path="countdown" element={<CountdownPage />} />
@@ -27,7 +28,7 @@ function App() {
             <Route path="partner" element={<PartnerPage />} />
             <Route path="gallery" element={<GalleryPage />} />
             <Route path="theme-demo" element={<ThemeDemo />} />
-          </Route>
+            <Route path="/profile-page" element={<ProfilePage/>}/>
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
