@@ -25,6 +25,8 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AboutPage from "./pages/AboutPage";
 import Preloader from "./components/Preloader";
 import { useState, useEffect } from "react";
+import AdminLogin from "./pages/AdminLogin";
+import AdminPanel from "./pages/AdminPanel";
 
 // Wrapper component to handle route changes
 function AppContent() {
@@ -59,6 +61,8 @@ function AppContent() {
         <Route path="/create-new-password" element={<CreateNewPasswordPage />} />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminPanel />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
