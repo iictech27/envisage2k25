@@ -64,7 +64,7 @@ function startServer() : void {
     server.use("/", rootRouter);
     server.use("/api", rootRouter);
     server.use("/api", usersRouter);
-    // server.use("/api", registrationRouter);
+    server.use("/api", registrationRouter);
     server.use("/api", eventsRouter);
 
     // non-existent endpoint handler

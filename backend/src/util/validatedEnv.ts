@@ -19,6 +19,18 @@ export default cleanEnv(process.env, {
     RZP_KEY_ID: str(),
     RZP_KEY_SECRET: str(),
 
+    // Cloudinary
+    CDNY_CLOUD_NAME: str(),
+    CDNY_API_KEY: str(),
+    CDNY_API_SECRET: str(),
+
+    // Nodemailer
+    NDML_SERVICE: str(),
+    NDML_SMTP: str(),
+    NDML_PORT: num(),
+    NDML_EMAIL: str(),
+    NDML_PASSWORD: str(),
+
     // Others
     LOG: bool(),
 });
