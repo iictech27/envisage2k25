@@ -11,7 +11,6 @@ import { uploadOnCloudinary } from "../services/cloudinary.js";
 export const createRegistration: RequestHandler<unknown, unknown, ReqSSRegistrationOrderBody, unknown> = async (req, res, next) => {
     const fullname = req.body.fullName?.trim();
     const email = req.body.email?.trim();
-    const department = req.body.department?.trim();
     const year = req.body.year;
     const phone = req.body.phone?.trim();
     const college = req.body.college?.trim();
@@ -22,7 +21,7 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqSSRegistrat
     try {
 
         // make sure all parameters are received
-        if(!fullname || !email || !department || !year || !eventIDs || !phone || !college || !paymentSS) {
+        if(!fullname || !email || !year || !eventIDs || !phone || !college || !paymentSS) {
             throw createHttpError(httpCodes["400"].code, httpCodes["400"].message + ": Parameters missing!");
         }
 
@@ -75,7 +74,7 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqSSRegistrat
         }
 
         // retrieve authenticated user
-        const user = await UserModel.findById(req.session.sessionToken).select("+email +registeredEventIDs").exec();
+        const user = await UserModel.findById(req.session.sessionToken).exec();
 
         // add as many characters of user id (from the end) to receipt as we can
         const userID = user!._id.toString();
@@ -94,7 +93,6 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqSSRegistrat
             userID: user!._id,
             fullName: fullname,
             email: email,
-            department: department,
             year: year,
             phone: phone,
             college: college,
@@ -119,7 +117,6 @@ export const createRegistration: RequestHandler<unknown, unknown, ReqSSRegistrat
             message: httpCodes["201"].message,
             userFullName: fullname,
             userEmail: user!.email,
-            userDept: department,
             userYear: year,
             userPhone: phone,
             userCollege: college,

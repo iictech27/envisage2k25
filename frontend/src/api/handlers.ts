@@ -1,6 +1,7 @@
+import { ReqSSRegistrationOrderBody, ResSSRegistrationBody } from "./bodies/registration_ss";
 import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
 // import { isResError } from "./bodies/errors";
-import { reqAuthUserData, reqNewUserSignIn, reqServerStatus, reqUserLogIn, reqUserLogout } from "./fetch";
+import { newRegistration, reqAuthUserData, reqNewUserSignIn, reqServerStatus, reqUserLogIn, reqUserLogout } from "./fetch";
 
 export async function canConnectToServer(): Promise<boolean> {
   try {
@@ -38,6 +39,27 @@ export async function signUpUser(creds: ReqSignupBody): Promise<ResUserBody | st
 
     const body = await reqNewUserSignIn(creds);
     return body;
+
+  } catch(error) {
+    console.log(error);
+    return getErrorMessage(error);
+  }
+}
+
+export async function newReg(fields: ReqSSRegistrationOrderBody, image: File): Promise<ResSSRegistrationBody | string> {
+  try {
+    const formData = new FormData();
+
+    formData.append("fullName", fields.fullName);
+    formData.append("email", fields.email);
+    formData.append("year", fields.year.toString());
+    formData.append("college", fields.college);
+    formData.append("phone", fields.phone);
+    formData.append("image", image);
+    if(fields.additionalInfo) formData.append("additionalInfo", fields.additionalInfo);
+
+    const response = await newRegistration(formData);
+    return response;
 
   } catch(error) {
     console.log(error);

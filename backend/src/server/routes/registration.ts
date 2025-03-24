@@ -9,6 +9,6 @@ const registrationRouter = Router();
 
 // registrationRouter.post("/reg/new", requireAuthUser, createRegistrationOrder);
 // registrationRouter.post("/reg/verify", requireAuthUser, verifyRegistrationOrder);
-registrationRouter.post("/reg/new", requireAuthUser, upload.single("image"), createRegistration);
+registrationRouter.post("/reg/new", upload.single("image"), createRegistration);
 
 export default registrationRouter;

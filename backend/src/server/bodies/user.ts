@@ -15,6 +15,10 @@ export interface ReqLoginBody {
     rememberUser?: boolean
 }
 
+export interface ReqEmailVeriBody {
+    otp?: string
+}
+
 // response bodies
 
 export interface ResUserBody {
@@ -30,5 +34,11 @@ export interface ResUserRegEventsBody {
     status: number,
     message: string,
     events: EventStructure[],
+    details: string
+}
+
+export interface ResEmailVeriBody {
+    status: number,
+    message: string,
     details: string
 }
