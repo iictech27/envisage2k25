@@ -5,9 +5,13 @@ import Header from "../components/Header";
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
 import { ResUserBody } from "../api/bodies/user";
 import { logInUser } from "../api/handlers";
+import { useDispatch } from "react-redux";
+import { setUser } from "../features/userSlice";
+import { AppDispatch } from "../store";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -61,17 +65,22 @@ const LoginPage = () => {
     const response: ResUserBody | string = await logInUser({
       email: formData.email,
       password: formData.password,
-      rememberUser: rememberUser
+      rememberUser: rememberUser,
     });
+
+    // console.log(response);
 
     setIsLoading(false);
 
     // string only when error
-    if(typeof response == "string") {
+    if (typeof response == "string") {
       apiError.api = response;
       setErrors(apiError);
       return;
     }
+
+    // Store user data in Redux
+    dispatch(setUser(response));
 
     navigate("/home");
   };
@@ -132,12 +141,13 @@ const LoginPage = () => {
                 className="w-full bg-gray-900 text-white border border-neon/50 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50 font-futuristic"
               />
               <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  // TODO : Add icon and fix styling
-                  className="absolute text-xl font-black right-3 top-1.5 text-gray-300/60 hover:text-gray-200 transition-colors">
-                  {showPassword ? "[o]" : "[x]"}
-                </button>
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                // TODO : Add icon and fix styling
+                className="absolute text-xl font-black right-3 top-1.5 text-gray-300/60 hover:text-gray-200 transition-colors"
+              >
+                {showPassword ? "[o]" : "[x]"}
+              </button>
 
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
@@ -170,9 +180,7 @@ const LoginPage = () => {
 
             <div className="relative">
               {errors.api && (
-                <p className="text-red-500 text-s mb-1">
-                  {errors.api}
-                </p>
+                <p className="text-red-500 text-s mb-1">{errors.api}</p>
               )}
               <button
                 type="submit"
