@@ -5,7 +5,7 @@ import { createRegistrationOrder, verifyRegistrationOrder } from "../controllers
 
 const registrationRouter = Router();
 
-registrationRouter.post("/reg/new", requireAuthUser, createRegistrationOrder);
-registrationRouter.post("/reg/verify", requireAuthUser, verifyRegistrationOrder);
+// registrationRouter.post("/reg/new", requireAuthUser, createRegistrationOrder);
+// registrationRouter.post("/reg/verify", requireAuthUser, verifyRegistrationOrder);
 
 export default registrationRouter;

@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-import MongoStore from "connect-mongo";
 
 import validatedEnv from "../util/validatedEnv.js";
 import { log, logErr } from "../util/logger.js";
+import MongoStore from "connect-mongo";
 
 const mongoStr = validatedEnv.MONGO_CONNECTION_STR;
-export const mongoStore = MongoStore.create({ mongoUrl: mongoStr }); // session store
+const mongoStore = MongoStore.create({ mongoUrl: mongoStr });
 
-export default function connectDB() : void {
+function connectDB() : void {
 
     // connect to the mongo db instance
     mongoose.connect(mongoStr)
@@ -15,8 +15,10 @@ export default function connectDB() : void {
             log("Connected to DB at " + mongoStr);
         })
         .catch((error) => {
-            logErr("Error while connecting to db:");
+            logErr("Error while connecting to db:", "db.ts");
             logErr(error);
         });
 
 }
+
+export { connectDB, mongoStore };

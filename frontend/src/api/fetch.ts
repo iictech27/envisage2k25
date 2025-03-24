@@ -1,6 +1,6 @@
 import validatedEnv from "./utils/validatedEnv";
 
-import { ReqRegistrationBody, ResRegistrationBody } from "./bodies/registration";
+// import { ReqRegistrationBody, ResRegistrationBody } from "./bodies/registration";
 import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
 import { ResEventsBody } from "./bodies/events";
 
@@ -77,16 +77,16 @@ export async function reqUserLogIn(credentials: ReqLoginBody): Promise<ResUserBo
 }
 
 export async function reqUserLogout() {
-  await fetchData("/users/logout", { method: reqTypes.POST });
+  console.log(await fetchData("/users/logout", { method: reqTypes.POST }));
 }
 
-export async function reqNewRegistration(info: ReqRegistrationBody): Promise<ResRegistrationBody> {
-  const response = await fetchData("/reg/new", {
-    method: reqTypes.POST,
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(info)
-  });
-
-  return response.json();
-}
+// export async function reqNewRegistration(info: ReqRegistrationBody): Promise<ResRegistrationBody> {
+//   const response = await fetchData("/reg/new", {
+//     method: reqTypes.POST,
+//     headers: { "Content-Type": "application/json" },
+//     credentials: "include",
+//     body: JSON.stringify(info)
+//   });
+//
+//   return response.json();
+// }

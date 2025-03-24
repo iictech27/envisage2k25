@@ -282,12 +282,10 @@ const Register = ({ onClose }: RegisterProps) => {
   // Form state
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
     college: "",
     year: "",
     events: [],
-    paymentMethod: "",
     message: "",
   });
 
@@ -314,11 +312,9 @@ const Register = ({ onClose }: RegisterProps) => {
     if (
       !selectedEvents.length ||
       !formData.name ||
-      !formData.email ||
       !formData.phone ||
       !formData.college ||
-      !formData.year ||
-      !formData.paymentMethod
+      !formData.year
     ) {
       alert("Please fill all the fields to proceed");
       console.log(paymentComplete);
@@ -479,20 +475,6 @@ const Register = ({ onClose }: RegisterProps) => {
 
                   <div className="form-element">
                     <FormInput
-                      label="EMAIL ADDRESS"
-                      type="email"
-                      placeholder="Enter your digital contact"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required={true}
-                      color="#7c3aed"
-                      name="email"
-                      accept=""
-                    />
-                  </div>
-
-                  <div className="form-element">
-                    <FormInput
                       label="NEURAL LINK (PHONE)"
                       type="tel"
                       placeholder="Enter your connect code"
@@ -528,20 +510,6 @@ const Register = ({ onClose }: RegisterProps) => {
                       options={yearOptions}
                       color="#f59e0b"
                       name="year"
-                      accept=""
-                    />
-                  </div>
-
-                  <div className="form-element">
-                    <FormInput
-                      label="PAYMENT PROTOCOL"
-                      type="select"
-                      value={formData.paymentMethod}
-                      onChange={handleChange}
-                      required={true}
-                      options={["UPI", "Net Banking", "Credit/Debit Card"]}
-                      color="#8b5cf6"
-                      name="paymentMethod"
                       accept=""
                     />
                   </div>

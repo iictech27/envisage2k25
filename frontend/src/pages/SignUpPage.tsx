@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
+import { ResUserBody } from "../api/bodies/user";
+import { signUpUser } from "../api/handlers";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -14,6 +16,7 @@ const SignUpPage = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,14 +65,30 @@ const SignUpPage = () => {
 
     if (!validate()) return;
 
+    const apiError: Record<string, string> = {};
+
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      // Redirect to email verification page after successful signup
-      navigate("/verify-email");
-    }, 1500);
+    const response: ResUserBody | string = await signUpUser({
+      fullName: formData.name,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword
+    });
+
+    setIsLoading(false);
+
+    // string only when error
+    if(typeof response == "string") {
+      apiError.api = response;
+      setErrors(apiError);
+      return;
+    }
+
+    navigate("/login");
+
+    // Redirect to email verification page after successful signup
+    // navigate("/verify-email");
   };
 
   return (
@@ -136,13 +155,20 @@ const SignUpPage = () => {
 
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Password"
                 className="w-full bg-gray-900 text-white border border-neon/50 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50 font-futuristic"
               />
+              <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  // TODO : Add icon and fix styling
+                  className="absolute text-xl font-black right-3 top-1.5 text-gray-300/60 hover:text-gray-200 transition-colors">
+                  {showPassword ? "[o]" : "[x]"}
+                </button>
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
               )}
@@ -152,7 +178,7 @@ const SignUpPage = () => {
 
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
@@ -168,16 +194,23 @@ const SignUpPage = () => {
               <div className="absolute -top-1 -left-1 w-3 h-3 border-l border-t border-neon"></div>
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="cyber-button w-full py-2 px-4 relative overflow-hidden group"
-            >
-              <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
-              <span className="relative z-10">
-                {isLoading ? "PROCESSING..." : "CREATE ACCOUNT"}
-              </span>
-            </button>
+            <div className="relative">
+              {errors.api && (
+                <p className="text-red-500 text-s mb-1">
+                  {errors.api}
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="cyber-button w-full py-2 px-4 relative overflow-hidden group"
+              >
+                <span className="absolute top-0 left-0 w-full h-full bg-white opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-all duration-500"></span>
+                <span className="relative z-10">
+                  {isLoading ? "PROCESSING..." : "CREATE ACCOUNT"}
+                </span>
+              </button>
+            </div>
           </form>
 
           <div className="mt-6 text-center">
