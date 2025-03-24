@@ -22,17 +22,28 @@ const sessionTimeLimitMs = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
 
 function startServer(): void {
   // listen to requests
+  
   server.listen(port, () => {
     log("Listening at port " + port);
   });
 
   // cors middleware
-  server.use(
-    cors({
-      origin: validatedEnv.CLIENT_LINK,
-      credentials: true,
-    })
-  );
+server.use(
+  cors({
+    origin: function (origin, callback) {
+      callback(null, origin || "*"); // Allow all origins
+    },
+    credentials: true, // Allow cookies and authentication headers
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all methods
+  })
+);
+
+// Allow preflight requests
+server.options("*", cors());
+
+
+
 
   // log http requests
   startHttpReqLogging(server);

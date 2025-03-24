@@ -191,7 +191,7 @@ export const createRegistration: RequestHandler<
   }
 };
 
-export const getRegistration: RequestHandler = async (req, res, next) => {
+export const getRegistration: RequestHandler = async (_req, res, next) => {
   try {
     const registrations = await SSRegistrationModel.find(
       {},
