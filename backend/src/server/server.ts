@@ -30,10 +30,18 @@ function startServer(): void {
   // cors middleware
 server.use(
   cors({
-    origin: "*", // Allows all origins
-    credentials: true, // Allow cookies and authorization headers
+    origin: function (origin, callback) {
+      callback(null, origin || "*"); // Allow all origins
+    },
+    credentials: true, // Allow cookies and authentication headers
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all methods
   })
 );
+
+// Allow preflight requests
+server.options("*", cors());
+
 
 
 
