@@ -5,7 +5,7 @@
   "scripts": {
   "start": "npm install && npm run build && node build/index.js",
   "dev": "tsx watch src",
-  "build": "tsc && cp -r src/config build/",
+  "build": "tsc",
   "lint": "eslint . --ext .ts"
   },
   "dependencies": {
