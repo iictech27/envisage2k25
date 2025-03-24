@@ -1,10 +1,8 @@
 import { useRef } from "react";
 import Events from "../components/Events";
-import { useTheme } from "../styles/ThemeProvider";
 
 const EventsPage = () => {
   const eventsRef = useRef<HTMLElement>(null);
-  const theme = useTheme();
 
   return (
     <section
