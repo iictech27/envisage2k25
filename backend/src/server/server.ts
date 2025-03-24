@@ -22,17 +22,36 @@ const sessionTimeLimitMs = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
 
 function startServer(): void {
   // listen to requests
+  
   server.listen(port, () => {
     log("Listening at port " + port);
   });
 
   // cors middleware
-  server.use(
-    cors({
-      origin: validatedEnv.CLIENT_LINK,
-      credentials: true,
-    })
-  );
+const allowedOrigins = [
+  "https://envisage2k25.vercel.app/",
+  "https://envisage2k25-iictmsls-projects.vercel.app/",
+  "https://envisage2k25-git-main-iictmsls-projects.vercel.app/",
+  "*",// For local testing
+];
+
+server.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) {
+        // Allow non-browser requests (like Postman or internal APIs)
+        return callback(null, true);
+      }
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 
   // log http requests
   startHttpReqLogging(server);
