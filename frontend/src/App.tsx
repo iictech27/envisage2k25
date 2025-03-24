@@ -19,6 +19,7 @@ import PartnerPage from "./pages/PartnerPage";
 import GalleryPage from "./pages/GalleryPage";
 import ThemeDemo from "./components/ThemeDemo";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import CreateNewPasswordPage from "./pages/CreateNewPasswordPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AboutPage from "./pages/AboutPage";
@@ -55,6 +56,7 @@ function AppContent() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/create-new-password" element={<CreateNewPasswordPage />} />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
