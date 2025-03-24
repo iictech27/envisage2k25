@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import Register from "../components/Register";
+// import Register from "../components/Register";
+import RegisterWithUPI from "../components/RegisterWithUPI";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -8,7 +9,8 @@ const RegisterPage = () => {
     navigate(-1); // Go back to the previous page
   };
 
-  return <Register onClose={handleClose} />;
+  // return <Register onClose={handleClose} />;
+ return <RegisterWithUPI onClose={handleClose} />;
 };
 
 export default RegisterPage;
