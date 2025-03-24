@@ -2,11 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../styles/ThemeProvider";
 import * as utils from "../styles/utils";
-import { isUserAuthenticated, logOutUser } from "../api/handlers";
+import { logOutUser } from "../api/handlers";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../features/userSlice";
+import { RootState } from "../store";
 
-const isUserAuth = await isUserAuthenticated();
+// const isUserAuth = await isUserAuthenticated();
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user.user);
   const theme = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,12 +37,13 @@ const Header = () => {
   const logoutUser = async () => {
     const success = await logOutUser();
 
-    if(success) {
+    if (success) {
+      dispatch(clearUser());
       alert("Logged out successfully");
     } else {
       alert("Couldn't log out. Try again later!");
     }
-  }
+  };
 
   useEffect(() => {
     // Disable scrolling when the menu is open
@@ -95,7 +101,7 @@ const Header = () => {
             <ul className="flex space-x-8">
               {navItems
                 .filter(
-                  (item) => item.path !== "/login" && item.path !== "/signup",
+                  (item) => item.path !== "/login" && item.path !== "/signup"
                 ) // Remove Login & Signup from desktop nav
                 .map((item) => (
                   <li key={item.label}>
@@ -123,7 +129,7 @@ const Header = () => {
             </ul>
           </nav>
 
-          {isUserAuth && (
+          {user && (
             <button
               onClick={logoutUser}
               className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
@@ -141,7 +147,7 @@ const Header = () => {
             </button>
           )}
 
-          {!isUserAuth && (
+          {!user && (
             <div className="hidden md:flex space-x-4 items-center">
               <NavLink
                 to="/login"
