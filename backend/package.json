@@ -3,9 +3,9 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-    "start": "dotenvx run --env-file=.env.production -- tsx watch src",
+    "start": "dotenvx run --env-file=.env -- tsx watch src",
     "dev": "dotenvx run --env-file=.env -- tsx watch src",
-    "build": "dotenvx run --env-file=.env.production -- tsc",
+    "build": "dotenvx run --env-file=.env -- tsc",
     "build_dev": "dotenvx run --env-file=.env -- tsc",
     "lint": "eslint . --ext .ts"
   },
