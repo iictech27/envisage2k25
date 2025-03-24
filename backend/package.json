@@ -3,9 +3,9 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-    "start": "node build/index.js",
+   "start": "node build/index.js",
     "dev": "tsx watch src",
-    "build": "tsc",
+    "build": "tsc && cp -r src/config build/",
     "build_dev": "tsc",
     "lint": "eslint . --ext .ts"
   },
