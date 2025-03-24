@@ -12,25 +12,25 @@ const eventOptions = [
   },
   {
     id: 2,
-    name: "Hype It Up",
+    name: "Promote It",
     fee: 30,
     mode: "offline - Individual Participation",
   },
-  { id: 3, name: "Hack-Ur-Way", fee: 200, mode: "Hybrid - Team of 2-4" },
-  { id: 4, name: "B-Plan", fee: 150, mode: "on-camous- Team of 2-4" },
-  { id: 5, name: "CXO's Insights", fee: 120, mode: "On Campus -Team of 1-3" },
-  { id: 6, name: "BizzQuiz", fee: 50, mode: "on Campus - Team of 1" },
+  { id: 3, name: "Hack-Ur-Way", fee: 200, mode: "Hybrid - Team of 5" },
+  { id: 4, name: "B-Plan", fee: 150, mode: "on-camous- Team of 4" },
+  { id: 5, name: "Case Study", fee: 60, mode: "On Campus -Team of 4" },
+  { id: 6, name: "BizzQuiz", fee: 50, mode: "on Campus - Team of 2" },
   {
     id: 7,
-    name: "Tweeters Debate",
-    fee: 50,
+    name: "Tweeters",
+    fee: 30,
     mode: "On Campus - Individual Participation",
   },
   {
     id: 8,
-    name: "Ventures Vault",
+    name: "Startup-Bid Auction",
     fee: 200,
-    mode: "On Campus - Team of 2-4",
+    mode: "On Campus - Team of 4",
   },
 ];
 
@@ -282,10 +282,12 @@ const Register = ({ onClose }: RegisterProps) => {
   // Form state
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     phone: "",
     college: "",
     year: "",
     events: [],
+    paymentMethod: "",
     message: "",
   });
 
@@ -312,9 +314,11 @@ const Register = ({ onClose }: RegisterProps) => {
     if (
       !selectedEvents.length ||
       !formData.name ||
+      !formData.email ||
       !formData.phone ||
       !formData.college ||
-      !formData.year
+      !formData.year ||
+      !formData.paymentMethod
     ) {
       alert("Please fill all the fields to proceed");
       console.log(paymentComplete);
@@ -475,6 +479,20 @@ const Register = ({ onClose }: RegisterProps) => {
 
                   <div className="form-element">
                     <FormInput
+                      label="EMAIL ADDRESS"
+                      type="email"
+                      placeholder="Enter your digital contact"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required={true}
+                      color="#7c3aed"
+                      name="email"
+                      accept=""
+                    />
+                  </div>
+
+                  <div className="form-element">
+                    <FormInput
                       label="NEURAL LINK (PHONE)"
                       type="tel"
                       placeholder="Enter your connect code"
@@ -510,6 +528,20 @@ const Register = ({ onClose }: RegisterProps) => {
                       options={yearOptions}
                       color="#f59e0b"
                       name="year"
+                      accept=""
+                    />
+                  </div>
+
+                  <div className="form-element">
+                    <FormInput
+                      label="PAYMENT PROTOCOL"
+                      type="select"
+                      value={formData.paymentMethod}
+                      onChange={handleChange}
+                      required={true}
+                      options={["UPI", "Net Banking", "Credit/Debit Card"]}
+                      color="#8b5cf6"
+                      name="paymentMethod"
                       accept=""
                     />
                   </div>

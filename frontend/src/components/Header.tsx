@@ -2,16 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../styles/ThemeProvider";
 import * as utils from "../styles/utils";
-import { logOutUser } from "../api/handlers";
-import { useDispatch, useSelector } from "react-redux";
-import { clearUser } from "../features/userSlice";
-import { RootState } from "../store";
-
-// const isUserAuth = await isUserAuthenticated();
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user.user);
   const theme = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,17 +24,6 @@ const Header = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
-  };
-
-  const logoutUser = async () => {
-    const success = await logOutUser();
-
-    if (success) {
-      dispatch(clearUser());
-      alert("Logged out successfully");
-    } else {
-      alert("Couldn't log out. Try again later!");
-    }
   };
 
   useEffect(() => {
@@ -97,11 +78,12 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
               {navItems
                 .filter(
-                  (item) => item.path !== "/login" && item.path !== "/signup"
+                  (item) => item.path !== "/login" && item.path !== "/signup",
                 ) // Remove Login & Signup from desktop nav
                 .map((item) => (
                   <li key={item.label}>
@@ -129,9 +111,15 @@ const Header = () => {
             </ul>
           </nav>
 
-          {user && (
-            <button
-              onClick={logoutUser}
+          <div className="hidden md:flex space-x-4 items-center">
+            <NavLink
+              to="/login"
+              className="font-cyber text-sm uppercase tracking-wider text-white hover:text-neon transition-colors duration-300"
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/signup"
               className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
               style={{
                 ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
@@ -143,35 +131,9 @@ const Header = () => {
                 letterSpacing: "1px",
               }}
             >
-              Logout
-            </button>
-          )}
-
-          {!user && (
-            <div className="hidden md:flex space-x-4 items-center">
-              <NavLink
-                to="/login"
-                className="font-cyber text-sm uppercase tracking-wider text-white hover:text-neon transition-colors duration-300"
-              >
-                Login
-              </NavLink>
-              <NavLink
-                to="/signup"
-                className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
-                style={{
-                  ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
-                  backgroundColor: theme.colors.dark.purple,
-                  padding: `${theme.spacing["2"]} ${theme.spacing["4"]}`,
-                  borderRadius: theme.borders.radius.md,
-                  fontFamily: theme.typography.fontFamily.cyber,
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                }}
-              >
-                Sign Up
-              </NavLink>
-            </div>
-          )}
+              Sign Up
+            </NavLink>
+          </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">

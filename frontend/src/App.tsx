@@ -19,14 +19,11 @@ import PartnerPage from "./pages/PartnerPage";
 import GalleryPage from "./pages/GalleryPage";
 import ThemeDemo from "./components/ThemeDemo";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import CreateNewPasswordPage from "./pages/CreateNewPasswordPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import AboutPage from "./pages/AboutPage";
 import Preloader from "./components/Preloader";
 import { useState, useEffect } from "react";
-import AdminLogin from "./pages/AdminLogin";
-import AdminPanel from "./pages/AdminPanel";
 
 // Wrapper component to handle route changes
 function AppContent() {
@@ -58,11 +55,8 @@ function AppContent() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/create-new-password" element={<CreateNewPasswordPage />} />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminPanel />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

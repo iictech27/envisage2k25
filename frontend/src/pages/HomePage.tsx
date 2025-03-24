@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NeonHero3D from "../components/NeonHero3D";
 import FeaturedEvents from "../components/FeaturedEvents";
 import Countdown from "./CountdownPage";
-import SpeakersPage from "./SpeakersPage";
+// import SpeakersPage from "./SpeakersPage";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ const HomePage = () => {
         </AnimatedSection> */}
         <FeaturedEvents />
         <Countdown />
-        <SpeakersPage />
+        {/* <SpeakersPage /> */}
         {/* <AnimatedSection animation={fadeInUp}>
           <SpeakersPage />
         </AnimatedSection> */}
