@@ -499,7 +499,7 @@ const Events = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
         >
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a
+            {/* <a
               href="/events"
               className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-glow"
             >
@@ -507,11 +507,13 @@ const Events = () => {
                 VIEW ALL EVENTS
               </span>
               <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-            </a>
+            </a> */}
 
             <button
               className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-glow"
-              onClick={() => window.open("/brochure.pdf", "_blank")}
+              onClick={() =>
+                window.open("/brochure/EnviSage2025.pdf", "_blank")
+              }
             >
               <span className="relative z-10 hover:cursor-pointer">
                 DOWNLOAD BROCHURE
