@@ -365,8 +365,15 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
     form.append("year", formData.year.slice(0, 1));
     form.append("paymentMethod", formData.paymentMethod);
     form.append("message", formData.message);
-    // Append selected events as JSON string
-    form.append("eventIDs", JSON.stringify(selectedEvents));
+
+
+    // let eventIDs = new Array<number>(selectedEvents.length);
+    for(let i = 0; i < selectedEvents.length; i++) {
+      // eventIDs[i] = selectedEvents[i].id;
+      form.append("eventIDs", selectedEvents[i].id.toString());
+    }
+    // extract ids of the events and return them
+
     form.append("totalFees", totalFees.toString());
     // Append file if uploaded
     if (paymentScreenshot) {

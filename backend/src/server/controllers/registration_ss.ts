@@ -10,6 +10,7 @@ import {
 } from "../bodies/registration_ss.js";
 import SSRegistrationModel from "../../db/models/registration_ss.js";
 import { uploadOnCloudinary } from "../services/cloudinary.js";
+import RegistrationModel from "../../db/models/registration.js";
 
 export const createRegistration: RequestHandler<
   unknown,
@@ -103,15 +104,7 @@ export const createRegistration: RequestHandler<
       );
     }
 
-    const cloudinaryRes = await uploadOnCloudinary(paymentSS.destination);
-    if (typeof cloudinaryRes === "string") {
-      throw createHttpError(
-        httpCodes["500"].code,
-        httpCodes["500"].message + ": " + cloudinaryRes
-      );
-    }
-
-    console.log("Cloudinary response : ", cloudinaryRes);
+    const cloudinaryURL = await uploadOnCloudinary(paymentSS.path);
 
     // make sure no duplicate events are present
     if (new Set(eventIDs).size != eventIDs.length) {
@@ -157,7 +150,7 @@ export const createRegistration: RequestHandler<
       .exec();
 
     // add as many characters of user id (from the end) to receipt as we can
-    const userID = user!._id.toString();
+    const userID = user ? user!._id.toString() : "UnAuth";
     receipt =
       userID.substring(userID.length - 40 + receipt.length, userID.length + 1) +
       " [" +
@@ -165,20 +158,39 @@ export const createRegistration: RequestHandler<
       "]";
 
     // check if user already registered in event
-    const userRegisteredEventIDs = user!.registeredEventIDs; // user will definitely exist as checked by middleware
-    for (let i = 0; i < eventIDs.length; i++) {
-      if (userRegisteredEventIDs.includes(Number(eventIDs[i]))) {
-        throw createHttpError(
-          httpCodes["401"].code,
-          httpCodes["401"].message +
-            ": User already registered in one or more events!"
-        );
-      }
+    const userRegisteredEventIDs = user?.registeredEventIDs; // user will definitely exist as checked by middleware
+    if(user) {
+        for (let i = 0; i < eventIDs.length; i++) {
+          if (userRegisteredEventIDs!.includes(Number(eventIDs[i]))) {
+            throw createHttpError(
+              httpCodes["401"].code,
+              httpCodes["401"].message +
+                ": User already registered in one or more events!"
+            );
+          }
+        }
+    } else {
+        const registrations = await SSRegistrationModel.find({ email: email }).exec();
+        let allEvents = new Array<number>;
+        for(let i = 0; i < registrations.length; i++) {
+            allEvents = [...allEvents, ...registrations[i].eventIDs]
+        }
+
+        for (let i = 0; i < eventIDs.length; i++) {
+            for (let j = 0; j < allEvents.length; j++) {
+                if(eventIDs[j] === allEvents[j]) {
+                    throw createHttpError(
+                        httpCodes["401"].code,
+                        httpCodes["401"].message +
+                            ": User already registered in one or more events!"
+                    );
+                }
+            }
+        }
     }
 
     // create new user with given data
     const newRegistration = await SSRegistrationModel.create({
-      userID: user!._id,
       fullName: fullname,
       email: email,
       year: year,
@@ -186,7 +198,7 @@ export const createRegistration: RequestHandler<
       college: college,
       eventIDs: eventIDs,
       totalPrice: price,
-      paymentSSUrl: cloudinaryRes.url,
+      paymentSSUrl: cloudinaryURL
     });
 
     // additional info
@@ -195,19 +207,23 @@ export const createRegistration: RequestHandler<
       newRegistration.save();
     }
 
-    // add new registrations to user
-    user!.registeredEventIDs = [...userRegisteredEventIDs, ...eventIDs];
-    user!.registrationIDs = [
-      ...user!.registrationIDs,
-      ...[newRegistration._id],
-    ];
-    user!.save();
+    if(user) {
+        // add new registrations to user
+        newRegistration.userID = user!._id;
+        user!.registeredEventIDs = [...userRegisteredEventIDs!, ...eventIDs];
+        user!.registrationIDs = [
+          ...user!.registrationIDs,
+          ...[newRegistration._id],
+        ];
+        newRegistration.save();
+        user!.save();
+    }
 
     const response: ResSSRegistrationBody = {
       status: httpCodes["201"].code,
       message: httpCodes["201"].message,
       userFullName: fullname,
-      userEmail: user!.email,
+      userEmail: email,
       userYear: year,
       userPhone: phone,
       userCollege: college,

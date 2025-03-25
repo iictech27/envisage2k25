@@ -29,6 +29,7 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 export async function newRegistration(
   formData: FormData
 ): Promise<ResSSRegistrationBody> {
+  console.log(formData);
   const response = await fetch(apiServerLink + "/api/reg/new", {
     method: reqTypes.POST,
     body: formData,
