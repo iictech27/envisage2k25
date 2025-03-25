@@ -4,6 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { newRegistration } from "../api/fetch";
 
 // Event data with fees and mode of conduction
 const eventOptions = [
@@ -353,7 +354,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = new FormData();
     form.append("name", formData.name);
@@ -373,7 +374,8 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
 
     try {
       // Call your API handler that accepts FormData
-      // await registerWithUPI(form);
+      const response = await newRegistration(form);
+      console.log(response);
       alert("Registration successful! Thank you for registering.");
       onClose();
     } catch (error) {
