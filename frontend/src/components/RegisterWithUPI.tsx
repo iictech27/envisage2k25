@@ -354,10 +354,6 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      navigate("/login");
-      return;
-    }
     const form = new FormData();
     form.append("name", formData.name);
     form.append("email", formData.email);
