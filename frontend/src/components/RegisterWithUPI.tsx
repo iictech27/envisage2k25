@@ -358,7 +358,6 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
     e.preventDefault();
     const form = new FormData();
     form.append("fullname", formData.name);
-    console.log(formData.name);
     form.append("email", formData.email);
     form.append("phone", formData.phone);
     form.append("college", formData.college);
@@ -389,7 +388,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
       onClose();
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
+      alert(error instanceof Error ? error.message : "Registration failed. Please try again.");
     }
   };
 

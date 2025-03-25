@@ -9,7 +9,7 @@ import { signUpUser } from "../api/handlers";
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -36,7 +36,7 @@ const SignUpPage = () => {
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
+    if (!formData.fullName.trim()) {
       newErrors.name = "Name is required";
     }
 
@@ -70,16 +70,16 @@ const SignUpPage = () => {
     setIsLoading(true);
 
     const response: ResUserBody | string = await signUpUser({
-      fullName: formData.name,
+      fullName: formData.fullName,
       email: formData.email,
       password: formData.password,
-      confirmPassword: formData.confirmPassword,
+      confirmPassword: formData.confirmPassword
     });
 
     setIsLoading(false);
 
     // string only when error
-    if (typeof response == "string") {
+    if(typeof response == "string") {
       apiError.api = response;
       setErrors(apiError);
       return;
@@ -124,8 +124,8 @@ const SignUpPage = () => {
             <div className="relative">
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="fullName"
+                value={formData.fullName}
                 onChange={handleChange}
                 placeholder="Full Name"
                 className="w-full bg-gray-900 text-white border border-neon/50 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50 font-futuristic"
@@ -163,13 +163,12 @@ const SignUpPage = () => {
                 className="w-full bg-gray-900 text-white border border-neon/50 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-neon focus:ring-opacity-50 font-futuristic"
               />
               <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                // TODO : Add icon and fix styling
-                className="absolute text-xl font-black right-3 top-1.5 text-gray-300/60 hover:text-gray-200 transition-colors"
-              >
-                {showPassword ? "[o]" : "[x]"}
-              </button>
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  // TODO : Add icon and fix styling
+                  className="absolute text-xl font-black right-3 top-1.5 text-gray-300/60 hover:text-gray-200 transition-colors">
+                  {showPassword ? "[o]" : "[x]"}
+                </button>
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
               )}
@@ -197,7 +196,9 @@ const SignUpPage = () => {
 
             <div className="relative">
               {errors.api && (
-                <p className="text-red-500 text-s mb-1">{errors.api}</p>
+                <p className="text-red-500 text-s mb-1">
+                  {errors.api}
+                </p>
               )}
               <button
                 type="submit"

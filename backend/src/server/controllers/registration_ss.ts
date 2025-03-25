@@ -178,7 +178,7 @@ export const createRegistration: RequestHandler<
 
         for (let i = 0; i < eventIDs.length; i++) {
             for (let j = 0; j < allEvents.length; j++) {
-                if(eventIDs[j] === allEvents[j]) {
+                if(eventIDs[i] == allEvents[j]) {
                     throw createHttpError(
                         httpCodes["401"].code,
                         httpCodes["401"].message +
