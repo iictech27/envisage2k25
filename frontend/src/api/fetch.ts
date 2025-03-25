@@ -4,6 +4,7 @@ import validatedEnv from "./utils/validatedEnv";
 import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
 import { ResEventsBody } from "./bodies/events";
 import { ResSSRegistrationBody } from "./bodies/registration_ss";
+import { ReqEditReg, ReqGetReg, ResRegAdmin } from "./bodies/admin";
 
 const reqTypes = {
   GET: "GET",
@@ -124,26 +125,47 @@ export async function reqUserLogIn(
 }
 
 export async function reqUserLogout() {
-  console.log(await fetchData("/users/logout", { method: reqTypes.POST }));
+  console.log(await fetchData("/users/logout", {
+    method: reqTypes.POST,
+    credentials: "include"
+  }));
 }
 
-export async function getRegistrations() {
-  const response = await fetchData("/reg", {
-    method: reqTypes.GET,
+
+export async function adminGetRegistraions(cred: ReqGetReg): Promise<ResRegAdmin> {
+  const response = await fetchData("/admin/getreg", {
+    method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
     credentials: "include",
+    body: JSON.stringify(cred),
   });
 
   return response.json();
 }
 
-// export async function reqNewRegistration(info: ReqRegistrationBody): Promise<ResRegistrationBody> {
-//   const response = await fetchData("/reg/new", {
-//     method: reqTypes.POST,
-//     headers: { "Content-Type": "application/json" },
-//     credentials: "include",
-//     body: JSON.stringify(info)
-//   });
-//
-//   return response.json();
-// }
+export async function adminVerifyRegistration(cred: ReqEditReg) {
+  console.log(await fetchData("/admin/verreg", {
+    method: reqTypes.POST,
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(cred),
+  }));
+}
+
+export async function adminRejectRegistration(cred: ReqEditReg) {
+  console.log(await fetchData("/admin/rejreg", {
+    method: reqTypes.POST,
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(cred),
+  }));
+}
+
+export async function adminDeleteRegistration(cred: ReqEditReg) {
+  console.log(await fetchData("/admin/delreg", {
+    method: reqTypes.POST,
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(cred),
+  }));
+}

@@ -11,7 +11,9 @@ const userSchema = new Schema({
 
     // registration details
     registeredEventIDs: { type: [Number],                required: true,               default: [] },
-    registrationIDs:    { type: [Schema.Types.ObjectId], required: true ,              default: [] }
+    registrationIDs:    { type: [Schema.Types.ObjectId], required: true ,              default: [] },
+    pendingRegIDs:    { type: [Schema.Types.ObjectId], required: true ,              default: [] },
+    rejectedRegIDs:    { type: [Schema.Types.ObjectId], required: true ,              default: [] }
 }, {
     timestamps: true
 });

@@ -7,6 +7,7 @@ export interface Event {
 }
 
 export interface Registration {
+  regID: string;
   email: string;
   fullname: string;
   events: Event[];

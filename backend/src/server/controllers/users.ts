@@ -230,6 +230,25 @@ export const verifyEmail: RequestHandler<
 
     UnverifiedUserModel.findByIdAndDelete(sessionToken).exec();
 
+  // try to destroy session which has unauthenticated user (should be overwritten anyways but just in case)
+    if(req.session && req.session.cookie) {
+      // manually unset cookie
+      res.cookie("connect.sid", null, {
+        expires: new Date("Thu, 01 Jan 1970 00:00:00 UTC"), // random day in the past
+        httpOnly: true
+      });
+
+        // try to destroy session
+      req.session.destroy((error) => {
+        if (error) {
+          next(error);
+        } else {
+          res.status(httpCodes["200"].code);
+          res.send("User logged out successfully!");
+        }
+      });
+    }
+
     // create a response to sent to client
     const response: ResUserBody = {
       status: httpCodes["201"].code,
@@ -380,6 +399,9 @@ export const logIn: RequestHandler<
     if (rememberUser) {
       req.session.cookie.maxAge =
         validatedEnv.SESSION_EXP_MAX_HR * 60 * 60 * 1000;
+    } else {
+      req.session.cookie.maxAge =
+        validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
     }
 
     const response: ResUserBody = {
@@ -399,14 +421,32 @@ export const logIn: RequestHandler<
 
 // endpoint ot logout of a user
 export const logOut: RequestHandler = (req, res, next) => {
-  req.session.destroy((error) => {
-    if (error) {
-      next(error);
-    } else {
-      res.status(httpCodes["200"].code);
-      res.send("User logged out successfully!");
+
+  try {
+
+    if(req.session && req.session.cookie) {
+
+      // manually unset cookie
+      res.cookie("connect.sid", null, {
+        expires: new Date("Thu, 01 Jan 1970 00:00:00 UTC"), // random day in the past
+        httpOnly: true
+      });
+
+        // try to destroy session
+      req.session.destroy((error) => {
+        if (error) {
+          next(error);
+        } else {
+          res.status(httpCodes["200"].code);
+          res.send("User logged out successfully!");
+        }
+      });
+
     }
-  });
+  } catch(error) {
+    next(error);
+  }
+
 };
 
 // endpoint to get registered events of a user

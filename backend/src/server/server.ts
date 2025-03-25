@@ -14,6 +14,7 @@ import usersRouter from "./routes/users.js";
 import eventsRouter from "./routes/events.js";
 import registrationRouter from "./routes/registration.js";
 import { ResErrorBody } from "./bodies/errors.js";
+import adminRouter from "./routes/admin.js";
 
 const server = express();
 const port = validatedEnv.PORT;
@@ -84,6 +85,7 @@ server.options("*", cors());
   server.use("/api", usersRouter);
   server.use("/api", registrationRouter);
   server.use("/api", eventsRouter);
+  server.use("/api", adminRouter);
 
   // non-existent endpoint handler
   server.use((_req: Request, _res: Response, next: NextFunction) => {
