@@ -357,20 +357,22 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = new FormData();
-    form.append("name", formData.name);
+    form.append("fullname", formData.name);
+    console.log(formData.name);
     form.append("email", formData.email);
     form.append("phone", formData.phone);
     form.append("college", formData.college);
-    form.append("year", formData.year);
+    form.append("year", formData.year.slice(0, 1));
     form.append("paymentMethod", formData.paymentMethod);
     form.append("message", formData.message);
     // Append selected events as JSON string
-    form.append("events", JSON.stringify(selectedEvents));
+    form.append("eventIDs", JSON.stringify(selectedEvents));
     form.append("totalFees", totalFees.toString());
     // Append file if uploaded
     if (paymentScreenshot) {
-      form.append("paymentScreenshot", paymentScreenshot);
+      form.append("image", paymentScreenshot);
     }
+    form.append("additionalInfo", formData.message);
 
     try {
       // Call your API handler that accepts FormData
@@ -653,7 +655,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
                       onChange={handleFileChange}
                       required={true}
                       color="#10b981"
-                      name="paymentScreenshot"
+                      name="image"
                       accept="image/*"
                       placeholder=""
                       value=""

@@ -14,6 +14,7 @@ import {
   reqServerStatus,
   reqUserLogIn,
   reqUserLogout,
+  verifyEmail,
 } from "./fetch";
 
 export async function canConnectToServer(): Promise<boolean> {
@@ -73,6 +74,16 @@ export async function newReg(
 
     const response = await newRegistration(formData);
     return response;
+  } catch (error) {
+    console.log(error);
+    return getErrorMessage(error);
+  }
+}
+
+export async function verifyUserEmail(creds: string): Promise<any> {
+  try {
+    const body = await verifyEmail(creds);
+    return body;
   } catch (error) {
     console.log(error);
     return getErrorMessage(error);
