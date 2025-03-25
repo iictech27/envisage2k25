@@ -358,15 +358,21 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
     e.preventDefault();
     const form = new FormData();
     form.append("fullname", formData.name);
-    console.log(formData.name);
     form.append("email", formData.email);
     form.append("phone", formData.phone);
     form.append("college", formData.college);
     form.append("year", formData.year.slice(0, 1));
     form.append("paymentMethod", formData.paymentMethod);
     form.append("message", formData.message);
-    // Append selected events as JSON string
-    form.append("eventIDs", JSON.stringify(selectedEvents));
+
+
+    // let eventIDs = new Array<number>(selectedEvents.length);
+    for(let i = 0; i < selectedEvents.length; i++) {
+      // eventIDs[i] = selectedEvents[i].id;
+      form.append("eventIDs", selectedEvents[i].id.toString());
+    }
+    // extract ids of the events and return them
+
     form.append("totalFees", totalFees.toString());
     // Append file if uploaded
     if (paymentScreenshot) {
@@ -382,7 +388,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
       onClose();
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
+      alert(error instanceof Error ? error.message : "Registration failed. Please try again.");
     }
   };
 
