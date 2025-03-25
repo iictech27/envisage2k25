@@ -115,6 +115,15 @@ export const signUp: RequestHandler<
     //   );
     // }
 
+    const unverifiedUserWithEmail = await UnverifiedUserModel.findOne({
+      email: email,
+    }).exec();
+    if (unverifiedUserWithEmail) {
+      // create and save session token which is the mongo id
+      req.session.sessionToken = unverifiedUserWithEmail._id;
+      req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
+    }
+
     // random 6 digit number
     const otp = Math.floor(100000 + Math.random() * 900000);
     const now = new Date();
