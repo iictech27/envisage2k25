@@ -1,6 +1,6 @@
 # dont commit anything inside the upload folder
-public/upload/*
-public/upload/**/*
+public/uploads/*
+public/uploads/**/*
 
 # Logs
 logs
