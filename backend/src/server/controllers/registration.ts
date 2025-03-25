@@ -44,7 +44,7 @@ export const verifyRegistrationOrder: RequestHandler<unknown, unknown, ReqRegist
         registration.save();
 
         // retrieve authenticated user
-        const user = await UserModel.findById(req.session.sessionToken).select("+email +registrationIDs").exec();
+        const user = await UserModel.findById(req.session.sessionToken).exec();
 
         // create response
         const response: ResRegistrationVerifiedBody = {
@@ -124,7 +124,7 @@ export const createRegistrationOrder: RequestHandler<unknown, unknown, ReqRegist
         }
 
         // retrieve authenticated user
-        const user = await UserModel.findById(req.session.sessionToken).select("+email +registeredEventIDs").exec();
+        const user = await UserModel.findById(req.session.sessionToken).exec();
 
         // add as many characters of user id (from the end) to receipt as we can
         const userID = user!._id.toString();

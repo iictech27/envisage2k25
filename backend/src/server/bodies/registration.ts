@@ -23,7 +23,6 @@ export interface ResRegistrationVerifiedBody {
     status: number,
     message: string,
     userFullName: string,
-    userDept: string,
     userYear: number,
     userEmail: string,
     userPhone: string,
