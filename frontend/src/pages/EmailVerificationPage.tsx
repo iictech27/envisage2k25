@@ -107,14 +107,19 @@ const EmailVerificationPage = () => {
     setError("");
 
     // Simulate API call for verification
-    const resp = await verifyUserEmail(otp.join(""));
-    if (resp) {
-      setVerificationSuccess(true);
-      navigate("/login");
-    } else {
+    const otpValue = otp.join("");
+    // console.log(otpValue);
+    const resp = await verifyUserEmail({ otp: otpValue });
+    if (typeof resp == "string") {
       setVerificationSuccess(false);
-      alert("Error while otp verifying Try again !");
+      setVerifying(false);
+      setOtp(["", "", "", "", "", ""]);
+      // alert("Error while otp verifying Try again !");
+      setError("Error while otp verifying Try again !");
+      return;
     }
+    setVerificationSuccess(true);
+    navigate("/login");
   };
 
   return (

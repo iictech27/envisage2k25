@@ -87,7 +87,9 @@ export async function reqNewUserSignIn(
   return response.json();
 }
 
-export async function verifyEmail(credentials: string): Promise<ResUserBody> {
+export async function verifyEmail(credentials: {
+  otp: string;
+}): Promise<ResUserBody> {
   const response = await fetchData("/users/veremail", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },

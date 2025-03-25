@@ -80,7 +80,7 @@ export async function newReg(
   }
 }
 
-export async function verifyUserEmail(creds: string): Promise<any> {
+export async function verifyUserEmail(creds: { otp: string }): Promise<any> {
   try {
     const body = await verifyEmail(creds);
     return body;

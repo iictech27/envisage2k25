@@ -100,20 +100,20 @@ export const signUp: RequestHandler<
     }
 
     // check if unverified account with email exists
-    const unverifiedUserWithEmail = await UnverifiedUserModel.findOne({
-      email: email,
-    }).exec();
-    if (unverifiedUserWithEmail) {
-      // create and save session token which is the mongo id
-      req.session.sessionToken = unverifiedUserWithEmail._id;
-      req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
+    // const unverifiedUserWithEmail = await UnverifiedUserModel.findOne({
+    //   email: email,
+    // }).exec();
+    // if (unverifiedUserWithEmail) {
+    //   // create and save session token which is the mongo id
+    //   req.session.sessionToken = unverifiedUserWithEmail._id;
+    //   req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
 
-      throw createHttpError(
-        httpCodes["409"].code,
-        httpCodes["409"].message +
-          ": Sign up request already exists. Check your inbox and verify email."
-      );
-    }
+    //   throw createHttpError(
+    //     httpCodes["409"].code,
+    //     httpCodes["409"].message +
+    //       ": Sign up request already exists. Check your inbox and verify email."
+    //   );
+    // }
 
     // random 6 digit number
     const otp = Math.floor(100000 + Math.random() * 900000);
@@ -160,6 +160,8 @@ export const verifyEmail: RequestHandler<
   unknown
 > = async (req, res, next) => {
   const otp = req.body.otp;
+  console.log(req.body);
+  console.log(otp);
   const sessionToken = req.session.sessionToken;
 
   try {
