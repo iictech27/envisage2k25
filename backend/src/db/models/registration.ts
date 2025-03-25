@@ -17,7 +17,7 @@ const registrationSchema = new Schema({
     phone:          { type: String,                required: true                            },
 
     // college details
-    department:     { type: String,                required: true                            },
+    department:     { type: String,                required: false                            },
     year:           { type: Number,                required: true                            },
     college:        { type: String,                required: true                            },
 
