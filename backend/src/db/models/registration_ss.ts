@@ -21,8 +21,12 @@ const registrationSchema = new Schema(
     totalPrice: { type: Number, requried: true },
     paymentSSUrl: { type: String, required: true },
     confirmed: { type: Boolean, required: true, default: false },
+    rejected: { type: Boolean, required: true, default: false },
 
     additionalInfo: { type: String },
+
+    // expireAt: { type: Date, required: false, default: null, expires: (7 * 24 * 60 * 60) }
+    expireAt: { type: Date, required: false, default: null, expires: 20 }
   },
   {
     timestamps: true,

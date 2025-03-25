@@ -54,16 +54,27 @@ const AdminPanel: React.FC = () => {
     dispatch(clearAdmin());
   };
 
+  const handleRefresh = () => {
+  }
+
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
-        >
-          Logout
-        </button>
+        <div className="flex gap-1">
+          <button
+            onClick={handleLogout}
+            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+          >
+            Logout
+          </button>
+          <button
+            onClick={handleRefresh}
+            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+          >
+            Refresh
+          </button>
+        </div>
       </div>
       <Filter
         onFilter={handleFilter}

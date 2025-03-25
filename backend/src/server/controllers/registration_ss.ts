@@ -119,7 +119,6 @@ export const createRegistration: RequestHandler<
 
     // make sure events are valid and calculate price
     let price = 0;
-    let receipt = ""; // add event indexes to receipt id
     for (let i = 0; i < eventIDs.length; i++) {
       // filter events with id (should return only one)
       const event = Events.filter((event) => event.id == eventIDs[i]);
@@ -143,19 +142,10 @@ export const createRegistration: RequestHandler<
       }
 
       price += event[0].fee;
-      receipt += (receipt == "" ? "" : "-") + event[0].id;
     }
 
     // retrieve authenticated user
     const user = await UserModel.findOne({email: email}).exec();
-
-    // add as many characters of user id (from the end) to receipt as we can
-    const userID = user ? user!._id.toString() : "UnAuth";
-    receipt =
-      userID.substring(userID.length - 40 + receipt.length, userID.length + 1) +
-      " [" +
-      receipt +
-      "]";
 
     // check if user already registered in event
     const userRegisteredEventIDs = user?.registeredEventIDs; // user will definitely exist as checked by middleware
@@ -213,9 +203,8 @@ export const createRegistration: RequestHandler<
 
     if(user) {
         // add new registrations to user
-        user!.registeredEventIDs = [...userRegisteredEventIDs!, ...eventIDs];
-        user!.registrationIDs = [
-          ...user!.registrationIDs,
+        user!.pendingRegIDs = [
+          ...user!.pendingRegIDs,
           ...[newRegistration._id],
         ];
         user!.save();
@@ -255,8 +244,6 @@ export const getRegistration: RequestHandler = async (_req, res, next) => {
       fullNname: reg.fullName,
       email: reg.email,
       phone: reg.phone,
-      year: reg.year,
-      college: reg.college,
       paymentSSUrl: reg.paymentSSUrl,
       confirmed: reg.confirmed,
       eventIDs: reg.eventIDs,

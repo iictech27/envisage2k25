@@ -7,7 +7,7 @@ import { RootState } from "../store";
 import { newRegistration } from "../api/fetch";
 
 // Event data with fees and mode of conduction
-const eventOptions = [
+export const eventOptions = [
   {
     id: 1,
     name: "Stockify",
