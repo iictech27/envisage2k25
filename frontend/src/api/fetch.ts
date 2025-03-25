@@ -3,7 +3,7 @@ import validatedEnv from "./utils/validatedEnv";
 // import { ReqRegistrationBody, ResRegistrationBody } from "./bodies/registration";
 import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
 import { ResEventsBody } from "./bodies/events";
-import { ResSSRegistrationBody, ReqSSRegistrationOrderBody } from "./bodies/registration_ss";
+import { ResSSRegistrationBody } from "./bodies/registration_ss";
 
 const reqTypes = {
   GET: "GET",
@@ -26,15 +26,16 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 }
 
 // new registration
-export async function newRegistration(formData: FormData): Promise<ResSSRegistrationBody> {
-
+export async function newRegistration(
+  formData: FormData
+): Promise<ResSSRegistrationBody> {
   const response = await fetch(apiServerLink + "/api/reg/new", {
     method: reqTypes.POST,
     body: formData,
-    credentials: "include"
+    credentials: "include",
   });
 
-  if(response.ok) {
+  if (response.ok) {
     return response.json();
   } else {
     const errorBody = await response.json();

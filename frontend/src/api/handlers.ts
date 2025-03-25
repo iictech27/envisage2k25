@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  ReqSSRegistrationOrderBody,
+  ResSSRegistrationBody,
+} from "./bodies/registration_ss";
 import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
 // import { isResError } from "./bodies/errors";
 import {
   getRegistrations,
+  newRegistration,
   reqAuthUserData,
   reqNewUserSignIn,
   reqServerStatus,
@@ -50,7 +55,10 @@ export async function signUpUser(
   }
 }
 
-export async function newReg(fields: ReqSSRegistrationOrderBody, image: File): Promise<ResSSRegistrationBody | string> {
+export async function newReg(
+  fields: ReqSSRegistrationOrderBody,
+  image: File
+): Promise<ResSSRegistrationBody | string> {
   try {
     const formData = new FormData();
 
@@ -60,18 +68,20 @@ export async function newReg(fields: ReqSSRegistrationOrderBody, image: File): P
     formData.append("college", fields.college);
     formData.append("phone", fields.phone);
     formData.append("image", image);
-    if(fields.additionalInfo) formData.append("additionalInfo", fields.additionalInfo);
+    if (fields.additionalInfo)
+      formData.append("additionalInfo", fields.additionalInfo);
 
     const response = await newRegistration(formData);
     return response;
-
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return getErrorMessage(error);
   }
 }
 
-export async function logInUser(creds: ReqLoginBody): Promise<ResUserBody | string> {
+export async function logInUser(
+  creds: ReqLoginBody
+): Promise<ResUserBody | string> {
   try {
     const body = await reqUserLogIn(creds);
     return body;
