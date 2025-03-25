@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { RootState } from "../store";
 
 // Event data with fees and mode of conduction
 const eventOptions = [
@@ -278,9 +279,9 @@ interface RegisterProps {
 }
 
 const RegisterWithUPI = ({ onClose }: RegisterProps) => {
-  const user = useSelector((state:any) => state.user.user);
+  const user = useSelector((state: RootState) => state.user.user);
   console.log(user);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // Form state
   const [formData, setFormData] = useState({
     name: "",
