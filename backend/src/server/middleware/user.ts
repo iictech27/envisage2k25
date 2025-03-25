@@ -26,6 +26,7 @@ export const requireAuthUser: RequestHandler = async (req, _res, next) => {
 export const requireUnauthUser: RequestHandler = async (req, _res, next) => {
     const sessionToken = req.session.sessionToken;
 
+    console.log(req.session);
     // if session token exists and there is a user with userID given in the token then user is authenticated
     if(sessionToken && await UserModel.findById(sessionToken).exec()) {
         next(createHttpError(httpCodes["403"].code, httpCodes["403"].message + ": User already authenticated!"));

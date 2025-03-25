@@ -124,7 +124,10 @@ export async function reqUserLogIn(
 }
 
 export async function reqUserLogout() {
-  console.log(await fetchData("/users/logout", { method: reqTypes.POST }));
+  console.log(await fetchData("/users/logout", {
+    method: reqTypes.POST,
+    credentials: "include"
+  }));
 }
 
 export async function getRegistrations() {
