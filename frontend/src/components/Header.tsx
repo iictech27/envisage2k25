@@ -7,15 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../features/userSlice";
 import { RootState } from "../store";
 
-// const isUserAuth = await isUserAuthenticated();
-
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
   const theme = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null); // Ref for mobile menu
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,17 +38,17 @@ const Header = () => {
     if (success) {
       dispatch(clearUser());
       alert("Logged out successfully");
+      closeMenu(); // Close mobile menu after logout
     } else {
       alert("Couldn't log out. Try again later!");
     }
   };
 
   useEffect(() => {
-    // Disable scrolling when the menu is open
     if (isMenuOpen) {
-      document.body.style.overflow = "hidden"; // Disable body scroll
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"; // Enable body scroll
+      document.body.style.overflow = "auto";
     }
   }, [isMenuOpen]);
 
@@ -58,16 +56,10 @@ const Header = () => {
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
     { path: "/events", label: "Events" },
-    // { path: "/countdown", label: "Countdown" },
-    // { path: "/speakers", label: "Speakers" },
     { path: "/team", label: "Team" },
     { path: "/partner", label: "Partner" },
-    // { path: "/theme-demo", label: "Theme" },
-    { path: "/signup", label: "Sign Up" },
-    { path: "/login", label: "Login" },
   ];
 
-  // Glass effect style for the header when scrolled
   const scrolledHeaderStyle = {
     ...utils.glassEffect("medium", "md"),
     borderBottom: `1px solid ${theme.colors.border.light}`,
@@ -76,7 +68,6 @@ const Header = () => {
 
   return (
     <div className="relative">
-      {/* Header */}
       <header
         style={scrolled ? scrolledHeaderStyle : {}}
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${
@@ -99,40 +90,36 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
-              {navItems
-                .filter(
-                  (item) => item.path !== "/login" && item.path !== "/signup"
-                ) // Remove Login & Signup from desktop nav
-                .map((item) => (
-                  <li key={item.label}>
-                    <NavLink
-                      to={item.path}
-                      className={({ isActive }) =>
-                        `font-cyber text-sm uppercase tracking-wider transition-all duration-300 relative px-2 py-1 ${
-                          isActive ? "text-neon" : "text-white hover:text-neon"
-                        }`
-                      }
-                      style={({ isActive }) =>
-                        isActive
-                          ? {
-                              textShadow: theme.shadows.neon.sm,
-                              borderBottom: `2px solid ${theme.colors.neon.main}`,
-                              boxShadow: `0 4px 6px -6px ${theme.colors.neon.main}`,
-                            }
-                          : {}
-                      }
-                    >
-                      {item.label}
-                    </NavLink>
-                  </li>
-                ))}
+              {navItems.map((item) => (
+                <li key={item.label}>
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `font-cyber text-sm uppercase tracking-wider transition-all duration-300 relative px-2 py-1 ${
+                        isActive ? "text-neon" : "text-white hover:text-neon"
+                      }`
+                    }
+                    style={({ isActive }) =>
+                      isActive
+                        ? {
+                            textShadow: theme.shadows.neon.sm,
+                            borderBottom: `2px solid ${theme.colors.neon.main}`,
+                            boxShadow: `0 4px 6px -6px ${theme.colors.neon.main}`,
+                          }
+                        : {}
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </nav>
 
           {user && (
             <button
               onClick={logoutUser}
-              className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+              className="cyber-button cursor-pointer hover:scale-105 active:scale-95 transition-transform hidden md:block"
               style={{
                 ...utils.neonBorderEffect(theme.colors.neon.main, "sm"),
                 backgroundColor: theme.colors.dark.purple,
@@ -234,7 +221,6 @@ const Header = () => {
           }}
         >
           <div className="flex justify-between items-center p-4 border-b border-border-light">
-            {/* <div className="text-xl font-cyber text-white">Menu</div> */}
             <button
               onClick={closeMenu}
               className="text-white p-2"
@@ -275,6 +261,42 @@ const Header = () => {
                     </NavLink>
                   </li>
                 ))}
+
+                {/* Add Logout button to mobile menu when user is logged in */}
+                {user && (
+                  <li>
+                    <button
+                      onClick={logoutUser}
+                      className="block w-full text-left py-3 px-2 font-cyber text-lg border-b border-border-light text-white"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                )}
+
+                {/* Add Login and Signup buttons to mobile menu when user is not logged in */}
+                {!user && (
+                  <>
+                    <li>
+                      <NavLink
+                        to="/login"
+                        onClick={closeMenu}
+                        className="block py-3 px-2 font-cyber text-lg border-b border-border-light text-white"
+                      >
+                        Login
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/signup"
+                        onClick={closeMenu}
+                        className="block py-3 px-2 font-cyber text-lg border-b border-border-light text-white"
+                      >
+                        Sign Up
+                      </NavLink>
+                    </li>
+                  </>
+                )}
               </ul>
             </nav>
           </div>
