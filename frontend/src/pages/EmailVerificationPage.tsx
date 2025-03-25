@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
+import { verifyUserEmail } from "../api/handlers";
 
 const EmailVerificationPage = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const EmailVerificationPage = () => {
   // Handle OTP input change
   const handleOtpChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => {
     const value = e.target.value;
 
@@ -53,7 +54,7 @@ const EmailVerificationPage = () => {
   // Handle backspace to go to previous input
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => {
     if (e.key === "Backspace" && otp[index] === "" && index > 0) {
       // Move to previous input on backspace if current input is empty
@@ -95,7 +96,7 @@ const EmailVerificationPage = () => {
   };
 
   // Function to handle verification
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     // Check if OTP is complete
     if (otp.some((digit) => digit === "")) {
       setError("Please enter all 6 digits of the verification code");
@@ -106,22 +107,19 @@ const EmailVerificationPage = () => {
     setError("");
 
     // Simulate API call for verification
-    setTimeout(() => {
+    const otpValue = otp.join("");
+    // console.log(otpValue);
+    const resp = await verifyUserEmail({ otp: otpValue });
+    if (typeof resp == "string") {
+      setVerificationSuccess(false);
       setVerifying(false);
-
-      // Hardcoded correct OTP for demo - in a real app, this would be validated on the server
-      const enteredOtp = otp.join("");
-      if (enteredOtp === "123456") {
-        setVerificationSuccess(true);
-
-        // Redirect to login page after 3 seconds
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
-      } else {
-        setError("Invalid verification code. Please try again.");
-      }
-    }, 1500);
+      setOtp(["", "", "", "", "", ""]);
+      // alert("Error while otp verifying Try again !");
+      setError("Error while otp verifying Try again !");
+      return;
+    }
+    setVerificationSuccess(true);
+    navigate("/login");
   };
 
   return (

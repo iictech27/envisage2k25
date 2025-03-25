@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { RootState } from "../store";
+import { newRegistration } from "../api/fetch";
 
 // Event data with fees and mode of conduction
 const eventOptions = [
@@ -278,9 +280,9 @@ interface RegisterProps {
 }
 
 const RegisterWithUPI = ({ onClose }: RegisterProps) => {
-  const user = useSelector((state:any) => state.user.user);
+  const user = useSelector((state: RootState) => state.user.user);
   console.log(user);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -352,31 +354,30 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      navigate("/login");
-      return;
-    }
     const form = new FormData();
-    form.append("name", formData.name);
+    form.append("fullname", formData.name);
+    console.log(formData.name);
     form.append("email", formData.email);
     form.append("phone", formData.phone);
     form.append("college", formData.college);
-    form.append("year", formData.year);
+    form.append("year", formData.year.slice(0, 1));
     form.append("paymentMethod", formData.paymentMethod);
     form.append("message", formData.message);
     // Append selected events as JSON string
-    form.append("events", JSON.stringify(selectedEvents));
+    form.append("eventIDs", JSON.stringify(selectedEvents));
     form.append("totalFees", totalFees.toString());
     // Append file if uploaded
     if (paymentScreenshot) {
-      form.append("paymentScreenshot", paymentScreenshot);
+      form.append("image", paymentScreenshot);
     }
+    form.append("additionalInfo", formData.message);
 
     try {
       // Call your API handler that accepts FormData
-      // await registerWithUPI(form);
+      const response = await newRegistration(form);
+      console.log(response);
       alert("Registration successful! Thank you for registering.");
       onClose();
     } catch (error) {
@@ -654,7 +655,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
                       onChange={handleFileChange}
                       required={true}
                       color="#10b981"
-                      name="paymentScreenshot"
+                      name="image"
                       accept="image/*"
                       placeholder=""
                       value=""
