@@ -10,7 +10,9 @@ import {
 } from "../bodies/registration_ss.js";
 import SSRegistrationModel from "../../db/models/registration_ss.js";
 import { uploadOnCloudinary } from "../services/cloudinary.js";
-import RegistrationModel from "../../db/models/registration.js";
+import transport from "../services/nodemailer.js";
+import mailOptions from "../mails/reg_requested.js";
+// import RegistrationModel from "../../db/models/registration.js";
 
 export const createRegistration: RequestHandler<
   unknown,
@@ -145,9 +147,7 @@ export const createRegistration: RequestHandler<
     }
 
     // retrieve authenticated user
-    const user = await UserModel.findById(req.session.sessionToken)
-      .select("+email +registeredEventIDs")
-      .exec();
+    const user = await UserModel.findOne({email: email}).exec();
 
     // add as many characters of user id (from the end) to receipt as we can
     const userID = user ? user!._id.toString() : "UnAuth";
@@ -170,6 +170,7 @@ export const createRegistration: RequestHandler<
           }
         }
     } else {
+        // check if registratin already exists from one email
         const registrations = await SSRegistrationModel.find({ email: email }).exec();
         let allEvents = new Array<number>;
         for(let i = 0; i < registrations.length; i++) {
@@ -191,6 +192,7 @@ export const createRegistration: RequestHandler<
 
     // create new user with given data
     const newRegistration = await SSRegistrationModel.create({
+      userID: user?._id,
       fullName: fullname,
       email: email,
       year: year,
@@ -201,6 +203,8 @@ export const createRegistration: RequestHandler<
       paymentSSUrl: cloudinaryURL
     });
 
+    transport.sendMail(mailOptions(email));
+
     // additional info
     if (additionalInfo) {
       newRegistration.additionalInfo = additionalInfo;
@@ -209,13 +213,11 @@ export const createRegistration: RequestHandler<
 
     if(user) {
         // add new registrations to user
-        newRegistration.userID = user!._id;
         user!.registeredEventIDs = [...userRegisteredEventIDs!, ...eventIDs];
         user!.registrationIDs = [
           ...user!.registrationIDs,
           ...[newRegistration._id],
         ];
-        newRegistration.save();
         user!.save();
     }
 

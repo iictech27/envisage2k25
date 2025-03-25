@@ -100,6 +100,16 @@ export async function verifyEmail(credentials: {
   return response.json();
 }
 
+// resend verification mail
+export async function resendEmail() {
+  const response = await fetchData("/users/resend", {
+    method: reqTypes.POST,
+    credentials: "include"
+  });
+
+  return response.json();
+}
+
 export async function reqUserLogIn(
   credentials: ReqLoginBody
 ): Promise<ResUserBody> {

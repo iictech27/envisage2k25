@@ -14,6 +14,7 @@ import {
   reqServerStatus,
   reqUserLogIn,
   reqUserLogout,
+  resendEmail,
   verifyEmail,
 } from "./fetch";
 
@@ -85,6 +86,16 @@ export async function verifyUserEmail(creds: { otp: string }): Promise<any> {
     const body = await verifyEmail(creds);
     return body;
   } catch (error) {
+    console.log(error);
+    return getErrorMessage(error);
+  }
+}
+
+export async function resendMail(): Promise<any> {
+  try {
+    const body = await resendEmail();
+    return body;
+  } catch(error) {
     console.log(error);
     return getErrorMessage(error);
   }

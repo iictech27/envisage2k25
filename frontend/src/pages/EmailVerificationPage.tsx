@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
-import { verifyUserEmail } from "../api/handlers";
+import { resendMail, verifyUserEmail } from "../api/handlers";
 
 const EmailVerificationPage = () => {
   const navigate = useNavigate();
@@ -79,20 +79,18 @@ const EmailVerificationPage = () => {
   };
 
   // Function to handle resend verification OTP
-  const handleResendOtp = () => {
+  const handleResendOtp = async () => {
     setIsResending(true);
     setError("");
 
-    // Simulate API call to resend verification OTP
-    setTimeout(() => {
-      setIsResending(false);
-      setResendSuccess(true);
+    const resp = await resendMail();
+    setIsResending(false);
+    setResendSuccess(true);
 
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setResendSuccess(false);
-      }, 5000);
-    }, 1500);
+    if(typeof resp == "string") {
+      setResendSuccess(false);
+      setError(resp);
+    }
   };
 
   // Function to handle verification
@@ -115,7 +113,7 @@ const EmailVerificationPage = () => {
       setVerifying(false);
       setOtp(["", "", "", "", "", ""]);
       // alert("Error while otp verifying Try again !");
-      setError("Error while otp verifying Try again !");
+      setError(resp);
       return;
     }
     setVerificationSuccess(true);
