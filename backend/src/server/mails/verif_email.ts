@@ -21,8 +21,9 @@ Admin Team`,
       </div>
       <div style="padding: 16px;">
         <p style="font-size: 16px;">Dear Participant,</p>
-        <p style="font-size: 16px;">Please verify your email ID using the following code. Please note that this code expires in 10 minutes.</p>
+        <p style="font-size: 16px;">Please verify your email ID using the following code. Note that this code expires in 10 minutes.</p>
         <p style="font-size: 16px;">${otp}</p>
+        <p style="font-size: 16px;">If you arent already redirected to the verfication page click on this <a href="${validatedEnv.CLIENT_LINK + "/verify-email"}">LINK</a></p>
         <p style="font-size: 16px;">If you have any questions, feel free to reply to this email or contact our support team.</p>
         <p style="font-size: 16px;">Best Regards,<br>Admin Team</p>
       </div>
