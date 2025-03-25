@@ -8,26 +8,6 @@ import RegistrationList, {
 import { AppDispatch, RootState } from "../store"; // adjust the path based on your project structure
 import { clearAdmin } from "../features/adminSlice";
 
-const dummyRegistrations: Registration[] = [
-  {
-    email: "john@example.com",
-    fullname: "John Doe",
-    events: [
-      { name: "React Workshop", type: "individual" },
-      { name: "Team Hackathon", type: "team" },
-    ],
-    paymentProof: "https://via.placeholder.com/150",
-    verified: false,
-  },
-  {
-    email: "jane@example.com",
-    fullname: "Jane Smith",
-    events: [{ name: "Vue Seminar", type: "individual" }],
-    paymentProof: "https://via.placeholder.com/150",
-    verified: false,
-  },
-];
-
 const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -40,10 +20,11 @@ const AdminPanel: React.FC = () => {
     }
   }, [admin, navigate]);
 
-  const [registrations, setRegistrations] =
-    useState<Registration[]>(dummyRegistrations);
-  const [filteredRegistrations, setFilteredRegistrations] =
-    useState<Registration[]>(registrations);
+  // Initialize with empty arrays
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [filteredRegistrations, setFilteredRegistrations] = useState<
+    Registration[]
+  >([]);
 
   const handleFilter = (eventName: string, eventType: string) => {
     const filtered = registrations.filter((reg) => {
@@ -61,16 +42,12 @@ const AdminPanel: React.FC = () => {
   };
 
   const handleVerify = (email: string) => {
-    setRegistrations((prev) =>
-      prev.map((reg) =>
+    const updateVerification = (regs: Registration[]) =>
+      regs.map((reg) =>
         reg.email === email ? { ...reg, verified: true } : reg
-      )
-    );
-    setFilteredRegistrations((prev) =>
-      prev.map((reg) =>
-        reg.email === email ? { ...reg, verified: true } : reg
-      )
-    );
+      );
+    setRegistrations((prev) => updateVerification(prev));
+    setFilteredRegistrations((prev) => updateVerification(prev));
   };
 
   const handleLogout = () => {

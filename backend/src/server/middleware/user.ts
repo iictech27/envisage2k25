@@ -3,7 +3,7 @@ import createHttpError from "http-errors";
 
 import { httpCodes } from "../../util/httpCodes.js";
 import UserModel from "../../db/models/user.js";
-import UnverifiedUserModel from "../../db/models/unverified_user.js";
+// import UnverifiedUserModel from "../../db/models/unverified_user.js";
 
 // middleware for requests which require the user to be authenticated (eg registration, profile view)
 export const requireAuthUser: RequestHandler = async (req, _res, next) => {
