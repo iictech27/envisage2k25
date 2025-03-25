@@ -22,8 +22,6 @@ const registrationSchema = new Schema(
     paymentSSUrl: { type: String, required: true },
     confirmed: { type: Boolean, required: true, default: false },
 
-    // paymentID:      { type: String,                                              default: "" },
-
     additionalInfo: { type: String },
   },
   {
