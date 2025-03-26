@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { RequestHandler } from "express";
 import SSRegistrationModel from "../../db/models/registration_ss.js";
 import { ResRegAdmin } from "../bodies/admin.js";
@@ -10,19 +11,18 @@ import transport from "../services/nodemailer.js";
 import regRejectedMail from "../mails/reg_rejected.js";
 import regVerifiedMail from "../mails/reg_verified.js";
 
-export const getRegistrations: RequestHandler = async(_req, res, next) => {
+export const getRegistrations: RequestHandler = async (_req, res, next) => {
   try {
-
     const registrations = await SSRegistrationModel.find().exec();
 
     let resReg: ResRegAdmin = {
       status: httpCodes["200"].code,
       message: httpCodes["200"].message,
       registrations: [],
-      details: "Successfully fetched and returned registrations!"
-    }
+      details: "Successfully fetched and returned registrations!",
+    };
 
-    for(let i = 0; i < registrations.length; i++) {
+    for (let i = 0; i < registrations.length; i++) {
       const reg = registrations[i];
       resReg.registrations.push({
         regID: reg._id.toString(),
@@ -33,33 +33,35 @@ export const getRegistrations: RequestHandler = async(_req, res, next) => {
         verified: reg.confirmed,
         phone: reg.phone,
         year: reg.year,
-        college: reg.college
+        college: reg.college,
+        totalPrice: reg.totalPrice as number,
+        rejected: reg.rejected,
       });
     }
 
     res.status(200);
     res.json(resReg);
-
   } catch (error) {
     next(error);
   }
-}
+};
 
-export const verifyRegistration: RequestHandler = async(req, res, next) => {
+export const verifyRegistration: RequestHandler = async (req, res, next) => {
   const registrationID = req.body.regID?.trim();
 
   try {
-
-    if(!registrationID) {
+    if (!registrationID) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'regID' parameter is missing!"
       );
     }
 
-    const reg = await SSRegistrationModel.findById(new mongoose.Types.ObjectId(registrationID)).exec();
+    const reg = await SSRegistrationModel.findById(
+      new mongoose.Types.ObjectId(registrationID)
+    ).exec();
 
-    if(!reg) {
+    if (!reg) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No registration with given id exists"
@@ -76,68 +78,69 @@ export const verifyRegistration: RequestHandler = async(req, res, next) => {
     // }
 
     let eventNames = "";
-    if(reg.eventIDs.length > 1) {
-      for(let i = 0; i < reg.eventIDs.length - 2; i++) {
-        eventNames += Events.filter((event) => event.id == reg.eventIDs[i])[0].name += ", ";
+    if (reg.eventIDs.length > 1) {
+      for (let i = 0; i < reg.eventIDs.length - 2; i++) {
+        eventNames += Events.filter(
+          (event) => event.id == reg.eventIDs[i]
+        )[0].name += ", ";
       }
-      eventNames += Events.filter((event) => event.id == reg.eventIDs[reg.eventIDs.length - 2])[0].name += " and ";
+      eventNames += Events.filter(
+        (event) => event.id == reg.eventIDs[reg.eventIDs.length - 2]
+      )[0].name += " and ";
     }
-    eventNames += Events.filter((event) => event.id == reg.eventIDs[reg.eventIDs.length - 1])[0].name;
+    eventNames += Events.filter(
+      (event) => event.id == reg.eventIDs[reg.eventIDs.length - 1]
+    )[0].name;
 
-
-    if(user) {
+    if (user) {
       // delete from pending
       const pendingIndex = user.pendingRegIDs.indexOf(reg._id, 0);
-      if(pendingIndex > -1) {
+      if (pendingIndex > -1) {
         user!.pendingRegIDs.splice(pendingIndex, 1); // delete pending reg
       }
 
       // delete from rejected
       const rejIndex = user.rejectedRegIDs.indexOf(reg._id, 0);
-      if(rejIndex > -1) {
+      if (rejIndex > -1) {
         user!.rejectedRegIDs.splice(rejIndex, 1); // delete verified reg
       }
 
       user!.registeredEventIDs = [...user.registeredEventIDs!, ...reg.eventIDs];
-      user!.registrationIDs = [
-        ...user!.registrationIDs,
-        ...[reg._id],
-      ];
+      user!.registrationIDs = [...user!.registrationIDs, ...[reg._id]];
       user!.save();
     }
 
     reg.confirmed = true;
     reg.rejected = false;
     reg.expireAt = null;
-    reg.updateOne({ $unset: { expiredAt: 1 }});
+    reg.updateOne({ $unset: { expiredAt: 1 } });
     reg.save();
 
     transport.sendMail(regVerifiedMail(reg.email, eventNames));
 
     res.status(httpCodes["200"].code);
     res.send(httpCodes["200"].message + ": Verified successfully!");
-
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
+};
 
-}
-
-export const rejectRegistration: RequestHandler = async(req, res, next) => {
+export const rejectRegistration: RequestHandler = async (req, res, next) => {
   const registrationID = req.body.regID?.trim();
 
   try {
-
-    if(!registrationID) {
+    if (!registrationID) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'regID' parameter is missing!"
       );
     }
 
-    const reg = await SSRegistrationModel.findById(new mongoose.Types.ObjectId(registrationID)).exec();
+    const reg = await SSRegistrationModel.findById(
+      new mongoose.Types.ObjectId(registrationID)
+    ).exec();
 
-    if(!reg) {
+    if (!reg) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No registration with given id exists"
@@ -154,42 +157,43 @@ export const rejectRegistration: RequestHandler = async(req, res, next) => {
     // }
 
     let eventNames = "";
-    if(reg.eventIDs.length > 1) {
-      for(let i = 0; i < reg.eventIDs.length - 2; i++) {
-        eventNames += Events.filter((event) => event.id == reg.eventIDs[i])[0].name += ", ";
+    if (reg.eventIDs.length > 1) {
+      for (let i = 0; i < reg.eventIDs.length - 2; i++) {
+        eventNames += Events.filter(
+          (event) => event.id == reg.eventIDs[i]
+        )[0].name += ", ";
       }
-      eventNames += Events.filter((event) => event.id == reg.eventIDs[reg.eventIDs.length - 2])[0].name += " and ";
+      eventNames += Events.filter(
+        (event) => event.id == reg.eventIDs[reg.eventIDs.length - 2]
+      )[0].name += " and ";
     }
-    eventNames += Events.filter((event) => event.id == reg.eventIDs[reg.eventIDs.length - 1])[0].name;
+    eventNames += Events.filter(
+      (event) => event.id == reg.eventIDs[reg.eventIDs.length - 1]
+    )[0].name;
 
-    if(user) {
-
+    if (user) {
       // remove from pending
       const index = user.pendingRegIDs.indexOf(reg._id, 0);
-      if(index > -1) {
+      if (index > -1) {
         user!.pendingRegIDs.splice(index, 1); // delete pending reg
       }
 
       // remove from verified
       const veriIndex = user.registrationIDs.indexOf(reg._id, 0);
-      if(veriIndex > -1) {
+      if (veriIndex > -1) {
         user!.registrationIDs.splice(veriIndex, 1); // delete verified reg
       }
 
       // delete ids
-      for(let i = 0; i < reg.eventIDs.length; i++) {
+      for (let i = 0; i < reg.eventIDs.length; i++) {
         const eventIndex = user.registeredEventIDs.indexOf(reg.eventIDs[i], 0);
-        if(eventIndex > -1) {
+        if (eventIndex > -1) {
           user!.registeredEventIDs.splice(eventIndex, 1); // delete event id
         }
       }
 
-      user!.rejectedRegIDs = [
-        ...user!.rejectedRegIDs,
-        ...[reg._id],
-      ];
+      user!.rejectedRegIDs = [...user!.rejectedRegIDs, ...[reg._id]];
       user!.save();
-
     }
 
     reg.confirmed = false;
@@ -201,28 +205,27 @@ export const rejectRegistration: RequestHandler = async(req, res, next) => {
 
     res.status(httpCodes["200"].code);
     res.send(httpCodes["200"].message + ": Rejected successfully!");
-
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
+};
 
-}
-
-export const deleteRegistration: RequestHandler = async(req, res, next) => {
+export const deleteRegistration: RequestHandler = async (req, res, next) => {
   const registrationID = req.body.regID?.trim();
 
   try {
-
-    if(!registrationID) {
+    if (!registrationID) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'regID' parameter is missing!"
       );
     }
 
-    const reg = await SSRegistrationModel.findById(new mongoose.Types.ObjectId(registrationID)).exec();
+    const reg = await SSRegistrationModel.findById(
+      new mongoose.Types.ObjectId(registrationID)
+    ).exec();
 
-    if(!reg) {
+    if (!reg) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No registration with given id exists"
@@ -238,29 +241,29 @@ export const deleteRegistration: RequestHandler = async(req, res, next) => {
     //   );
     // }
 
-    if(user) {
+    if (user) {
       // delete from pending
       const pendingIndex = user.pendingRegIDs.indexOf(reg._id, 0);
-      if(pendingIndex > -1) {
+      if (pendingIndex > -1) {
         user!.pendingRegIDs.splice(pendingIndex, 1); // delete pending reg
       }
 
       // delete from verified
       const veriIndex = user.registrationIDs.indexOf(reg._id, 0);
-      if(veriIndex > -1) {
+      if (veriIndex > -1) {
         user!.registrationIDs.splice(veriIndex, 1); // delete verified reg
       }
 
       // delete from rejected
       const rejIndex = user.rejectedRegIDs.indexOf(reg._id, 0);
-      if(rejIndex > -1) {
+      if (rejIndex > -1) {
         user!.rejectedRegIDs.splice(rejIndex, 1); // delete verified reg
       }
 
       // delete ids
-      for(let i = 0; i < reg.eventIDs.length; i++) {
+      for (let i = 0; i < reg.eventIDs.length; i++) {
         const eventIndex = user.registeredEventIDs.indexOf(reg.eventIDs[i], 0);
-        if(eventIndex > -1) {
+        if (eventIndex > -1) {
           user!.registeredEventIDs.splice(eventIndex, 1); // delete event id
         }
       }
@@ -272,9 +275,7 @@ export const deleteRegistration: RequestHandler = async(req, res, next) => {
 
     res.status(httpCodes["200"].code);
     res.send(httpCodes["200"].message + ": Deleted successfully!");
-
-
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
-}
+};

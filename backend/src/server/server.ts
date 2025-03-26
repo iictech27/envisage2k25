@@ -4,6 +4,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import session from "express-session";
 import createHttpError, { isHttpError } from "http-errors";
+import rateLimit from "express-rate-limit";
 
 import { mongoStore } from "../db/db.js";
 import { httpCodes } from "../util/httpCodes.js";
@@ -21,30 +22,37 @@ const port = validatedEnv.PORT;
 const sessionSecret = validatedEnv.SESSION_SECRET;
 const sessionTimeLimitMs = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // limit each IP to 20 requests per windowMs
+  message: "Too many requests from this IP, please try again after 15 minutes",
+  handler: (req, res) => {
+    console.log("Rate limit exceeded:", req.ip);
+    res.status(429).send({ message: "Too many requests, try again later." });
+  },
+});
+
 function startServer(): void {
   // listen to requests
-  
+
   server.listen(port, () => {
     log("Listening at port " + port);
   });
 
   // cors middleware
-server.use(
-  cors({
-    origin: function (origin, callback) {
-      callback(null, origin || "*"); // Allow all origins
-    },
-    credentials: true, // Allow cookies and authentication headers
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all methods
-  })
-);
+  server.use(
+    cors({
+      origin: function (origin, callback) {
+        callback(null, origin || "*"); // Allow all origins
+      },
+      credentials: true, // Allow cookies and authentication headers
+      allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all methods
+    })
+  );
 
-// Allow preflight requests
-server.options("*", cors());
-
-
-
+  // Allow preflight requests
+  server.options("*", cors());
 
   // log http requests
   startHttpReqLogging(server);
@@ -82,8 +90,8 @@ server.options("*", cors());
   // different routes/endpoints
   server.use("/", rootRouter);
   server.use("/api", rootRouter);
-  server.use("/api", usersRouter);
-  server.use("/api", registrationRouter);
+  server.use("/api", apiLimiter, usersRouter);
+  server.use("/api", apiLimiter, registrationRouter);
   server.use("/api", eventsRouter);
   server.use("/api", adminRouter);
 

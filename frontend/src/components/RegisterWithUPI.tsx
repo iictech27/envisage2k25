@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef } from "react";
 import Header from "./Header";
@@ -301,6 +302,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
   const [showQRCode, setShowQRCode] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   // Handle form input changes
   const handleChange = (
@@ -356,6 +358,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsRegistering(true);
     const form = new FormData();
     form.append("fullname", formData.name);
     form.append("email", formData.email);
@@ -365,9 +368,8 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
     form.append("paymentMethod", formData.paymentMethod);
     form.append("message", formData.message);
 
-
     // let eventIDs = new Array<number>(selectedEvents.length);
-    for(let i = 0; i < selectedEvents.length; i++) {
+    for (let i = 0; i < selectedEvents.length; i++) {
       // eventIDs[i] = selectedEvents[i].id;
       form.append("eventIDs", selectedEvents[i].id.toString());
     }
@@ -382,13 +384,18 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
 
     try {
       // Call your API handler that accepts FormData
-      const response = await newRegistration(form);
-      console.log(response);
+      await newRegistration(form);
+      // console.log(response);
+      setIsRegistering(false);
       alert("Registration successful! Thank you for registering.");
       onClose();
     } catch (error) {
       console.error("Registration failed:", error);
-      alert(error instanceof Error ? error.message : "Registration failed. Please try again.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Registration failed. Please try again."
+      );
     }
   };
 
@@ -694,7 +701,9 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
                   <button
                     type="submit"
                     className="cyber-button text-lg px-10 py-4 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={!paymentComplete || !paymentScreenshot}
+                    disabled={
+                      isRegistering || !paymentComplete || !paymentScreenshot
+                    }
                   >
                     {/* Button styling with fancy effects */}
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 z-0"></div>
@@ -711,7 +720,7 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
                     <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-neon z-30"></div>
 
                     <span className="relative z-40 font-cyber tracking-widest group-hover:text-white transition-colors duration-300">
-                      INITIALIZE ACCESS
+                      {isRegistering ? "REGISTERING" : "INITIALIZE ACCESS"}
                     </span>
                   </button>
                   {!paymentComplete && (
