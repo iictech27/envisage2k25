@@ -2,11 +2,11 @@ import { MailOptions } from "nodemailer/lib/ses-transport/index.js";
 import validatedEnv from "../../util/validatedEnv.js";
 
 function mailOptions(toEmail: string, events: string): MailOptions {
-    return {
-        from: validatedEnv.NDML_EMAIL,
-        to: toEmail,
-        subject: "Registration Verified and Successful",
-        text: `Dear Participant,
+  return {
+    from: validatedEnv.NDML_EMAIL,
+    to: toEmail,
+    subject: "Registration Verified and Successful",
+    text: `Dear Participant,
 
 Congratulations! Your registration request for ${events} has been verified and successfully completed. Thank you for registering for our events. 
 
@@ -14,7 +14,7 @@ If you have any questions or need further assistance, please do not hesitate to 
 
 Best Regards,
 Admin Team`,
-  html: `
+    html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; overflow: hidden;">
       <div style="background-color: #4CAF50; color: white; padding: 16px; text-align: center; font-size: 24px;">
         Registration Verified
@@ -23,6 +23,7 @@ Admin Team`,
         <p style="font-size: 16px;">Dear Participant,</p>
         <p style="font-size: 16px;">We are pleased to inform you that your registration for ${events} has been verified and is now successful. Thank you for registering for our events.</p>
         <p style="font-size: 16px;">You can now participate in the events you registered for. Please keep this email for your reference.</p>
+        <p style="font-size: 16px;">Keep checking your inbox / spam time to time</p>
         <p style="font-size: 16px;">If you have any questions, feel free to reply to this email or contact our support team.</p>
         <p style="font-size: 16px;">Best Regards,<br>Admin Team</p>
       </div>
@@ -31,7 +32,7 @@ Admin Team`,
       </div>
     </div>
   `,
-    }
-};
+  };
+}
 
 export default mailOptions;
