@@ -3,10 +3,10 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-  "start": "npm install && npm run build",
-  "dev": "tsx watch src",
-  "build": "tsc",
-  "lint": "eslint . --ext .ts"
+    "start": "npm install && npm run build",
+    "dev": "tsx watch src",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "1.38.5",
@@ -16,6 +16,7 @@
     "cors": "2.8.5",
     "envalid": "8.0.0",
     "express": "4.21.2",
+    "express-rate-limit": "^7.5.0",
     "express-session": "1.18.1",
     "http-errors": "2.0.0",
     "mongoose": "8.12.1",
