@@ -24,8 +24,8 @@ const AdminLogin: React.FC = () => {
 
   return (
     <div style={{ margin: "2rem" }} className="text-xl">
-      <h2>Admin Login</h2>
-      <form onSubmit={handleLogin} className="flex gap-x-3">
+      <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
+      <form onSubmit={handleLogin} className="flex gap-x-3 flex-wrap gap-y-3">
         <div>
           <label>Username:</label>
           <input
