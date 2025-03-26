@@ -122,7 +122,7 @@ const AdminPanel: React.FC = () => {
         <div>Loading registrations...</div>
       ) : (
         <RegistrationList
-          registrations={filteredRegistrations}
+          registrations={filteredRegistrations || []}
           onVerify={handleVerify}
           onReject={handleReject}
           verifyLoading={verifyLoading}
