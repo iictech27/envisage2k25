@@ -1,5 +1,5 @@
 export interface Registration {
-  regID: string,
+  regID: string;
   email: string;
   fullname: string;
   events: number[];
@@ -8,11 +8,13 @@ export interface Registration {
   phone: string;
   year: number;
   college: string;
+  totalPrice: number;
+  rejected: boolean;
 }
 
 export interface ResRegAdmin {
-  status: number,
-  message: string,
-  registrations: Registration[]
-  details: string
+  status: number;
+  message: string;
+  registrations: Registration[];
+  details: string;
 }
