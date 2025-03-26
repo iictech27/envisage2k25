@@ -365,6 +365,7 @@ const TeamPage = () => {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
       },
+    },
      {
       id: 32,
       name: "Soumyata Sarkar",
