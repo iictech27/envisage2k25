@@ -112,8 +112,7 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
 
     reg.confirmed = true;
     reg.rejected = false;
-    // reg.expireAt = null;
-    reg.updateOne({ $unset: { expiredAt: 1 } });
+    reg.expireAt = null;
     reg.save();
 
     transport.sendMail(regVerifiedMail(reg.email, eventNames));
@@ -198,7 +197,11 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
 
     reg.confirmed = false;
     reg.rejected = true;
-    // reg.expireAt = new Date();
+    const now = new Date();
+    // const twentySecLater = new Date(now.getTime() + (20 * 1000));
+    // reg.expireAt = twentySecLater;
+    const sevenDaysLater = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+    reg.expireAt = sevenDaysLater;
     reg.save();
 
     transport.sendMail(regRejectedMail(reg.email, eventNames));
