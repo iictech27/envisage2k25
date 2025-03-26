@@ -26,7 +26,12 @@ const registrationSchema = new Schema(
     additionalInfo: { type: String },
 
     // expireAt: { type: Date, required: false, default: null, expires: (7 * 24 * 60 * 60) }
-    expireAt: { type: Date, required: false, default: null, expires: 20 }
+    // expireAt: {
+    //   type: Date,
+    //   required: false,
+    //   default: null,
+    //   expires: 7 * 24 * 60 * 60,
+    // },
   },
   {
     timestamps: true,

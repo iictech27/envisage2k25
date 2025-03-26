@@ -114,7 +114,7 @@ const Filter: React.FC<FilterProps> = ({ onFilter, filteredEmails }) => {
         </div>
         <button
           onClick={handleSendEmail}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-sm sm:text-base text-white px-1 sm:px-2 py-1 rounded hover:bg-blue-600 text-nowrap"
         >
           Send Email
         </button>

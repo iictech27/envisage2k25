@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Header from "../components/Header";
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
 import { resendMail, verifyUserEmail } from "../api/handlers";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EmailVerificationPage = () => {
   const navigate = useNavigate();
@@ -11,6 +13,32 @@ const EmailVerificationPage = () => {
   const [verifying, setVerifying] = useState(false);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [searchParams] = useSearchParams();
+  const isOtpSent = searchParams.get("otp");
+  const msg = searchParams.get("msg");
+
+  useEffect(() => {
+    if (isOtpSent !== "sent") {
+      navigate("/signup");
+    } else {
+      if (msg === "spam") {
+        toast.info(
+          "Just check the spam folder if you have not received the verification code!",
+          {
+            position: "top-center",
+            style: { top: "50px", maxWidth: "300px" },
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          }
+        );
+      }
+    }
+  }, [isOtpSent, navigate, msg]);
 
   // OTP state - 6 digit code
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -87,7 +115,7 @@ const EmailVerificationPage = () => {
     setIsResending(false);
     setResendSuccess(true);
 
-    if(typeof resp == "string") {
+    if (typeof resp == "string") {
       setResendSuccess(false);
       setError(resp);
     }
@@ -117,6 +145,7 @@ const EmailVerificationPage = () => {
       return;
     }
     setVerificationSuccess(true);
+    toast.success("Email verified successfully!", { theme: "colored" });
     navigate("/login");
   };
 
@@ -124,6 +153,18 @@ const EmailVerificationPage = () => {
     <>
       <Header />
       <div className="min-h-screen pt-20 pb-10 flex items-center justify-center relative overflow-hidden">
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         {/* 3D Background */}
         <CyberpunkBackground3D
           variant="hexagons"

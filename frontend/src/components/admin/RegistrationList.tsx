@@ -39,17 +39,20 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
 }) => {
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
-      registrations.map((reg) => ({
-        Email: reg.email,
-        "Full Name": reg.fullname,
-        "Registered Events": reg.events
-          .map((event) => `${event.name} (${event.type})`)
-          .join(", "),
-        "Payment Proof": reg.paymentProof
-          ? `=HYPERLINK("${reg.paymentProof}", "View Image")`
-          : "No Proof",
-        Verified: reg.verified ? "Yes" : "No",
-      }))
+      registrations
+        .filter((reg) => reg.verified)
+        .map((reg) => ({
+          "Full Name": reg.fullname,
+          Email: reg.email,
+          Phone: reg.phone,
+          "Registered Events": reg.events
+            .map((event) => `${event.name} (${event.type})`)
+            .join(", "),
+          "Payment Proof": reg.paymentProof
+            ? `=HYPERLINK("${reg.paymentProof}", "View Image")`
+            : "No Proof",
+          Verified: reg.verified ? "Yes" : "No",
+        }))
     );
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Registrations");
@@ -67,8 +70,9 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
       <table className="min-w-full border">
         <thead>
           <tr>
-            <th className="border px-4 py-2 text-left">Email</th>
             <th className="border px-4 py-2 text-left">Full Name</th>
+            <th className="border px-4 py-2 text-left">Email</th>
+            <th className="border px-4 py-2 text-left">Phone</th>
             <th className="border px-4 py-2 text-left">Registered Events</th>
             <th className="border px-4 py-2 text-left">Total</th>
             {showPaymentProof && (
@@ -83,8 +87,9 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
               key={index}
               className="border odd:bg-transparent even:bg-white/10"
             >
-              <td className="border px-4 py-2">{reg.email}</td>
               <td className="border px-4 py-2">{reg.fullname}</td>
+              <td className="border px-4 py-2">{reg.email}</td>
+              <td className="border px-4 py-2">{reg.phone}</td>
               <td className="border px-4 py-2">
                 {reg.events.map((event, idx) => (
                   <p key={idx}>
@@ -111,12 +116,22 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
                 ) : reg.rejected ? (
                   <>
                     <span className="text-red-500">Rejected</span>
+                    <button
+                      onClick={() => onVerify(reg.regID)}
+                      className="ml-4 flex justify-center items-center w-20 bg-blue-500 text-sm sm:text-base text-white px-2 py-1 rounded hover:bg-blue-600"
+                    >
+                      {verifyLoading ? (
+                        <div className="animate-spin rounded-full h-3 w-3 border-t-2 border-white"></div>
+                      ) : (
+                        "Verify"
+                      )}
+                    </button>
                   </>
                 ) : (
                   <>
                     <button
                       onClick={() => onVerify(reg.regID)}
-                      className="flex justify-center items-center w-20 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                      className="flex justify-center items-center w-20 bg-blue-500 text-sm sm:text-base text-white px-2 py-1 rounded hover:bg-blue-600"
                     >
                       {verifyLoading ? (
                         <div className="animate-spin rounded-full h-3 w-3 border-t-2 border-white"></div>
@@ -126,7 +141,7 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
                     </button>
                     <button
                       onClick={() => onReject(reg.regID)}
-                      className="flex justify-center items-center w-20 ml-4 bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                      className="flex justify-center items-center w-20 ml-4 bg-red-500 text-sm sm:text-base text-white px-2 py-1 rounded hover:bg-red-600"
                     >
                       {rejectLoading ? (
                         <div className="animate-spin rounded-full h-3 w-3 border-t-2 border-white"></div>
@@ -136,7 +151,7 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
                     </button>
                   </>
                 )}
-                <button className="ml-4 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                <button className="ml-4 bg-blue-500 text-sm sm:text-base text-white px-1 sm:px-2 py-1 rounded hover:bg-blue-600 text-nowrap">
                   Send Email
                 </button>
               </td>
