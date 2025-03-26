@@ -59,6 +59,11 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
     XLSX.writeFile(workbook, "registrations.xlsx");
   };
 
+  const sendEmail = (email: string) => {
+      const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`;
+      window.location.href = gmailURL;
+  }
+
   return (
     <div>
       <button
@@ -151,7 +156,10 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
                     </button>
                   </>
                 )}
-                <button className="ml-4 bg-blue-500 text-sm sm:text-base text-white px-1 sm:px-2 py-1 rounded hover:bg-blue-600 text-nowrap">
+                <button
+                  onClick={() => sendEmail(reg.email)}
+                  className="ml-4 bg-blue-500 text-sm sm:text-base text-white px-1 sm:px-2 py-1 rounded hover:bg-blue-600 text-nowrap"
+                >
                   Send Email
                 </button>
               </td>
