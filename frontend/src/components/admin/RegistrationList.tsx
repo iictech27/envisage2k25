@@ -13,6 +13,8 @@ export interface Registration {
   events: Event[];
   paymentProof: string;
   verified: boolean;
+  rejected: boolean;
+  totalPrice: number;
   phone?: string;
   year?: number;
   college?: string;
@@ -20,13 +22,19 @@ export interface Registration {
 
 export interface RegistrationListProps {
   registrations: Registration[];
-  onVerify: (email: string) => void;
+  onVerify: (regId: string) => void;
+  onReject: (regId: string) => void;
+  verifyLoading?: boolean;
+  rejectLoading?: boolean;
   showPaymentProof?: boolean;
 }
 
 const RegistrationList: React.FC<RegistrationListProps> = ({
   registrations,
   onVerify,
+  onReject,
+  verifyLoading,
+  rejectLoading,
   showPaymentProof = false,
 }) => {
   const exportToExcel = () => {
@@ -37,6 +45,9 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
         "Registered Events": reg.events
           .map((event) => `${event.name} (${event.type})`)
           .join(", "),
+        "Payment Proof": reg.paymentProof
+          ? `=HYPERLINK("${reg.paymentProof}", "View Image")`
+          : "No Proof",
         Verified: reg.verified ? "Yes" : "No",
       }))
     );
@@ -59,6 +70,7 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
             <th className="border px-4 py-2 text-left">Email</th>
             <th className="border px-4 py-2 text-left">Full Name</th>
             <th className="border px-4 py-2 text-left">Registered Events</th>
+            <th className="border px-4 py-2 text-left">Total</th>
             {showPaymentProof && (
               <th className="border px-4 py-2 text-left">Payment Proof</th>
             )}
@@ -80,6 +92,7 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
                   </p>
                 ))}
               </td>
+              <td className="border px-4 py-2">₹{reg.totalPrice}</td>
               {showPaymentProof && (
                 <td className="border px-4 py-2">
                   <a
@@ -92,16 +105,36 @@ const RegistrationList: React.FC<RegistrationListProps> = ({
                   </a>
                 </td>
               )}
-              <td className="border px-4 py-2">
+              <td className="px-4 py-2 flex items-center">
                 {reg.verified ? (
                   <span className="text-green-500">Verified</span>
+                ) : reg.rejected ? (
+                  <>
+                    <span className="text-red-500">Rejected</span>
+                  </>
                 ) : (
-                  <button
-                    onClick={() => onVerify(reg.email)}
-                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
-                  >
-                    Verify
-                  </button>
+                  <>
+                    <button
+                      onClick={() => onVerify(reg.regID)}
+                      className="flex justify-center items-center w-20 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                    >
+                      {verifyLoading ? (
+                        <div className="animate-spin rounded-full h-3 w-3 border-t-2 border-white"></div>
+                      ) : (
+                        "Verify"
+                      )}
+                    </button>
+                    <button
+                      onClick={() => onReject(reg.regID)}
+                      className="flex justify-center items-center w-20 ml-4 bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    >
+                      {rejectLoading ? (
+                        <div className="animate-spin rounded-full h-3 w-3 border-t-2 border-white"></div>
+                      ) : (
+                        "Reject"
+                      )}
+                    </button>
+                  </>
                 )}
                 <button className="ml-4 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
                   Send Email

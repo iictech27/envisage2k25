@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event, Registration } from "../components/admin/RegistrationList";
@@ -100,7 +101,7 @@ export async function resendMail(): Promise<any> {
   try {
     const body = await resendEmail();
     return body;
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return getErrorMessage(error);
   }
@@ -130,20 +131,20 @@ export async function logOutUser(): Promise<boolean> {
 
 export async function getReg(): Promise<Registration[]> {
   try {
-
     const response = await adminGetRegistraions({
       adminName: "admin_envisage",
-      adminPassword: "@tmsltechies"
+      adminPassword: "@tmsltechies",
     });
 
     let registrations: Registration[] = [];
     let resRegsitrations = response.registrations;
 
-    for(let i = 0; i < resRegsitrations.length; i++) {
-
+    for (let i = 0; i < resRegsitrations.length; i++) {
       let events: Event[] = [];
-      for(let j = 0; j < resRegsitrations[i].events.length; j++) {
-        let event = eventOptions.filter((event) => event.id == resRegsitrations[i].events[j])[0];
+      for (let j = 0; j < resRegsitrations[i].events.length; j++) {
+        let event = eventOptions.filter(
+          (event) => event.id == resRegsitrations[i].events[j]
+        )[0];
         events.push({
           name: event.name,
           type: event.mode,
@@ -157,15 +158,16 @@ export async function getReg(): Promise<Registration[]> {
         events: events,
         paymentProof: resRegsitrations[i].paymentProof,
         verified: resRegsitrations[i].verified,
+        rejected: resRegsitrations[i].rejected,
+        totalPrice: resRegsitrations[i].totalPrice,
         phone: resRegsitrations[i].phone,
         year: resRegsitrations[i].year,
-        college: resRegsitrations[i].college
+        college: resRegsitrations[i].college,
       });
     }
 
     return registrations;
-
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     alert(getErrorMessage(error));
     return [];
@@ -174,16 +176,14 @@ export async function getReg(): Promise<Registration[]> {
 
 export async function verifyReg(regID: string): Promise<boolean> {
   try {
-
     await adminVerifyRegistration({
       adminName: "admin_envisage",
       adminPassword: "@tmsltechies",
-      regID: regID
+      regID: regID,
     });
 
     return true;
-
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return false;
   }
@@ -191,16 +191,14 @@ export async function verifyReg(regID: string): Promise<boolean> {
 
 export async function rejectReg(regID: string): Promise<boolean> {
   try {
-
     await adminRejectRegistration({
       adminName: "admin_envisage",
       adminPassword: "@tmsltechies",
-      regID: regID
+      regID: regID,
     });
 
     return true;
-
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return false;
   }
@@ -208,16 +206,14 @@ export async function rejectReg(regID: string): Promise<boolean> {
 
 export async function deleteReg(regID: string): Promise<boolean> {
   try {
-
     await adminDeleteRegistration({
       adminName: "admin_envisage",
       adminPassword: "@tmsltechies",
-      regID: regID
+      regID: regID,
     });
 
     return true;
-
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return false;
   }
@@ -230,4 +226,3 @@ function getErrorMessage(error: unknown): string {
 
   return "An unknown error has occured";
 }
-

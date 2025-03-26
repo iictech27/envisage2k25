@@ -5,14 +5,31 @@ import Filter from "../components/admin/Filter";
 import RegistrationList, {
   Registration,
 } from "../components/admin/RegistrationList";
-import { AppDispatch, RootState } from "../store"; // adjust the path based on your project structure
-import { clearAdmin } from "../features/adminSlice";
+import { AppDispatch, RootState } from "../store"; // adjust path as needed
+import {
+  clearAdmin,
+  fetchRegistrations,
+  rejectRegistrationThunk,
+  verifyRegistrationThunk,
+} from "../features/adminSlice";
 
 const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+
   // Check if admin is logged in
   const admin = useSelector((state: RootState) => state.admin.admin);
+  const registrations = useSelector(
+    (state: RootState) => state.admin.registrations
+  );
+  const loading = useSelector((state: RootState) => state.admin.loading);
+  const { verifyLoading, rejectLoading } = useSelector(
+    (state: RootState) => state.admin
+  );
+
+  const [filteredRegistrations, setFilteredRegistrations] = useState<
+    Registration[]
+  >([]);
 
   useEffect(() => {
     if (!admin) {
@@ -20,13 +37,22 @@ const AdminPanel: React.FC = () => {
     }
   }, [admin, navigate]);
 
-  // Initialize with empty arrays
-  const [registrations, setRegistrations] = useState<Registration[]>([]);
-  const [filteredRegistrations, setFilteredRegistrations] = useState<
-    Registration[]
-  >([]);
+  // Fetch registrations on mount or refresh
+  useEffect(() => {
+    dispatch(fetchRegistrations());
+  }, [dispatch]);
 
-  const handleFilter = (eventName: string, eventType: string) => {
+  // Update local filtered state when registrations change
+  useEffect(() => {
+    setFilteredRegistrations(registrations);
+  }, [registrations]);
+
+  // Filter registration entries
+  const handleFilter = (
+    eventName: string,
+    eventType: string,
+    status: string
+  ) => {
     const filtered = registrations.filter((reg) => {
       const nameMatch = eventName
         ? reg.events.some((event) =>
@@ -34,20 +60,29 @@ const AdminPanel: React.FC = () => {
           )
         : true;
       const typeMatch = eventType
-        ? reg.events.some((event) => event.type === eventType)
+        ? reg.events.some((event) =>
+            event.type.toLowerCase().includes(eventType.toLowerCase())
+          )
         : true;
-      return nameMatch && typeMatch;
+      const statusMatch =
+        status === "verified"
+          ? reg.verified === true
+          : status === "unverified"
+          ? reg.verified === false
+          : true;
+      return nameMatch && typeMatch && statusMatch;
     });
     setFilteredRegistrations(filtered);
   };
 
-  const handleVerify = (email: string) => {
-    const updateVerification = (regs: Registration[]) =>
-      regs.map((reg) =>
-        reg.email === email ? { ...reg, verified: true } : reg
-      );
-    setRegistrations((prev) => updateVerification(prev));
-    setFilteredRegistrations((prev) => updateVerification(prev));
+  // Verify registration by dispatching verifyRegistrationThunk
+  const handleVerify = async (regID: string) => {
+    await dispatch(verifyRegistrationThunk(regID));
+  };
+
+  // Verify registration by dispatching verifyRegistrationThunk
+  const handleReject = async (regID: string) => {
+    await dispatch(rejectRegistrationThunk(regID));
   };
 
   const handleLogout = () => {
@@ -55,7 +90,8 @@ const AdminPanel: React.FC = () => {
   };
 
   const handleRefresh = () => {
-  }
+    dispatch(fetchRegistrations());
+  };
 
   return (
     <div className="p-4">
@@ -82,11 +118,18 @@ const AdminPanel: React.FC = () => {
           ...new Set(filteredRegistrations.map((reg) => reg.email)),
         ]}
       />
-      <RegistrationList
-        registrations={filteredRegistrations}
-        onVerify={handleVerify}
-        showPaymentProof={true}
-      />
+      {loading ? (
+        <div>Loading registrations...</div>
+      ) : (
+        <RegistrationList
+          registrations={filteredRegistrations}
+          onVerify={handleVerify}
+          onReject={handleReject}
+          verifyLoading={verifyLoading}
+          rejectLoading={rejectLoading}
+          showPaymentProof={true}
+        />
+      )}
     </div>
   );
 };
