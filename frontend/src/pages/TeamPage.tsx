@@ -365,6 +365,16 @@ const TeamPage = () => {
         twitter: "https://twitter.com",
         linkedin: "https://linkedin.com",
       },
+     {
+      id: 32,
+      name: "Soumyata Sarkar",
+      role: "Head of UI/UX wing",
+      bio: "Building and nurturing our vibrant community of metaverse enthusiasts and creators.",
+      image: "/images/soumyata_sarkar.jpg",
+      socialLinks: {
+        twitter: "https://twitter.com",
+        linkedin: "https://linkedin.com",
+      },
     },
   ];
 
