@@ -40,18 +40,27 @@ function startServer(): void {
   });
 
   // cors middleware
+  const allowedOrigins = [process.env.CLIENT_LINK];
+
   server.use(
     cors({
       origin: function (origin, callback) {
-        callback(null, origin || "*"); // Allow all origins
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.indexOf(origin) !== -1) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
       },
-      credentials: true, // Allow cookies and authentication headers
-      allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all methods
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      optionsSuccessStatus: 200, // Legacy browser support
     })
   );
 
-  // Allow preflight requests
+  // Preflight requests
   server.options("*", cors());
 
   // log http requests

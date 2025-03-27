@@ -121,7 +121,10 @@ export const signUp: RequestHandler<
     if (unverifiedUserWithEmail) {
       // create and save session token which is the mongo id
       req.session.sessionToken = unverifiedUserWithEmail._id;
+      // console.log("Session token 1 ... ", req.session.sessionToken);
       req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
+      req.session.cookie.secure = true;
+      req.session.cookie.sameSite = "none";
     }
 
     // random 6 digit number
@@ -152,6 +155,7 @@ export const signUp: RequestHandler<
 
     // create and save session token which is the mongo id
     req.session.sessionToken = newUnverifiedUser._id;
+    // console.log("Session token 2 ... ", req.session.sessionToken);
     req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
 
     res.status(response.status);
@@ -180,6 +184,8 @@ export const verifyEmail: RequestHandler<
         httpCodes["400"].message + ": Parameters missing!"
       );
     }
+
+    // console.log("Session Token : ", sessionToken);
 
     if (!sessionToken) {
       throw createHttpError(
@@ -220,7 +226,7 @@ export const verifyEmail: RequestHandler<
       );
     }
 
-    console.log(unverifiedUser);
+    // console.log(unverifiedUser);
 
     const newUser = await UserModel.create({
       fullName: unverifiedUser.fullName,
@@ -230,15 +236,15 @@ export const verifyEmail: RequestHandler<
 
     UnverifiedUserModel.findByIdAndDelete(sessionToken).exec();
 
-  // try to destroy session which has unauthenticated user (should be overwritten anyways but just in case)
-    if(req.session && req.session.cookie) {
+    // try to destroy session which has unauthenticated user (should be overwritten anyways but just in case)
+    if (req.session && req.session.cookie) {
       // manually unset cookie
       res.cookie("connect.sid", null, {
         expires: new Date("Thu, 01 Jan 1970 00:00:00 UTC"), // random day in the past
-        httpOnly: true
+        httpOnly: true,
       });
 
-        // try to destroy session
+      // try to destroy session
       req.session.destroy((error) => {
         if (error) {
           next(error);
@@ -400,8 +406,7 @@ export const logIn: RequestHandler<
       req.session.cookie.maxAge =
         validatedEnv.SESSION_EXP_MAX_HR * 60 * 60 * 1000;
     } else {
-      req.session.cookie.maxAge =
-        validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
+      req.session.cookie.maxAge = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
     }
 
     const response: ResUserBody = {
@@ -421,18 +426,15 @@ export const logIn: RequestHandler<
 
 // endpoint ot logout of a user
 export const logOut: RequestHandler = (req, res, next) => {
-
   try {
-
-    if(req.session && req.session.cookie) {
-
+    if (req.session && req.session.cookie) {
       // manually unset cookie
       res.cookie("connect.sid", null, {
         expires: new Date("Thu, 01 Jan 1970 00:00:00 UTC"), // random day in the past
-        httpOnly: true
+        httpOnly: true,
       });
 
-        // try to destroy session
+      // try to destroy session
       req.session.destroy((error) => {
         if (error) {
           next(error);
@@ -441,12 +443,10 @@ export const logOut: RequestHandler = (req, res, next) => {
           res.send("User logged out successfully!");
         }
       });
-
     }
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
-
 };
 
 // endpoint to get registered events of a user
