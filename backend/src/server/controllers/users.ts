@@ -108,11 +108,18 @@ export const signUp: RequestHandler<
     }).exec();
 
     if (unverifiedUserWithEmail) {
-      throw createHttpError(
-        httpCodes["409"].code,
-        httpCodes["409"].message +
-          ": sign up request already exists. check your inbox and verify email. if this wasnt you, contact the admin team"
-      );
+      const now = new Date().valueOf();
+      const oneDayAfterRequestCreated = new Date(unverifiedUserWithEmail.createdAt.getTime() + (24 * 60 * 60 * 1000));
+      const difference = now - oneDayAfterRequestCreated.valueOf();
+
+      // one day has not passed since request
+      if(difference > 0) {
+        throw createHttpError(
+          httpCodes["409"].code,
+          httpCodes["409"].message +
+            ": sign up request already exists. check your inbox and verify email. if this wasnt you, contact the admin team"
+        );
+      }
     }
 
     // random 6 digit number
