@@ -3,8 +3,6 @@
 import { useState, useRef } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
 import { newRegistration } from "../api/fetch";
 
 // Event data with fees and mode of conduction
@@ -281,8 +279,6 @@ interface RegisterProps {
 }
 
 const RegisterWithUPI = ({ onClose }: RegisterProps) => {
-  const user = useSelector((state: RootState) => state.user.user);
-  console.log(user);
   // const navigate = useNavigate();
   // Form state
   const [formData, setFormData] = useState({
