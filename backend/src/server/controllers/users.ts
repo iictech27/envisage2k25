@@ -125,6 +125,12 @@ export const signUp: RequestHandler<
       req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
       req.session.cookie.secure = true;
       req.session.cookie.sameSite = "none";
+      await new Promise<void>((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
     }
 
     // random 6 digit number
@@ -157,6 +163,16 @@ export const signUp: RequestHandler<
     req.session.sessionToken = newUnverifiedUser._id;
     // console.log("Session token 2 ... ", req.session.sessionToken);
     req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
+    req.session.cookie.secure = true;
+    req.session.cookie.sameSite = "none";
+    await new Promise<void>((resolve, reject) => {
+      req.session.save((err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+
+    console.log("Session : ", req.session);
 
     res.status(response.status);
     res.json(response);
@@ -173,9 +189,10 @@ export const verifyEmail: RequestHandler<
   unknown
 > = async (req, res, next) => {
   const otp = req.body.otp;
-  console.log(req.body);
-  console.log(otp);
+  // console.log(req.body);
+  // console.log(otp);
   const sessionToken = req.session.sessionToken;
+  console.log("Session token : ", sessionToken);
 
   try {
     if (!otp) {
@@ -274,6 +291,7 @@ export const verifyEmail: RequestHandler<
 // endpoint to resend verification mail
 export const resendVerifyEmail: RequestHandler = async (req, res, next) => {
   const sessionToken = req.session.sessionToken;
+  console.log("Session token : ", sessionToken);
 
   try {
     if (!sessionToken) {
