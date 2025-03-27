@@ -104,7 +104,7 @@ export async function verifyEmail(
 // resend verification mail
 export async function resendEmail(
   credentials: ReqResendEmailBody
-) {
+): Promise<ResUserBody> {
   const response = await fetchData("/users/resend", {
     method: reqTypes.POST,
     credentials: "include",

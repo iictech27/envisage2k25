@@ -20,6 +20,7 @@ import {
 import UnverifiedUserModel from "../../db/models/unverified_user.js";
 import mailOptions from "../mails/verif_email.js";
 import transport from "../services/nodemailer.js";
+import SSRegistrationModel from "../../db/models/registration_ss.js";
 
 const hashNum = validatedEnv.HASH_NUM;
 
@@ -107,11 +108,18 @@ export const signUp: RequestHandler<
     }).exec();
 
     if (unverifiedUserWithEmail) {
-      throw createHttpError(
-        httpCodes["409"].code,
-        httpCodes["409"].message +
-          ": sign up request already exists. check your inbox and verify email. if this wasnt you, contact the admin team"
-      );
+      const now = new Date().valueOf();
+      const oneDayAfterRequestCreated = new Date(unverifiedUserWithEmail.createdAt.getTime() + (24 * 60 * 60 * 1000));
+      const difference = now - oneDayAfterRequestCreated.valueOf();
+
+      // one day has not passed since request
+      if(difference > 0) {
+        throw createHttpError(
+          httpCodes["409"].code,
+          httpCodes["409"].message +
+            ": sign up request already exists. check your inbox and verify email. if this wasnt you, contact the admin team"
+        );
+      }
     }
 
     // random 6 digit number
@@ -205,13 +213,35 @@ export const verifyEmail: RequestHandler<
       );
     }
 
-    // console.log(unverifiedUser);
 
     const newUser = await UserModel.create({
       fullName: unverifiedUser.fullName,
       email: unverifiedUser.email,
       hashedPassword: unverifiedUser.hashedPassword,
     });
+
+    // check if there are any user-less registrations from the account's email and link with this account
+    const registrations = await SSRegistrationModel.find({email: unverifiedUser.email}).exec();
+    for(let i = 0; i < registrations.length; i++) {
+      if (registrations[i].confirmed) {
+
+        newUser!.registeredEventIDs = [...newUser.registeredEventIDs!, ...registrations[i].eventIDs];
+        newUser!.registrationIDs = [...newUser!.registrationIDs, ...[registrations[i]._id]];
+
+      } else if (registrations[i].rejected) {
+
+        newUser!.rejectedRegIDs = [...newUser!.rejectedRegIDs, ...[registrations[i]._id]];
+
+      } else {
+
+        newUser!.pendingRegIDs = [...newUser!.pendingRegIDs, ...[registrations[i]._id]];
+
+      }
+
+      registrations[i].userID = newUser._id;
+    }
+    newUser.save();
+
 
     UnverifiedUserModel.findByIdAndDelete(unverifiedUser._id).exec();
 
@@ -289,8 +319,8 @@ export const resendVerifyEmail: RequestHandler<
       status: httpCodes["201"].code,
       message: httpCodes["201"].message,
       details: "Successfully sent new verification otp!",
-      fullName: "",
-      email: "",
+      fullName: unverifiedUser.fullName,
+      email: unverifiedUser.email,
     };
 
     res.status(response.status);
