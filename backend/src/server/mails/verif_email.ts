@@ -2,11 +2,11 @@ import { MailOptions } from "nodemailer/lib/ses-transport/index.js";
 import validatedEnv from "../../util/validatedEnv.js";
 
 function mailOptions(toEmail: string, otp: string): MailOptions {
-    return {
-        from: validatedEnv.NDML_EMAIL,
-        to: toEmail,
-        subject: "Email Verification Required",
-        text: `Dear Participant,
+  return {
+    from: validatedEnv.NDML_EMAIL,
+    to: toEmail,
+    subject: "Email Verification Required",
+    text: `Dear Participant,
 
 Congratulations! Your signup request has been recorded. But before you proceed, you would need to verify your email adress.
 
@@ -14,7 +14,7 @@ If you have any questions or need further assistance, please do not hesitate to 
 
 Best Regards,
 Admin Team`,
-  html: `
+    html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; overflow: hidden;">
       <div style="background-color: #4CAF50; color: white; padding: 16px; text-align: center; font-size: 24px;">
         Email Verification Required
@@ -23,7 +23,9 @@ Admin Team`,
         <p style="font-size: 16px;">Dear Participant,</p>
         <p style="font-size: 16px;">Please verify your email ID using the following code. Note that this code expires in 10 minutes.</p>
         <p style="font-size: 16px;">${otp}</p>
-        <p style="font-size: 16px;">If you arent already redirected to the verfication page click on this <a href="${validatedEnv.CLIENT_LINK + "/verify-email"}">LINK</a></p>
+        <p style="font-size: 16px;">If you arent already redirected to the verfication page click on this <a href="${
+          validatedEnv.CLIENT_LINK + "/verify-email?otp=sent&msg=spam"
+        }">LINK</a></p>
         <p style="font-size: 16px;">If you have any questions, feel free to reply to this email or contact our support team.</p>
         <p style="font-size: 16px;">Best Regards,<br>Admin Team</p>
       </div>
@@ -32,7 +34,7 @@ Admin Team`,
       </div>
     </div>
   `,
-    }
-};
+  };
+}
 
 export default mailOptions;
