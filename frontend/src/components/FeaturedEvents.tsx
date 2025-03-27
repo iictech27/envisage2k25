@@ -237,7 +237,7 @@ const FeaturedEvents = () => {
         "https://images.unsplash.com/photo-1626379953822-baec19c3accd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
       category: "Tech",
       featured: true,
-      registrationUrl: "/events/metaverse-summit-2024",
+      registrationUrl: "/register",
     },
     {
       id: 2,
@@ -248,7 +248,7 @@ const FeaturedEvents = () => {
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       category: "Auction",
       featured: true,
-      registrationUrl: "/events/digital-art-exhibition",
+      registrationUrl: "/register",
     },
     {
       id: 3,
@@ -259,7 +259,7 @@ const FeaturedEvents = () => {
         "https://plus.unsplash.com/premium_photo-1681487769650-a0c3fbaed85a?q=80&w=2155&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       category: "Finance",
       featured: true,
-      registrationUrl: "/events/blockchain-nft-workshop",
+      registrationUrl: "/register",
     },
     {
       id: 4,
@@ -270,7 +270,7 @@ const FeaturedEvents = () => {
         "https://plus.unsplash.com/premium_photo-1661313688756-2e38d59fb9f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       category: "Business",
       featured: true,
-      registrationUrl: "/events/cyberpunk-music-festival",
+      registrationUrl: "/register",
     },
   ];
 
