@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./features/userSlice";
 import adminReducer from "./features/adminSlice";
+import authReducer from "./features/authSlice";
 
 // TypeScript: Define the RootState and AppDispatch types
 export type RootState = ReturnType<typeof rootReducer>;
@@ -18,6 +19,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   admin: adminReducer,
+  auth: authReducer,
 });
 
 // Persisted Reducer

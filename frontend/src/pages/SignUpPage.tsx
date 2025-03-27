@@ -3,11 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
-import { ResUserBody } from "../api/bodies/user";
+import { ResUserSignupBody } from "../api/bodies/user";
 import { signUpUser } from "../api/handlers";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { setAuthId } from "../features/authSlice";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -69,12 +73,14 @@ const SignUpPage = () => {
 
     setIsLoading(true);
 
-    const response: ResUserBody | string = await signUpUser({
+    const response: ResUserSignupBody | string = await signUpUser({
       fullName: formData.fullName,
       email: formData.email,
       password: formData.password,
       confirmPassword: formData.confirmPassword,
     });
+
+    console.log("Response : ", response);
 
     setIsLoading(false);
 
@@ -83,6 +89,8 @@ const SignUpPage = () => {
       apiError.api = response;
       setErrors(apiError);
       return;
+    } else {
+      dispatch(setAuthId(response.userID));
     }
 
     // navigate("/login");

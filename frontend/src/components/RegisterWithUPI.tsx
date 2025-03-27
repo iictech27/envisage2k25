@@ -396,6 +396,20 @@ const RegisterWithUPI = ({ onClose }: RegisterProps) => {
           ? error.message
           : "Registration failed. Please try again."
       );
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        college: "",
+        year: "",
+        events: [],
+        paymentMethod: "",
+        message: "",
+      });
+      for (const pair of form.entries()) {
+        form.delete(pair[0]);
+      }
+      setIsRegistering(false);
     }
   };
 

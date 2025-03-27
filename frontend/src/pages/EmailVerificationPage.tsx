@@ -5,9 +5,12 @@ import CyberpunkBackground3D from "../components/CyberpunkBackground3D";
 import { resendMail, verifyUserEmail } from "../api/handlers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const EmailVerificationPage = () => {
   const navigate = useNavigate();
+  const authId = useSelector((state: RootState) => state.auth.authId);
   const [isResending, setIsResending] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
   const [verifying, setVerifying] = useState(false);
@@ -111,7 +114,7 @@ const EmailVerificationPage = () => {
     setIsResending(true);
     setError("");
 
-    const resp = await resendMail();
+    const resp = await resendMail({ userID: authId });
     setIsResending(false);
     setResendSuccess(true);
 
@@ -135,7 +138,7 @@ const EmailVerificationPage = () => {
     // Simulate API call for verification
     const otpValue = otp.join("");
     // console.log(otpValue);
-    const resp = await verifyUserEmail({ otp: otpValue });
+    const resp = await verifyUserEmail({ otp: otpValue, userID: authId });
     if (typeof resp == "string") {
       setVerificationSuccess(false);
       setVerifying(false);
