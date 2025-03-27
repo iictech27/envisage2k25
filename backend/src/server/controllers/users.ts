@@ -289,8 +289,8 @@ export const resendVerifyEmail: RequestHandler<
       status: httpCodes["201"].code,
       message: httpCodes["201"].message,
       details: "Successfully sent new verification otp!",
-      fullName: "",
-      email: "",
+      fullName: unverifiedUser.fullName,
+      email: unverifiedUser.email,
     };
 
     res.status(response.status);
