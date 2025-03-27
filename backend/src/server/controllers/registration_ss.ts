@@ -145,13 +145,33 @@ export const createRegistration: RequestHandler<
     }
 
     // retrieve authenticated user
-    const user = await UserModel.findOne({email: email}).exec();
+    const user = await UserModel.findOne({ email: email }).exec();
 
     // check if user already registered in event
     const userRegisteredEventIDs = user?.registeredEventIDs; // user will definitely exist as checked by middleware
-    if(user) {
-        for (let i = 0; i < eventIDs.length; i++) {
-          if (userRegisteredEventIDs!.includes(Number(eventIDs[i]))) {
+    if (user) {
+      for (let i = 0; i < eventIDs.length; i++) {
+        if (userRegisteredEventIDs!.includes(Number(eventIDs[i]))) {
+          throw createHttpError(
+            httpCodes["401"].code,
+            httpCodes["401"].message +
+              ": User already registered in one or more events!"
+          );
+        }
+      }
+    } else {
+      // check if registratin already exists from one email
+      const registrations = await SSRegistrationModel.find({
+        email: email,
+      }).exec();
+      let allEvents = new Array<number>();
+      for (let i = 0; i < registrations.length; i++) {
+        allEvents = [...allEvents, ...registrations[i].eventIDs];
+      }
+
+      for (let i = 0; i < eventIDs.length; i++) {
+        for (let j = 0; j < allEvents.length; j++) {
+          if (eventIDs[i] == allEvents[j]) {
             throw createHttpError(
               httpCodes["401"].code,
               httpCodes["401"].message +
@@ -159,25 +179,7 @@ export const createRegistration: RequestHandler<
             );
           }
         }
-    } else {
-        // check if registratin already exists from one email
-        const registrations = await SSRegistrationModel.find({ email: email }).exec();
-        let allEvents = new Array<number>;
-        for(let i = 0; i < registrations.length; i++) {
-            allEvents = [...allEvents, ...registrations[i].eventIDs]
-        }
-
-        for (let i = 0; i < eventIDs.length; i++) {
-            for (let j = 0; j < allEvents.length; j++) {
-                if(eventIDs[i] == allEvents[j]) {
-                    throw createHttpError(
-                        httpCodes["401"].code,
-                        httpCodes["401"].message +
-                            ": User already registered in one or more events!"
-                    );
-                }
-            }
-        }
+      }
     }
 
     // create new user with given data
@@ -190,7 +192,7 @@ export const createRegistration: RequestHandler<
       college: college,
       eventIDs: eventIDs,
       totalPrice: price,
-      paymentSSUrl: cloudinaryURL
+      paymentSSUrl: cloudinaryURL,
     });
 
     transport.sendMail(mailOptions(email));
@@ -201,13 +203,10 @@ export const createRegistration: RequestHandler<
       newRegistration.save();
     }
 
-    if(user) {
-        // add new registrations to user
-        user!.pendingRegIDs = [
-          ...user!.pendingRegIDs,
-          ...[newRegistration._id],
-        ];
-        user!.save();
+    if (user) {
+      // add new registrations to user
+      user!.pendingRegIDs = [...user!.pendingRegIDs, ...[newRegistration._id]];
+      user!.save();
     }
 
     const response: ResSSRegistrationBody = {

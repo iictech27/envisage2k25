@@ -103,24 +103,24 @@ export const signUp: RequestHandler<
       );
     }
 
-    const unverifiedUserWithEmail = await UnverifiedUserModel.findOne({
-      email: email,
-    }).exec();
+    // const unverifiedUserWithEmail = await UnverifiedUserModel.findOne({
+    //   email: email,
+    // }).exec();
 
-    if (unverifiedUserWithEmail) {
-      const now = new Date().valueOf();
-      const oneDayAfterRequestCreated = new Date(unverifiedUserWithEmail.createdAt.getTime() + (24 * 60 * 60 * 1000));
-      const difference = now - oneDayAfterRequestCreated.valueOf();
+    // if (unverifiedUserWithEmail) {
+    //   const now = new Date().valueOf();
+    //   const oneDayAfterRequestCreated = new Date(unverifiedUserWithEmail.createdAt.getTime() + (24 * 60 * 60 * 1000));
+    //   const difference = now - oneDayAfterRequestCreated.valueOf();
 
-      // one day has not passed since request
-      if(difference > 0) {
-        throw createHttpError(
-          httpCodes["409"].code,
-          httpCodes["409"].message +
-            ": sign up request already exists. check your inbox and verify email. if this wasnt you, contact the admin team"
-        );
-      }
-    }
+    //   // one day has not passed since request
+    //   if(difference > 0) {
+    //     throw createHttpError(
+    //       httpCodes["409"].code,
+    //       httpCodes["409"].message +
+    //         ": sign up request already exists. check your inbox and verify email. if this wasnt you, contact the admin team"
+    //     );
+    //   }
+    // }
 
     // random 6 digit number
     const otp = Math.floor(100000 + Math.random() * 900000);
@@ -151,7 +151,6 @@ export const signUp: RequestHandler<
 
     res.status(response.status);
     res.json(response);
-
   } catch (error) {
     next(error);
   }
@@ -175,7 +174,7 @@ export const verifyEmail: RequestHandler<
       );
     }
 
-    if(!userID) {
+    if (!userID) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No User ID provided!"
@@ -213,7 +212,6 @@ export const verifyEmail: RequestHandler<
       );
     }
 
-
     const newUser = await UserModel.create({
       fullName: unverifiedUser.fullName,
       email: unverifiedUser.email,
@@ -221,27 +219,34 @@ export const verifyEmail: RequestHandler<
     });
 
     // check if there are any user-less registrations from the account's email and link with this account
-    const registrations = await SSRegistrationModel.find({email: unverifiedUser.email}).exec();
-    for(let i = 0; i < registrations.length; i++) {
+    const registrations = await SSRegistrationModel.find({
+      email: unverifiedUser.email,
+    }).exec();
+    for (let i = 0; i < registrations.length; i++) {
       if (registrations[i].confirmed) {
-
-        newUser!.registeredEventIDs = [...newUser.registeredEventIDs!, ...registrations[i].eventIDs];
-        newUser!.registrationIDs = [...newUser!.registrationIDs, ...[registrations[i]._id]];
-
+        newUser!.registeredEventIDs = [
+          ...newUser.registeredEventIDs!,
+          ...registrations[i].eventIDs,
+        ];
+        newUser!.registrationIDs = [
+          ...newUser!.registrationIDs,
+          ...[registrations[i]._id],
+        ];
       } else if (registrations[i].rejected) {
-
-        newUser!.rejectedRegIDs = [...newUser!.rejectedRegIDs, ...[registrations[i]._id]];
-
+        newUser!.rejectedRegIDs = [
+          ...newUser!.rejectedRegIDs,
+          ...[registrations[i]._id],
+        ];
       } else {
-
-        newUser!.pendingRegIDs = [...newUser!.pendingRegIDs, ...[registrations[i]._id]];
-
+        newUser!.pendingRegIDs = [
+          ...newUser!.pendingRegIDs,
+          ...[registrations[i]._id],
+        ];
       }
 
       registrations[i].userID = newUser._id;
     }
     newUser.save();
-
 
     UnverifiedUserModel.findByIdAndDelete(unverifiedUser._id).exec();
 
@@ -271,7 +276,7 @@ export const resendVerifyEmail: RequestHandler<
   const userID = req.body.userID;
 
   try {
-    if(!userID) {
+    if (!userID) {
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No User ID provided!"
