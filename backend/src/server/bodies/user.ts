@@ -3,6 +3,7 @@ import { EventStructure } from "../../util/events.js";
 // request bodies
 
 export interface ReqSignupBody {
+	unveriUserID?: string,
     fullName?: string,
     email?: string,
     password?: string,
@@ -16,10 +17,25 @@ export interface ReqLoginBody {
 }
 
 export interface ReqEmailVeriBody {
+	userID?: string,
     otp?: string
 }
 
+export interface ReqResendEmailBody {
+	userID?: string,
+}
+
 // response bodies
+//
+export interface ResUserSignupBody {
+    status: number,
+    message: string,
+    fullName: string,
+    email: string,
+	userID: string,
+    registeredEventIDs?: number[],
+    details: string
+}
 
 export interface ResUserBody {
     status: number,
