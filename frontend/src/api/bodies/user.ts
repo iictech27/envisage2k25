@@ -15,7 +15,26 @@ export interface ReqLoginBody {
     rememberUser: boolean
 }
 
+export interface ReqEmailVeriBody {
+	userID: string,
+    otp: string
+}
+
+export interface ReqResendEmailBody {
+	userID: string,
+}
+
 // response bodies
+//
+export interface ResUserSignupBody {
+    status: number,
+    message: string,
+    fullName: string,
+    email: string,
+	userID: string,
+    registeredEventIDs?: number[],
+    details: string
+}
 
 export interface ResUserBody {
     status: number,
@@ -32,3 +51,4 @@ export interface ResUserRegEventsBody {
     events: EventStructure[],
     details: string
 }
+

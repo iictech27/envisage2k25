@@ -7,7 +7,7 @@ import {
   ReqSSRegistrationOrderBody,
   ResSSRegistrationBody,
 } from "./bodies/registration_ss";
-import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
+import { ReqEmailVeriBody, ReqLoginBody, ReqResendEmailBody, ReqSignupBody, ResUserBody, ResUserSignupBody } from "./bodies/user";
 // import { isResError } from "./bodies/errors";
 import {
   adminDeleteRegistration,
@@ -53,7 +53,7 @@ export async function getAuthUser(): Promise<ResUserBody | string> {
 
 export async function signUpUser(
   creds: ReqSignupBody
-): Promise<ResUserBody | string> {
+): Promise<ResUserSignupBody | string> {
   try {
     const body = await reqNewUserSignIn(creds);
     return body;
@@ -87,7 +87,7 @@ export async function newReg(
   }
 }
 
-export async function verifyUserEmail(creds: { otp: string }): Promise<any> {
+export async function verifyUserEmail(creds: ReqEmailVeriBody): Promise<any> {
   try {
     const body = await verifyEmail(creds);
     return body;
@@ -97,9 +97,9 @@ export async function verifyUserEmail(creds: { otp: string }): Promise<any> {
   }
 }
 
-export async function resendMail(): Promise<any> {
+export async function resendMail(creds: ReqResendEmailBody): Promise<any> {
   try {
-    const body = await resendEmail();
+    const body = await resendEmail(creds);
     return body;
   } catch (error) {
     console.log(error);

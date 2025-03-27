@@ -2,6 +2,7 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
 
 import UserModel from "../../db/models/user.js";
 import { httpCodes } from "../../util/httpCodes.js";
@@ -10,9 +11,11 @@ import { Events, EventStructure } from "../../util/events.js";
 import {
   ReqEmailVeriBody,
   ReqLoginBody,
+  ReqResendEmailBody,
   ReqSignupBody,
   ResUserBody,
   ResUserRegEventsBody,
+  ResUserSignupBody,
 } from "../bodies/user.js";
 import UnverifiedUserModel from "../../db/models/unverified_user.js";
 import mailOptions from "../mails/verif_email.js";
@@ -99,38 +102,16 @@ export const signUp: RequestHandler<
       );
     }
 
-    // check if unverified account with email exists
-    // const unverifiedUserWithEmail = await UnverifiedUserModel.findOne({
-    //   email: email,
-    // }).exec();
-    // if (unverifiedUserWithEmail) {
-    //   // create and save session token which is the mongo id
-    //   req.session.sessionToken = unverifiedUserWithEmail._id;
-    //   req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
-
-    //   throw createHttpError(
-    //     httpCodes["409"].code,
-    //     httpCodes["409"].message +
-    //       ": Sign up request already exists. Check your inbox and verify email."
-    //   );
-    // }
-
     const unverifiedUserWithEmail = await UnverifiedUserModel.findOne({
       email: email,
     }).exec();
+
     if (unverifiedUserWithEmail) {
-      // create and save session token which is the mongo id
-      req.session.sessionToken = unverifiedUserWithEmail._id;
-      // console.log("Session token 1 ... ", req.session.sessionToken);
-      req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
-      req.session.cookie.secure = true;
-      req.session.cookie.sameSite = "none";
-      await new Promise<void>((resolve, reject) => {
-        req.session.save((err) => {
-          if (err) reject(err);
-          else resolve();
-        });
-      });
+      throw createHttpError(
+        httpCodes["409"].code,
+        httpCodes["409"].message +
+          ": sign up request already exists. check your inbox and verify email. if this wasnt you, contact the admin team"
+      );
     }
 
     // random 6 digit number
@@ -151,31 +132,18 @@ export const signUp: RequestHandler<
     transport.sendMail(mailOptions(email, otp.toString()));
 
     // create a response to sent to client
-    const response: ResUserBody = {
+    const response: ResUserSignupBody = {
       status: httpCodes["201"].code,
       message: httpCodes["201"].message,
       fullName: newUnverifiedUser.fullName,
+      userID: newUnverifiedUser._id.toString(),
       email: newUnverifiedUser.email,
       details: "Successfully created new signup request!",
     };
 
-    // create and save session token which is the mongo id
-    req.session.sessionToken = newUnverifiedUser._id;
-    // console.log("Session token 2 ... ", req.session.sessionToken);
-    req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
-    req.session.cookie.secure = true;
-    req.session.cookie.sameSite = "none";
-    await new Promise<void>((resolve, reject) => {
-      req.session.save((err) => {
-        if (err) reject(err);
-        else resolve();
-      });
-    });
-
-    console.log("Session : ", req.session);
-
     res.status(response.status);
     res.json(response);
+
   } catch (error) {
     next(error);
   }
@@ -188,32 +156,26 @@ export const verifyEmail: RequestHandler<
   ReqEmailVeriBody,
   unknown
 > = async (req, res, next) => {
+  const userID = req.body.userID;
   const otp = req.body.otp;
-  // console.log(req.body);
-  // console.log(otp);
-  const sessionToken = req.session.sessionToken;
-  console.log("Session token : ", sessionToken);
 
   try {
     if (!otp) {
       throw createHttpError(
         httpCodes["400"].code,
-        httpCodes["400"].message + ": Parameters missing!"
+        httpCodes["400"].message + ": No otp provided!"
       );
     }
 
-    // console.log("Session Token : ", sessionToken);
-
-    if (!sessionToken) {
+    if(!userID) {
       throw createHttpError(
         httpCodes["400"].code,
-        httpCodes["400"].message +
-          ": Please try to signup or login atleast once before verification!"
+        httpCodes["400"].message + ": No User ID provided!"
       );
     }
 
     const unverifiedUser = await UnverifiedUserModel.findById(
-      sessionToken
+      new mongoose.Types.ObjectId(userID)
     ).exec();
 
     if (!unverifiedUser) {
@@ -251,26 +213,7 @@ export const verifyEmail: RequestHandler<
       hashedPassword: unverifiedUser.hashedPassword,
     });
 
-    UnverifiedUserModel.findByIdAndDelete(sessionToken).exec();
-
-    // try to destroy session which has unauthenticated user (should be overwritten anyways but just in case)
-    if (req.session && req.session.cookie) {
-      // manually unset cookie
-      res.cookie("connect.sid", null, {
-        expires: new Date("Thu, 01 Jan 1970 00:00:00 UTC"), // random day in the past
-        httpOnly: true,
-      });
-
-      // try to destroy session
-      req.session.destroy((error) => {
-        if (error) {
-          next(error);
-        } else {
-          res.status(httpCodes["200"].code);
-          res.send("User logged out successfully!");
-        }
-      });
-    }
+    UnverifiedUserModel.findByIdAndDelete(unverifiedUser._id).exec();
 
     // create a response to sent to client
     const response: ResUserBody = {
@@ -289,21 +232,24 @@ export const verifyEmail: RequestHandler<
 };
 
 // endpoint to resend verification mail
-export const resendVerifyEmail: RequestHandler = async (req, res, next) => {
-  const sessionToken = req.session.sessionToken;
-  console.log("Session token : ", sessionToken);
+export const resendVerifyEmail: RequestHandler<
+  unknown,
+  unknown,
+  ReqResendEmailBody,
+  unknown
+> = async (req, res, next) => {
+  const userID = req.body.userID;
 
   try {
-    if (!sessionToken) {
+    if(!userID) {
       throw createHttpError(
         httpCodes["400"].code,
-        httpCodes["400"].message +
-          ": Please try to signup or login atleast once before verification!"
+        httpCodes["400"].message + ": No User ID provided!"
       );
     }
 
     const unverifiedUser = await UnverifiedUserModel.findById(
-      sessionToken
+      new mongoose.Types.ObjectId(userID)
     ).exec();
 
     if (!unverifiedUser) {
@@ -314,7 +260,6 @@ export const resendVerifyEmail: RequestHandler = async (req, res, next) => {
     }
 
     const now = new Date().valueOf();
-    console.log(now);
     const difference = unverifiedUser.otpRegenAt.valueOf() - now;
 
     if (difference >= 0) {
@@ -392,10 +337,6 @@ export const logIn: RequestHandler<
         email: email,
       }).exec();
       if (unverifiedUserWithEmail) {
-        // create and save session token which is the mongo id
-        req.session.sessionToken = unverifiedUserWithEmail._id;
-        req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000; // dont expire (1yr)
-
         throw createHttpError(
           httpCodes["409"].code,
           httpCodes["409"].message +

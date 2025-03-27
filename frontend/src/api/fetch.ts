@@ -1,7 +1,7 @@
 import validatedEnv from "./utils/validatedEnv";
 
 // import { ReqRegistrationBody, ResRegistrationBody } from "./bodies/registration";
-import { ReqLoginBody, ReqSignupBody, ResUserBody } from "./bodies/user";
+import { ReqEmailVeriBody, ReqLoginBody, ReqResendEmailBody, ReqSignupBody, ResUserBody, ResUserSignupBody } from "./bodies/user";
 import { ResEventsBody } from "./bodies/events";
 import { ResSSRegistrationBody } from "./bodies/registration_ss";
 import { ReqEditReg, ReqGetReg, ResRegAdmin } from "./bodies/admin";
@@ -77,7 +77,7 @@ export async function reqAuthUserData(): Promise<ResUserBody> {
 
 export async function reqNewUserSignIn(
   credentials: ReqSignupBody
-): Promise<ResUserBody> {
+): Promise<ResUserSignupBody> {
   const response = await fetchData("/users/signup", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
@@ -88,9 +88,9 @@ export async function reqNewUserSignIn(
   return response.json();
 }
 
-export async function verifyEmail(credentials: {
-  otp: string;
-}): Promise<ResUserBody> {
+export async function verifyEmail(
+  credentials: ReqEmailVeriBody
+): Promise<ResUserBody> {
   const response = await fetchData("/users/veremail", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
@@ -102,10 +102,13 @@ export async function verifyEmail(credentials: {
 }
 
 // resend verification mail
-export async function resendEmail() {
+export async function resendEmail(
+  credentials: ReqResendEmailBody
+) {
   const response = await fetchData("/users/resend", {
     method: reqTypes.POST,
-    credentials: "include"
+    credentials: "include",
+    body: JSON.stringify(credentials),
   });
 
   return response.json();
@@ -130,7 +133,6 @@ export async function reqUserLogout() {
     credentials: "include"
   }));
 }
-
 
 export async function adminGetRegistraions(cred: ReqGetReg): Promise<ResRegAdmin> {
   const response = await fetchData("/admin/getreg", {
