@@ -10,6 +10,7 @@ import { Events } from "../../util/events.js";
 import transport from "../services/nodemailer.js";
 import regRejectedMail from "../mails/reg_rejected.js";
 import regVerifiedMail from "../mails/reg_verified.js";
+import { logDebug, logInfo, logWarn } from "../../util/logger.js";
 
 export const getRegistrations: RequestHandler = async (_req, res, next) => {
   try {
@@ -39,6 +40,7 @@ export const getRegistrations: RequestHandler = async (_req, res, next) => {
       });
     }
 
+    logInfo("Retrieved registrations!", "getRegistrations @ controllers/admin.ts");
     res.status(200);
     res.json(resReg);
   } catch (error) {
@@ -49,8 +51,10 @@ export const getRegistrations: RequestHandler = async (_req, res, next) => {
 export const verifyRegistration: RequestHandler = async (req, res, next) => {
   const registrationID = req.body.regID?.trim();
 
+
   try {
     if (!registrationID) {
+      logWarn("Tried to verify registrtion but no registration id was provided.", "verifyRegistration @ controllers/admin.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'regID' parameter is missing!"
@@ -62,6 +66,7 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
     ).exec();
 
     if (!reg) {
+      logWarn("Not registrtions in database with provided registration id.", "verifyRegistration @ controllers/admin.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No registration with given id exists"
@@ -69,13 +74,6 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
     }
 
     const user = await UserModel.findById(reg?.userID).exec();
-
-    // if(!user) {
-    //   throw createHttpError(
-    //     httpCodes["400"].code,
-    //     httpCodes["400"].message + ": The user who started the registration no longer exists"
-    //   );
-    // }
 
     let eventNames = "";
     if (reg.eventIDs.length > 1) {
@@ -108,6 +106,7 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
       user!.registeredEventIDs = [...user.registeredEventIDs!, ...reg.eventIDs];
       user!.registrationIDs = [...user!.registrationIDs, ...[reg._id]];
       user!.save();
+      logInfo("Updated user with new registration status.", "verifyRegistration @ controllers/admin.ts");
     }
 
     reg.confirmed = true;
@@ -116,6 +115,7 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
     reg.save();
 
     transport.sendMail(regVerifiedMail(reg.email, eventNames));
+    logInfo(`Mail sent to ${reg.email}`, "verifyRegistration @ controllers/admin.ts");
 
     res.status(httpCodes["200"].code);
     res.send(httpCodes["200"].message + ": Verified successfully!");
@@ -127,8 +127,11 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
 export const rejectRegistration: RequestHandler = async (req, res, next) => {
   const registrationID = req.body.regID?.trim();
 
+  logDebug("Reject Registration Body:", req.body, "rejectRegistration @ controllers/admin.ts");
+
   try {
     if (!registrationID) {
+      logWarn("Tried to reject registrtion but no registration id was provided.", "rejectRegistration @ controllers/admin.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'regID' parameter is missing!"
@@ -140,6 +143,7 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
     ).exec();
 
     if (!reg) {
+      logWarn("Not registrtions in database with provided registration id.", "rejectRegistration @ controllers/admin.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No registration with given id exists"
@@ -147,13 +151,6 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
     }
 
     const user = await UserModel.findById(reg?.userID).exec();
-
-    // if(!user) {
-    //   throw createHttpError(
-    //     httpCodes["400"].code,
-    //     httpCodes["400"].message + ": The user who started the registration no longer exists"
-    //   );
-    // }
 
     let eventNames = "";
     if (reg.eventIDs.length > 1) {
@@ -193,18 +190,18 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
 
       user!.rejectedRegIDs = [...user!.rejectedRegIDs, ...[reg._id]];
       user!.save();
+      logInfo("Updated user with new registration status.", "rejectRegistration @ controllers/admin.ts");
     }
 
     reg.confirmed = false;
     reg.rejected = true;
     const now = new Date();
-    // const twentySecLater = new Date(now.getTime() + (20 * 1000));
-    // reg.expireAt = twentySecLater;
     const sevenDaysLater = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
     reg.expireAt = sevenDaysLater;
     reg.save();
 
     transport.sendMail(regRejectedMail(reg.email, eventNames));
+    logInfo(`Mail sent to ${reg.email}`, "rejectRegistration @ controllers/admin.ts");
 
     res.status(httpCodes["200"].code);
     res.send(httpCodes["200"].message + ": Rejected successfully!");
@@ -216,8 +213,11 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
 export const deleteRegistration: RequestHandler = async (req, res, next) => {
   const registrationID = req.body.regID?.trim();
 
+  logDebug("Delete Registration Body:", req.body, "deleteRegistration @ controllers/admin.ts");
+
   try {
     if (!registrationID) {
+      logWarn("Tried to delete registrtion but no registration id was provided.", "deleteRegistration @ controllers/admin.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'regID' parameter is missing!"
@@ -229,6 +229,7 @@ export const deleteRegistration: RequestHandler = async (req, res, next) => {
     ).exec();
 
     if (!reg) {
+      logWarn("No registrtions in database with provided registration id.", "deleteRegistration @ controllers/admin.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No registration with given id exists"
@@ -236,13 +237,6 @@ export const deleteRegistration: RequestHandler = async (req, res, next) => {
     }
 
     const user = await UserModel.findById(reg?.userID).exec();
-
-    // if(!user) {
-    //   throw createHttpError(
-    //     httpCodes["400"].code,
-    //     httpCodes["400"].message + ": The user who started the registration no longer exists"
-    //   );
-    // }
 
     if (user) {
       // delete from pending
@@ -272,6 +266,7 @@ export const deleteRegistration: RequestHandler = async (req, res, next) => {
       }
 
       user.save();
+      logInfo("Removed registrtion from user", "deleteRegistration @ controllers/admin.ts");
     }
 
     await SSRegistrationModel.findByIdAndDelete(reg._id).exec();

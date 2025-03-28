@@ -10,6 +10,7 @@ import validatedEnv from "./validatedEnv.js";
 
 const shouldLog = validatedEnv.LOG;
 const shouldLogHttpRequests = validatedEnv.LOG_LEVEL;
+const logTo = validatedEnv.LOG_TO;
 
 const LogLevels = {
   error: 0,
@@ -50,7 +51,7 @@ const console = new winston.transports.Console({
 const logger = winston.createLogger({
   levels: LogLevels,
   level: validatedEnv.LOG_LEVEL,
-  transports: [papertrail, console],
+  transports: logTo == "papertrail" ? [papertrail] : (logTo == "console" ? [console] : [papertrail, console]),
 });
 
 
@@ -81,18 +82,14 @@ export function logDebug(message: string, obj: unknown, sender?: string): void {
 export function logErr(error: unknown, sender?: string): void {
   if (!shouldLog) return;
 
-  if (error instanceof Error || isHttpError(error)) {
+  if (error instanceof String) {
+    logger.log("error", error + (sender ? " (from: " + sender + ")" : ""));
+    return;
+  } else {
     logger.log("error", "An error occurred" + (sender ? " at " + sender : ""));
     logger.log("error", error);
     return;
   }
-
-  if (error instanceof String) {
-    logger.log("error", error + (sender ? " (from: " + sender + ")" : ""));
-    return;
-  }
-
-  logger.log("error", "An unknown error occurred" + (sender ? " at " + sender : ""));
 }
 
 export function logWarn(message: String, sender?: string): void {

@@ -1,10 +1,10 @@
 import multer from "multer";
+import { logInfo } from "../../util/logger.js";
 
 const storage = multer.diskStorage({
   filename: (_res, file, callback) => {
-    // console.log(file);
-    // console.log(_res);
     const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 100);
+    logInfo(`Multer received and stored file ${file.originalname} to disk.`, "storage @ middleware/multer.ts");
     callback(null, uniquePrefix + "-" + file.originalname);
   },
   destination: (_req, _file, callback) => {

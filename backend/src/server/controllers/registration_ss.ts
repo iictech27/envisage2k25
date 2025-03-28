@@ -12,7 +12,7 @@ import SSRegistrationModel from "../../db/models/registration_ss.js";
 import { uploadOnCloudinary } from "../services/cloudinary.js";
 import transport from "../services/nodemailer.js";
 import mailOptions from "../mails/reg_requested.js";
-// import RegistrationModel from "../../db/models/registration.js";
+import { logDebug, logWarn, logErr, logInfo } from "../../util/logger.js";
 
 export const createRegistration: RequestHandler<
   unknown,
@@ -20,6 +20,9 @@ export const createRegistration: RequestHandler<
   ReqSSRegistrationOrderBody,
   unknown
 > = async (req, res, next) => {
+
+  logDebug("Create Registration Body:", req.body, "createRegistration @ controllers/registration.ts");
+
   const fullname = req.body.fullname?.trim();
   const email = req.body.email?.trim();
   // const department = req.body.department?.trim();
@@ -33,6 +36,7 @@ export const createRegistration: RequestHandler<
   try {
     // make sure all parameters are received
     if (!fullname) {
+      logWarn("Tried to register event(s) without providing fullname", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'fullname' parameter is missing!"
@@ -40,6 +44,7 @@ export const createRegistration: RequestHandler<
     }
 
     if (!email) {
+      logWarn("Tried to register event(s) without providing email", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'email' parameter is missing!"
@@ -47,6 +52,7 @@ export const createRegistration: RequestHandler<
     }
 
     if (!year) {
+      logWarn("Tried to register event(s) without providing year", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'year' parameter is missing!"
@@ -54,6 +60,7 @@ export const createRegistration: RequestHandler<
     }
 
     if (!eventIDs) {
+      logWarn("Tried to register event(s) without providing event ids", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'eventIDs' parameter is missing!"
@@ -61,6 +68,7 @@ export const createRegistration: RequestHandler<
     }
 
     if (!phone) {
+      logWarn("Tried to register event(s) without providing phone number", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'phone' parameter is missing!"
@@ -68,6 +76,7 @@ export const createRegistration: RequestHandler<
     }
 
     if (!college) {
+      logWarn("Tried to register event(s) without providing college", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'college' parameter is missing!"
@@ -75,6 +84,7 @@ export const createRegistration: RequestHandler<
     }
 
     if (!paymentSS) {
+      logWarn("Tried to register event(s) without providing payment proof", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": 'paymentSS' parameter is missing!"
@@ -83,6 +93,7 @@ export const createRegistration: RequestHandler<
 
     // validate email
     if (!/\S+@\S+\.\S+/.test(email)) {
+      logWarn("Tried to register event(s) with an invalid email", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message + ": Invalid credentials!"
@@ -91,6 +102,7 @@ export const createRegistration: RequestHandler<
 
     // validate year
     if (year != 1 && year != 2 && year != 3 && year != 4) {
+      logWarn("Tried to register event(s) with an invalid year", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message + ": Enter valid year!"
@@ -99,6 +111,7 @@ export const createRegistration: RequestHandler<
 
     // phone number validation
     if (!/^[6-9]{1}[0-9]{9}$/.test(phone)) {
+      logWarn("Tried to register event(s) with an invalid phone number", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message +
@@ -110,6 +123,7 @@ export const createRegistration: RequestHandler<
 
     // make sure no duplicate events are present
     if (new Set(eventIDs).size != eventIDs.length) {
+      logWarn("Tried to register to duplicate events", "createRegistration @ controllers/registration.ts");
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message +
@@ -125,6 +139,7 @@ export const createRegistration: RequestHandler<
 
       // check if the eventID exists in list
       if (event.length <= 0) {
+      logWarn("Tried to register to events that do not exist", "createRegistration @ controllers/registration.ts");
         throw createHttpError(
           httpCodes["401"].code,
           httpCodes["401"].message +
@@ -135,6 +150,7 @@ export const createRegistration: RequestHandler<
       // NOTE : Should never happen (setup the event array properly)
       // check only one event is returned
       if (event.length > 1) {
+        logErr("Multiple events exist in server with same index. FIX IMMEDIATELY", "createRegistration @ controllers/registration.ts");
         throw createHttpError(
           httpCodes["500"].code,
           httpCodes["500"].message + ": Server error! Sorry, working on it!"
@@ -152,6 +168,7 @@ export const createRegistration: RequestHandler<
     if (user) {
       for (let i = 0; i < eventIDs.length; i++) {
         if (userRegisteredEventIDs!.includes(Number(eventIDs[i]))) {
+          logWarn("Tried to register to events user is already registered in", "createRegistration @ controllers/registration.ts");
           throw createHttpError(
             httpCodes["401"].code,
             httpCodes["401"].message +
@@ -172,6 +189,7 @@ export const createRegistration: RequestHandler<
       for (let i = 0; i < eventIDs.length; i++) {
         for (let j = 0; j < allEvents.length; j++) {
           if (eventIDs[i] == allEvents[j]) {
+            logWarn("Tried to register to events email id is already registered in", "createRegistration @ controllers/registration.ts");
             throw createHttpError(
               httpCodes["401"].code,
               httpCodes["401"].message +
@@ -196,6 +214,7 @@ export const createRegistration: RequestHandler<
     });
 
     transport.sendMail(mailOptions(email));
+    logInfo(`Mail sent to ${email}`, "createRegistration @ controllers/registrations.ts");
 
     // additional info
     if (additionalInfo) {
@@ -207,6 +226,7 @@ export const createRegistration: RequestHandler<
       // add new registrations to user
       user!.pendingRegIDs = [...user!.pendingRegIDs, ...[newRegistration._id]];
       user!.save();
+      logInfo("User update with new registration request", "createRegistration @ controllers/registrations.ts");
     }
 
     const response: ResSSRegistrationBody = {
@@ -225,37 +245,32 @@ export const createRegistration: RequestHandler<
     res.status(response.status);
     res.json(response);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
 
-export const getRegistration: RequestHandler = async (_req, res, next) => {
-  try {
-    const registrations = await SSRegistrationModel.find(
-      {},
-      "fullName email phone year college paymentSSUrl confirmed eventIDs"
-    ).exec();
-
-    console.log(registrations);
-
-    const transformed = registrations.map((reg) => ({
-      fullNname: reg.fullName,
-      email: reg.email,
-      phone: reg.phone,
-      paymentSSUrl: reg.paymentSSUrl,
-      confirmed: reg.confirmed,
-      eventIDs: reg.eventIDs,
-    }));
-
-    console.log(transformed);
-
-    res.status(httpCodes["200"].code).json({
-      status: httpCodes["200"].code,
-      message: httpCodes["200"].message,
-      registrations: transformed,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+// export const getRegistration: RequestHandler = async (_req, res, next) => {
+//   try {
+//     const registrations = await SSRegistrationModel.find(
+//       {},
+//       "fullName email phone year college paymentSSUrl confirmed eventIDs"
+//     ).exec();
+//
+//     const transformed = registrations.map((reg) => ({
+//       fullNname: reg.fullName,
+//       email: reg.email,
+//       phone: reg.phone,
+//       paymentSSUrl: reg.paymentSSUrl,
+//       confirmed: reg.confirmed,
+//       eventIDs: reg.eventIDs,
+//     }));
+//     
+//     res.status(httpCodes["200"].code).json({
+//       status: httpCodes["200"].code,
+//       message: httpCodes["200"].message,
+//       registrations: transformed,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
