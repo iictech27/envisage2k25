@@ -45,20 +45,21 @@ const registrationSchema = new Schema(
       default: new Date("2100-01-01"),
     },
   },
-  {
-    timestamps: true,
-
-    // NOTE : According to https://www.mongodb.com/docs/manual/core/index-ttl/,
-    // since mongoDB 7.0 "partial TTL indexes" can be created by making the
-    // collected a "time series collection"... making this a time series collection
-    // just in case
-    //
-    // https://mongoosejs.com/docs/guide.html#timeseries
-    timeseries: {
-      timeField: "expireAt",
-      granularity: "hours",
-    },
-  }
+  // ERROR : Breaks lots of stuff :/
+  // {
+  //   timestamps: true,
+  //
+  //   // NOTE : According to https://www.mongodb.com/docs/manual/core/index-ttl/,
+  //   // since mongoDB 7.0 "partial TTL indexes" can be created by making the
+  //   // collected a "time series collection"... making this a time series collection
+  //   // just in case
+  //   //
+  //   // https://mongoosejs.com/docs/guide.html#timeseries
+  //   timeseries: {
+  //     timeField: "expireAt",
+  //     granularity: "hours",
+  //   },
+  // }
 );
 
 type SSRegistration = InferSchemaType<typeof registrationSchema>;
