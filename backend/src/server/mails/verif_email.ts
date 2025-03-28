@@ -8,8 +8,13 @@ function mailOptions(toEmail: string, otp: string): MailOptions {
     subject: "Email Verification Required",
     text: `Dear Participant,
 
-Congratulations! Your signup request has been recorded. But before you proceed, you would need to verify your email adress.
+Congratulations! Your signup request has been recorded. But before you proceed, you would need to verify your email ID using the following code.
+Note that this code will expire in 10 minutes.
+${otp}
 
+If out arent already redirecetd to the verification page, visit ${
+          validatedEnv.CLIENT_LINK + "/verify-email?otp=sent&msg=spam"
+        }
 If you have any questions or need further assistance, please do not hesitate to contact our support team.
 
 Best Regards,

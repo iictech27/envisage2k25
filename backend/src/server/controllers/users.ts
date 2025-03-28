@@ -22,6 +22,7 @@ import mailOptions from "../mails/verif_email.js";
 import transport from "../services/nodemailer.js";
 import SSRegistrationModel from "../../db/models/registration_ss.js";
 import { logDebug, logInfo, logWarn } from "../../util/logger.js";
+import { sendMail } from "../services/email_handler.js";
 
 const hashNum = validatedEnv.HASH_NUM;
 
@@ -173,8 +174,9 @@ export const signUp: RequestHandler<
       logInfo("Successfully created new signup request.", "signUp @ controllers/user.ts");
     }
 
-    await transport.sendMail(mailOptions(email, otp.toString()));
+    const mailRes = await sendMail(mailOptions(email, otp.toString()));
     logInfo(`Mail sent to ${email}`, "signUp @ controllers/user.ts");
+    logDebug("Mail Sending Response:", mailRes, "signUp @ controllers/users.ts");
 
     res.status(response.status);
     res.json(response);
@@ -364,8 +366,9 @@ export const resendVerifyEmail: RequestHandler<
     unverifiedUser.otpRegenAt = oneMinutesLater;
     unverifiedUser.save();
 
-    await transport.sendMail(mailOptions(unverifiedUser.email, otp.toString()));
+    const mailRes = await sendMail(mailOptions(unverifiedUser.email, otp.toString()));
     logInfo(`Mail sent to ${unverifiedUser.email}`, "resendVerifyEmail @ controllers/user.ts");
+    logDebug("Mail Sending Response:", mailRes, "resendVerifyEmail @ controllers/users.ts");
 
     // create a response to sent to client
     const response: ResUserBody = {

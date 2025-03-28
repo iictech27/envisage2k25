@@ -11,6 +11,7 @@ import transport from "../services/nodemailer.js";
 import regRejectedMail from "../mails/reg_rejected.js";
 import regVerifiedMail from "../mails/reg_verified.js";
 import { logDebug, logInfo, logWarn } from "../../util/logger.js";
+import { sendMail } from "../services/email_handler.js";
 
 export const getRegistrations: RequestHandler = async (_req, res, next) => {
   try {
@@ -114,7 +115,8 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
     reg.expireAt = null;
     reg.save();
 
-    await transport.sendMail(regVerifiedMail(reg.email, eventNames));
+    const mailRes = await sendMail(regVerifiedMail(reg.email, eventNames));
+    logDebug("Mail Sending Response:", mailRes, "verifyRegistration @ controllers/admin.ts");
     logInfo(`Mail sent to ${reg.email}`, "verifyRegistration @ controllers/admin.ts");
 
     res.status(httpCodes["200"].code);
@@ -200,7 +202,8 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
     reg.expireAt = sevenDaysLater;
     reg.save();
 
-    await transport.sendMail(regRejectedMail(reg.email, eventNames));
+    const mailRes = await sendMail(regRejectedMail(reg.email, eventNames));
+    logDebug("Mail Sending Response:", mailRes, "rejectRegistration @ controllers/admin.ts");
     logInfo(`Mail sent to ${reg.email}`, "rejectRegistration @ controllers/admin.ts");
 
     res.status(httpCodes["200"].code);

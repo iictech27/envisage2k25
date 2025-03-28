@@ -13,6 +13,7 @@ import { uploadOnCloudinary } from "../services/cloudinary.js";
 import transport from "../services/nodemailer.js";
 import mailOptions from "../mails/reg_requested.js";
 import { logDebug, logWarn, logErr, logInfo } from "../../util/logger.js";
+import { sendMail } from "../services/email_handler.js";
 
 export const createRegistration: RequestHandler<
   unknown,
@@ -213,7 +214,8 @@ export const createRegistration: RequestHandler<
       paymentSSUrl: cloudinaryURL,
     });
 
-    await transport.sendMail(mailOptions(email));
+    const mailRes = await sendMail(mailOptions(email));
+    logDebug("Mail Sending Response:", mailRes, "createRegistration @ controllers/registrations.ts");
     logInfo(`Mail sent to ${email}`, "createRegistration @ controllers/registrations.ts");
 
     // additional info

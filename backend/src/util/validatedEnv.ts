@@ -31,6 +31,10 @@ export default cleanEnv(process.env, {
   NDML_EMAIL: str(),
   NDML_PASSWORD: str(),
 
+  // Resend
+  RSND_FROM: str(),
+  RSND_API_KEY: str(),
+
   // Logging
   PPTRL_HOST: str(),
   PPTRL_PORT: num(),

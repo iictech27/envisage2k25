@@ -25,6 +25,7 @@
     "nodemailer": "6.10.0",
     "oauth": "0.10.2",
     "razorpay": "2.9.6",
+    "resend": "^4.2.0",
     "winston": "^3.17.0",
     "winston-syslog": "^2.7.1"
   },
