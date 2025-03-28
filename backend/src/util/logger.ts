@@ -16,8 +16,7 @@ const LogLevels = {
   error: 0,
   warn: 1,
   info: 2,
-  debug: 3,
-  http: 4
+  debug: 3
 }
 
 // transport for logging to papertrail
@@ -61,7 +60,7 @@ export function startHttpReqLogging(server: Express): void {
 
   server.use(morgan("dev", {
     stream: {
-      write: (message) => logger.log("http", "[Morgan] " + message.trim())
+      write: (message) => logger.log("debug", "[Morgan] " + message.trim())
     }
   }));
 }
