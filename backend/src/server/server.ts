@@ -9,7 +9,7 @@ import rateLimit from "express-rate-limit";
 import { mongoStore } from "../db/db.js";
 import { httpCodes } from "../util/httpCodes.js";
 import validatedEnv from "../util/validatedEnv.js";
-import { log, logErr, startHttpReqLogging } from "../util/logger.js";
+import { logInfo, logErr, startHttpReqLogging, logWarn, logDebug } from "../util/logger.js";
 import rootRouter from "./routes/root.js";
 import usersRouter from "./routes/users.js";
 import eventsRouter from "./routes/events.js";
@@ -27,7 +27,7 @@ const apiLimiter = rateLimit({
   max: 20, // limit each IP to 20 requests per windowMs
   message: "Too many requests from this IP, please try again after 15 minutes",
   handler: (req, res) => {
-    console.log("Rate limit exceeded:", req.ip);
+    logWarn(`${req.ip} exhausted rate limit.`, "apiLimiter @ server.ts");    
     res.status(429).send({ message: "Too many requests, try again later." });
   },
 });
@@ -36,7 +36,8 @@ function startServer(): void {
   // listen to requests
 
   server.listen(port, () => {
-    log("Listening at port " + port);
+    logInfo("------------------------------------------------------------------------------------------");
+    logInfo("Listening at port " + port);
   });
 
   // cors middleware
@@ -50,6 +51,7 @@ function startServer(): void {
         if (allowedOrigins.indexOf(origin) !== -1) {
           callback(null, true);
         } else {
+          logWarn(`${origin} blocked by CORS`, "cors @ server.ts");
           callback(new Error("Not allowed by CORS"));
         }
       },
@@ -106,6 +108,7 @@ function startServer(): void {
 
   // non-existent endpoint handler
   server.use((_req: Request, _res: Response, next: NextFunction) => {
+    logWarn("Tried to access a non-existent endpoint!", "endpoint handler @ server.ts");
     next(
       createHttpError(
         httpCodes["404"].code,
@@ -118,8 +121,6 @@ function startServer(): void {
   // error handling
   server.use(
     (error: unknown, _req: Request, res: Response, _next: NextFunction) => {
-      logErr(error);
-
       // default error
       let errorResponse: ResErrorBody = {
         code: httpCodes["500"].code,
@@ -135,6 +136,8 @@ function startServer(): void {
       if (isHttpError(error)) {
         errorResponse.code = error.statusCode;
         errorResponse.error = "[" + error.statusCode + "] " + error.message;
+      } else {
+        logErr(error, "error handler @ server.ts");
       }
 
       res.status(errorResponse.code);
