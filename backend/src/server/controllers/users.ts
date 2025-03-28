@@ -133,6 +133,8 @@ export const signUp: RequestHandler<
         unverifiedUserWithEmail.email = email;
         unverifiedUserWithEmail.hashedPassword = await bcrypt.hash(password, hashNum);
         unverifiedUserWithEmail.hashedOtp = await bcrypt.hash(otp.toString(), hashNum);
+		unverifiedUserWithEmail.otpExpiresAt = tenMinutesLater;
+		unverifiedUserWithEmail.otpRegenAt = now;
         unverifiedUserWithEmail.save();
 
         // create a response to sent to client
