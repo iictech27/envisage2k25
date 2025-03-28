@@ -49,7 +49,7 @@ export const requireUnauthUser: RequestHandler = async (req, _res, next) => {
 
 
   if (await UserModel.findById(sessionToken).exec()) {
-    logWarn(`Authenticated user (with${sessionToken ? "" : " no"} session token) tries to access route requiring auth.`, "requireUnuthUser @ middleware/user.ts");
+    logWarn(`Authenticated user (with${sessionToken ? "" : " no"} session token) tries to access route requiring unauth.`, "requireUnuthUser @ middleware/user.ts");
     next(
       createHttpError(
         httpCodes["403"].code,
