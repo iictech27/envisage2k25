@@ -76,7 +76,7 @@ export function logDebug(message: string, obj: unknown, sender?: string): void {
   if (!shouldLog) return;
 
   logger.debug(message + (sender ? " (from: " + sender + ")" : ""));
-  if(obj != null && obj != undefined && Object.keys(obj).length) logger.debug("More info:\n" + obj);
+  if(obj != null && obj != undefined && Object.keys(obj).length) logger.debug("More info:\n" + JSON.stringify(obj, null, 2));
 }
 
 export function logErr(error: unknown, sender?: string): void {
@@ -87,7 +87,7 @@ export function logErr(error: unknown, sender?: string): void {
     return;
   } else {
     logger.error("An error occurred" + (sender ? " at " + sender : ""));
-    if(error != null && error != undefined  && Object.keys(error).length > 0) logger.error("More info:\n" + error);
+    if(error != null && error != undefined  && Object.keys(error).length > 0) logger.error("More info:\n" + (error instanceof Object ? JSON.stringify(error, null, 2) : error));
     return;
   }
 }
