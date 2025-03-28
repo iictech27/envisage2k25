@@ -284,6 +284,7 @@ export const verifyEmail: RequestHandler<
       }
 
       registrations[i].userID = newUser._id;
+	  registrations[i].save();
     }
     newUser.save();
 
