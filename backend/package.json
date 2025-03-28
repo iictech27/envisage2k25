@@ -20,11 +20,13 @@
     "express-session": "1.18.1",
     "http-errors": "2.0.0",
     "mongoose": "8.12.1",
-    "morgan": "1.10.0",
+    "morgan": "^1.10.0",
     "multer": "1.4.5-lts.2",
     "nodemailer": "6.10.0",
     "oauth": "0.10.2",
-    "razorpay": "2.9.6"
+    "razorpay": "2.9.6",
+    "winston": "^3.17.0",
+    "winston-syslog": "^2.7.1"
   },
   "devDependencies": {
     "@eslint/js": "9.22.0",
@@ -33,9 +35,11 @@
     "@types/express": "5.0.0",
     "@types/express-session": "1.18.1",
     "@types/http-errors": "2.0.4",
-    "@types/morgan": "1.9.9",
+    "@types/morgan": "^1.9.9",
     "@types/multer": "1.4.12",
     "@types/nodemailer": "6.4.17",
+    "@types/winston": "^2.4.4",
+    "@types/winston-syslog": "^2.4.3",
     "eslint": "9.22.0",
     "globals": "16.0.0",
     "tsx": "4.19.3",

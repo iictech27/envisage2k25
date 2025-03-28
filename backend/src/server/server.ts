@@ -9,7 +9,7 @@ import rateLimit from "express-rate-limit";
 import { mongoStore } from "../db/db.js";
 import { httpCodes } from "../util/httpCodes.js";
 import validatedEnv from "../util/validatedEnv.js";
-import { log, logErr, startHttpReqLogging } from "../util/logger.js";
+import { logInfo, logErr, startHttpReqLogging } from "../util/logger.js";
 import rootRouter from "./routes/root.js";
 import usersRouter from "./routes/users.js";
 import eventsRouter from "./routes/events.js";
@@ -36,7 +36,8 @@ function startServer(): void {
   // listen to requests
 
   server.listen(port, () => {
-    log("Listening at port " + port);
+    logInfo("------------------------------------------------------------------------------------------");
+    logInfo("Listening at port " + port);
   });
 
   // cors middleware
