@@ -35,6 +35,6 @@ export default cleanEnv(process.env, {
   PPTRL_HOST: str(),
   PPTRL_PORT: num(),
   PPTRL_PROTOCOL: str(),
-  LOG_REQS: bool(),
+  LOG_LEVEL: str(),
   LOG: bool(),
 });

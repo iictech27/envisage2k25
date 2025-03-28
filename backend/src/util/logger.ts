@@ -9,7 +9,15 @@ import { Express } from "express";
 import validatedEnv from "./validatedEnv.js";
 
 const shouldLog = validatedEnv.LOG;
-const shouldLogHttpRequests = validatedEnv.LOG_REQS;
+const shouldLogHttpRequests = validatedEnv.LOG_LEVEL;
+
+const LogLevels = {
+  error: 0,
+  warn: 1,
+  info: 2,
+  debug: 3,
+  http: 4
+}
 
 // transport for logging to papertrail
 const papertrail = new Syslog({
@@ -38,53 +46,56 @@ const console = new winston.transports.Console({
   eol: "\n",
 });
 
+// creating logger with the transports
+const logger = winston.createLogger({
+  levels: LogLevels,
+  level: validatedEnv.LOG_LEVEL,
+  transports: [papertrail, console],
+});
+
+
 export function startHttpReqLogging(server: Express): void {
   if (!shouldLog) return;
   if(!shouldLogHttpRequests) return;
 
   server.use(morgan("dev", {
     stream: {
-      write: (message) => logger.info("[Morgan] " + message.trim())
+      write: (message) => logger.log("http", "[Morgan] " + message.trim())
     }
   }));
 }
 
-// creating logger with the transports
-const logger = winston.createLogger({
-  transports: [papertrail, console],
-});
-
 export function logInfo(message: String, sender?: string): void {
   if (!shouldLog) return;
 
-  logger.info(message + (sender ? " (from: " + sender + ")" : ""));
+  logger.log("info", message + (sender ? " (from: " + sender + ")" : ""));
 }
 
-export function logDebug(message: unknown, sender?: string): void {
+export function logDebug(message: string, obj: unknown, sender?: string): void {
   if (!shouldLog) return;
 
-  logger.debug(message + (sender ? " (from: " + sender + ")" : ""));
+  logger.log("debug", message + (sender ? " (from: " + sender + ")" : ""));
+  if(obj != null) logger.log("debug", obj);
 }
 
 export function logErr(error: unknown, sender?: string): void {
   if (!shouldLog) return;
 
-  // Check if error is a valid Error or a String message, otherwise handle it
-  let out: unknown = "Unknown Error";
-  if (error instanceof Error) {
-    out = "[" +  error.name + "] " + error.message;
-  }
-  if (isHttpError(error)) {
-    out = "[" + error.statusCode + " " + error.name + "]" + " " + error.message;
-  }
-  if (error instanceof String) {
-    out = error;
+  if (error instanceof Error || isHttpError(error)) {
+    logger.log("error", "An error occurred" + (sender ? " at " + sender : ""));
+    logger.log("error", error);
+    return;
   }
 
-  logger.error(out + (sender ? " (from: " + sender + ")" : ""));
+  if (error instanceof String) {
+    logger.log("error", error + (sender ? " (from: " + sender + ")" : ""));
+    return;
+  }
+
+  logger.log("error", "An unknown error occurred" + (sender ? " at " + sender : ""));
 }
 
 export function logWarn(message: String, sender?: string): void {
   if (!shouldLog) return;
-  logger.warn(message + (sender ? " (from: " + sender + ")" : ""));
+  logger.log("warn", message + (sender ? " (from: " + sender + ")" : ""));
 }
