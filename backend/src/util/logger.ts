@@ -12,11 +12,12 @@ const shouldLog = validatedEnv.LOG;
 const shouldLogHttpRequests = validatedEnv.LOG_LEVEL;
 const logTo = validatedEnv.LOG_TO;
 
+// WARN : Has to conform to syslog levels
 const LogLevels = {
   error: 0,
   warn: 1,
   info: 2,
-  debug: 3
+  debug: 3,
 }
 
 // transport for logging to papertrail
@@ -60,7 +61,7 @@ export function startHttpReqLogging(server: Express): void {
 
   server.use(morgan("dev", {
     stream: {
-      write: (message) => logger.log("debug", "[Morgan] " + message.trim())
+      write: (message) => logger.debug("[Morgan] " + message.trim())
     }
   }));
 }
@@ -68,30 +69,30 @@ export function startHttpReqLogging(server: Express): void {
 export function logInfo(message: String, sender?: string): void {
   if (!shouldLog) return;
 
-  logger.log("info", message + (sender ? " (from: " + sender + ")" : ""));
+  logger.info( message + (sender ? " (from: " + sender + ")" : ""));
 }
 
 export function logDebug(message: string, obj: unknown, sender?: string): void {
   if (!shouldLog) return;
 
-  logger.log("debug", message + (sender ? " (from: " + sender + ")" : ""));
-  if(obj != null) logger.log("debug", obj);
+  logger.debug(message + (sender ? " (from: " + sender + ")" : ""));
+  if(obj != null && obj != undefined && Object.keys(obj).length) logger.debug("More info:\n" + obj);
 }
 
 export function logErr(error: unknown, sender?: string): void {
   if (!shouldLog) return;
 
   if (error instanceof String) {
-    logger.log("error", error + (sender ? " (from: " + sender + ")" : ""));
+    logger.error(error + (sender ? " (from: " + sender + ")" : ""));
     return;
   } else {
-    logger.log("error", "An error occurred" + (sender ? " at " + sender : ""));
-    logger.log("error", error);
+    logger.error("An error occurred" + (sender ? " at " + sender : ""));
+    if(error != null && error != undefined  && Object.keys(error).length > 0) logger.error("More info:\n" + error);
     return;
   }
 }
 
 export function logWarn(message: String, sender?: string): void {
   if (!shouldLog) return;
-  logger.log("warn", message + (sender ? " (from: " + sender + ")" : ""));
+  logger.warn(message + (sender ? " (from: " + sender + ")" : ""));
 }

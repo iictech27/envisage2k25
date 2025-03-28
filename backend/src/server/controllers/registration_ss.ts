@@ -213,7 +213,7 @@ export const createRegistration: RequestHandler<
       paymentSSUrl: cloudinaryURL,
     });
 
-    transport.sendMail(mailOptions(email));
+    await transport.sendMail(mailOptions(email));
     logInfo(`Mail sent to ${email}`, "createRegistration @ controllers/registrations.ts");
 
     // additional info

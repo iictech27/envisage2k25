@@ -129,19 +129,6 @@ export const signUp: RequestHandler<
     let response: ResUserSignupBody;
 
     if (unverifiedUserWithEmail) {
-      const now = new Date().valueOf();
-      const twoMinAfterRequestCreated = new Date(unverifiedUserWithEmail.createdAt.getTime() + (2 * 60 * 1000));
-      const difference = now - twoMinAfterRequestCreated.valueOf();
-
-      // one day has not passed since request
-      logWarn("Tried to signup user too soon since last request. Have to wait for atleast 2 minutes", "signUp @ controllers/users.ts");
-      if(difference > 0) {
-        throw createHttpError(
-          httpCodes["409"].code,
-          httpCodes["409"].message +
-            ": You recently sent a signup request. You can verify your email to confirm signup or wait 2min for another signup request!"
-        );
-      } else {
         unverifiedUserWithEmail.fullName = fullName;
         unverifiedUserWithEmail.email = email;
         unverifiedUserWithEmail.hashedPassword = await bcrypt.hash(password, hashNum);
@@ -159,7 +146,7 @@ export const signUp: RequestHandler<
         };
 
         logInfo("Successfully updated signup request.", "signUp @ controllers/user.ts");
-      }
+
     } else {
       // create new user with given data
       const newUnverifiedUser = await UnverifiedUserModel.create({
@@ -184,7 +171,7 @@ export const signUp: RequestHandler<
       logInfo("Successfully created new signup request.", "signUp @ controllers/user.ts");
     }
 
-    transport.sendMail(mailOptions(email, otp.toString()));
+    await transport.sendMail(mailOptions(email, otp.toString()));
     logInfo(`Mail sent to ${email}`, "signUp @ controllers/user.ts");
 
     res.status(response.status);
@@ -375,7 +362,7 @@ export const resendVerifyEmail: RequestHandler<
     unverifiedUser.otpRegenAt = oneMinutesLater;
     unverifiedUser.save();
 
-    transport.sendMail(mailOptions(unverifiedUser.email, otp.toString()));
+    await transport.sendMail(mailOptions(unverifiedUser.email, otp.toString()));
     logInfo(`Mail sent to ${unverifiedUser.email}`, "resendVerifyEmail @ controllers/user.ts");
 
     // create a response to sent to client

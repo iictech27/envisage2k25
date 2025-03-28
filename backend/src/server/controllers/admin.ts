@@ -114,7 +114,7 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
     reg.expireAt = null;
     reg.save();
 
-    transport.sendMail(regVerifiedMail(reg.email, eventNames));
+    await transport.sendMail(regVerifiedMail(reg.email, eventNames));
     logInfo(`Mail sent to ${reg.email}`, "verifyRegistration @ controllers/admin.ts");
 
     res.status(httpCodes["200"].code);
@@ -200,7 +200,7 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
     reg.expireAt = sevenDaysLater;
     reg.save();
 
-    transport.sendMail(regRejectedMail(reg.email, eventNames));
+    await transport.sendMail(regRejectedMail(reg.email, eventNames));
     logInfo(`Mail sent to ${reg.email}`, "rejectRegistration @ controllers/admin.ts");
 
     res.status(httpCodes["200"].code);

@@ -24,7 +24,7 @@ export const requireAuthUser: RequestHandler = async (req, _res, next) => {
   }
 
   // if session token exists but there is no user with userID given in the token then user is not authenticated
-  if (!(await UserModel.findById(sessionToken).exec())) {
+  else if (!(await UserModel.findById(sessionToken).exec())) {
     logWarn("Unauthenticated user (with invalid session token) tries to access route requiring auth.", "requireAuthUser @ middleware/user.ts");
     next(
       createHttpError(
@@ -34,7 +34,10 @@ export const requireAuthUser: RequestHandler = async (req, _res, next) => {
     );
   }
 
-  logInfo("User is authenticated! Continuing.", "requireAuthUser @ middleware/user.ts");
+  else {
+    logInfo("User is authenticated! Continuing.", "requireAuthUser @ middleware/user.ts");
+  }
+
   next();
 };
 
@@ -53,8 +56,9 @@ export const requireUnauthUser: RequestHandler = async (req, _res, next) => {
         httpCodes["403"].message + ": User already authenticated!"
       )
     );
+  } else {
+    logInfo("User is unauthenticated! Continuing.", "requireUnuthUser @ middleware/user.ts");
   }
 
-  logInfo("User is unauthenticated! Continuing.", "requireUnuthUser @ middleware/user.ts");
   next();
 };
