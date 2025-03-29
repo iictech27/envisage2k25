@@ -7,7 +7,6 @@ import mongoose from "mongoose";
 import createHttpError from "http-errors";
 import UserModel from "../../db/models/user.js";
 import { Events } from "../../util/events.js";
-import transport from "../services/nodemailer.js";
 import regRejectedMail from "../mails/reg_rejected.js";
 import regVerifiedMail from "../mails/reg_verified.js";
 import { logDebug, logInfo, logWarn } from "../../util/logger.js";
@@ -112,7 +111,7 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
 
     reg.confirmed = true;
     reg.rejected = false;
-    reg.expireAt = null;
+    // reg.expireAt = null;
     await reg.save();
 
     const mailRes = await sendMail(regVerifiedMail(reg.email, eventNames));
@@ -197,9 +196,9 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
 
     reg.confirmed = false;
     reg.rejected = true;
-    const now = new Date();
-    const sevenDaysLater = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
-    reg.expireAt = sevenDaysLater;
+    // const now = new Date();
+    // const sevenDaysLater = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+    // reg.expireAt = sevenDaysLater;
     await reg.save();
 
     const mailRes = await sendMail(regRejectedMail(reg.email, eventNames));

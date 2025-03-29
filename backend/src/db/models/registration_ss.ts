@@ -39,11 +39,11 @@ const registrationSchema = new Schema(
     // a significant delay between provided timestamp and actual deletion.
 
     // WARN : Special field for TTL - Do not changed unless needed
-    expireAt: {
-      type: Date,
-      required: false,
-      default: new Date("2100-01-01"),
-    },
+    // expireAt: {
+    //   type: Date,
+    //   required: false,
+    //   default: new Date("2100-01-01"),
+    // },
   },
   {
     timestamps: true,
@@ -54,10 +54,10 @@ const registrationSchema = new Schema(
     // just in case
     //
     // https://mongoosejs.com/docs/guide.html#timeseries
-    timeseries: {
-      timeField: "expireAt",
-      granularity: "hours",
-    },
+    // timeseries: {
+    //   timeField: "expireAt",
+    //   granularity: "hours",
+    // },
   }
 );
 
