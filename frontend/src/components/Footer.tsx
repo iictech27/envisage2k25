@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 
@@ -14,16 +15,26 @@ const Footer = () => {
   ];
 
   const footerLinks = [
-    { title: "About", links: ["About Us", "Team", "Sponsors", "Past Events"] },
-    {
-      title: "Events",
-      links: ["Schedule", "Speakers", "Workshops", "Competitions"],
-    },
-    {
-      title: "Resources",
-      links: ["FAQs", "Contact", "Privacy Policy", "Terms of Service"],
-    },
+    { title: "About", links: [
+      { name: "About Us", path: "/about" },
+      { name: "Team", path: "/team" },
+      { name: "Sponsors", path: "/sponsors" },
+      { name: "Past Events", path: "/past-events" }
+    ]},
+    { title: "Events", links: [
+      { name: "Schedule", path: "/schedule" },
+      { name: "Speakers", path: "/speakers" },
+      { name: "Workshops", path: "/workshops" },
+      { name: "Competitions", path: "/competitions" }
+    ]},
+    { title: "Resources", links: [
+      { name: "FAQs", path: "/faqs" },
+      { name: "Contact", path: "/contact" },
+      { name: "Privacy Policy", path: "/privacy-policy" },
+      { name: "Terms of Service", path: "/terms" }
+    ]}
   ];
+  
 
   return (
     <footer className="bg-primary pt-16 pb-8 relative overflow-hidden">
@@ -93,17 +104,18 @@ const Footer = () => {
               </h3>
               <ul className="space-y-2">
                 {column.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                     className="text-gray-400 hover:text-white transition-all duration-300 font-futuristic 
+                <li li key={link.path}>
+                  <Link
+                    to={link.path}
+                      className="text-gray-400 hover:text-white transition-all duration-300 font-futuristic 
                                 hover:[text-shadow:0_0_10px_white]"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
+      >
+                        {link.name}
+                    </Link>
+                </li>
+                  ))}
               </ul>
+
             </motion.div>
           ))}
 
