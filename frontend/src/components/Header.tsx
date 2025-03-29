@@ -75,7 +75,7 @@ const Header = () => {
              <img
                 src={logo} 
                 alt="Envisage Logo"
-                className="h-10 w-10 md:h-12 md:w-12 object-contain transition-all duration-300"
+                className="h-16 w-16 md:h-20 md:w-20 object-contain transition-all duration-300  "
                 style={{
                   filter: `drop-shadow(0px 0px 4px ${theme.colors.neon.main}) 
                            drop-shadow(0px 0px 8px ${theme.colors.neon.main})`,
@@ -83,13 +83,13 @@ const Header = () => {
                 
               />
               
-            <NavLink
+            {/* <NavLink
               to="/"
               className="text-2xl font-cyber font-bold"
               style={utils.neonTextEffect(theme.colors.neon.main, "md")}
             >
               ENVISAGE<span className="text-accent">2025</span>
-            </NavLink>
+            </NavLink> */}
           </div>
 
           {/* Desktop Navigation */}

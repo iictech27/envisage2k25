@@ -59,10 +59,11 @@ const Footer = () => {
               <img
                 src={logo}
                 alt="Envisage Logo"
-                 className="h-10 w-10 object-contain transition-all duration-00"
+                 className="h-10 w-10 object-contain transition-all duration-100 "
                 style={{
                   filter: `drop-shadow(0px 0px 4px #00FFFF) drop-shadow(0px 0px 8px #00FFFF)`,
                 }}
+                
               />
 
               <h2 className="text-2xl font-cyber font-bold neon-text mb-2">
