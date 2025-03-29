@@ -106,14 +106,14 @@ export const verifyRegistration: RequestHandler = async (req, res, next) => {
 
       user!.registeredEventIDs = [...user.registeredEventIDs!, ...reg.eventIDs];
       user!.registrationIDs = [...user!.registrationIDs, ...[reg._id]];
-      user!.save();
+      await user!.save();
       logInfo("Updated user with new registration status.", "verifyRegistration @ controllers/admin.ts");
     }
 
     reg.confirmed = true;
     reg.rejected = false;
     reg.expireAt = null;
-    reg.save();
+    await reg.save();
 
     const mailRes = await sendMail(regVerifiedMail(reg.email, eventNames));
     logDebug("Mail Sending Response:", mailRes, "verifyRegistration @ controllers/admin.ts");
@@ -191,7 +191,7 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
       }
 
       user!.rejectedRegIDs = [...user!.rejectedRegIDs, ...[reg._id]];
-      user!.save();
+      await user!.save();
       logInfo("Updated user with new registration status.", "rejectRegistration @ controllers/admin.ts");
     }
 
@@ -200,7 +200,7 @@ export const rejectRegistration: RequestHandler = async (req, res, next) => {
     const now = new Date();
     const sevenDaysLater = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
     reg.expireAt = sevenDaysLater;
-    reg.save();
+    await reg.save();
 
     const mailRes = await sendMail(regRejectedMail(reg.email, eventNames));
     logDebug("Mail Sending Response:", mailRes, "rejectRegistration @ controllers/admin.ts");
@@ -268,7 +268,7 @@ export const deleteRegistration: RequestHandler = async (req, res, next) => {
         }
       }
 
-      user.save();
+      await user.save();
       logInfo("Removed registrtion from user", "deleteRegistration @ controllers/admin.ts");
     }
 

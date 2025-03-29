@@ -130,25 +130,25 @@ export const signUp: RequestHandler<
     let response: ResUserSignupBody;
 
     if (unverifiedUserWithEmail) {
-        unverifiedUserWithEmail.fullName = fullName;
-        unverifiedUserWithEmail.email = email;
-        unverifiedUserWithEmail.hashedPassword = await bcrypt.hash(password, hashNum);
-        unverifiedUserWithEmail.hashedOtp = await bcrypt.hash(otp.toString(), hashNum);
-		unverifiedUserWithEmail.otpExpiresAt = tenMinutesLater;
-		unverifiedUserWithEmail.otpRegenAt = now;
-        unverifiedUserWithEmail.save();
+      unverifiedUserWithEmail.fullName = fullName;
+      unverifiedUserWithEmail.email = email;
+      unverifiedUserWithEmail.hashedPassword = await bcrypt.hash(password, hashNum);
+      unverifiedUserWithEmail.hashedOtp = await bcrypt.hash(otp.toString(), hashNum);
+      unverifiedUserWithEmail.otpExpiresAt = tenMinutesLater;
+      unverifiedUserWithEmail.otpRegenAt = now;
+      await unverifiedUserWithEmail.save();
 
-        // create a response to sent to client
-        response = {
-          status: httpCodes["201"].code,
-          message: httpCodes["201"].message,
-          fullName: unverifiedUserWithEmail.fullName,
-          userID: unverifiedUserWithEmail._id.toString(),
-          email: unverifiedUserWithEmail.email,
-          details: "Successfully created new signup request!",
-        };
+      // create a response to sent to client
+      response = {
+        status: httpCodes["201"].code,
+        message: httpCodes["201"].message,
+        fullName: unverifiedUserWithEmail.fullName,
+        userID: unverifiedUserWithEmail._id.toString(),
+        email: unverifiedUserWithEmail.email,
+        details: "Successfully created new signup request!",
+      };
 
-        logInfo("Successfully updated signup request.", "signUp @ controllers/user.ts");
+      logInfo("Successfully updated signup request.", "signUp @ controllers/user.ts");
 
     } else {
       // create new user with given data
@@ -284,11 +284,11 @@ export const verifyEmail: RequestHandler<
       }
 
       registrations[i].userID = newUser._id;
-	  registrations[i].save();
+	    await registrations[i].save();
     }
-    newUser.save();
+    await newUser.save();
 
-    UnverifiedUserModel.findByIdAndDelete(unverifiedUser._id).exec();
+    await UnverifiedUserModel.findByIdAndDelete(unverifiedUser._id).exec();
 
     // create a response to sent to client
     const response: ResUserBody = {
@@ -365,7 +365,7 @@ export const resendVerifyEmail: RequestHandler<
     unverifiedUser.hashedOtp = await bcrypt.hash(otp.toString(), hashNum);
     unverifiedUser.otpExpiresAt = tenMinutesLater;
     unverifiedUser.otpRegenAt = oneMinutesLater;
-    unverifiedUser.save();
+    await unverifiedUser.save();
 
     const mailRes = await sendMail(mailOptions(unverifiedUser.email, otp.toString()));
     logInfo(`Mail sent to ${unverifiedUser.email}`, "resendVerifyEmail @ controllers/user.ts");

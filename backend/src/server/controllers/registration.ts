@@ -68,7 +68,7 @@ export const verifyRegistrationOrder: RequestHandler<
     // make registration verified
     registration.order.verified = true;
     registration.paymentID = rzpPaymentID;
-    registration.save();
+    await registration.save();
 
     // retrieve authenticated user
     const user = await UserModel.findById(req.session.sessionToken).exec();
@@ -234,7 +234,7 @@ export const createRegistrationOrder: RequestHandler<
     // additional info
     if (additionalInfo) {
       newRegistration.additionalInfo = additionalInfo;
-      newRegistration.save();
+      await newRegistration.save();
     }
 
     // add new registrations to user
@@ -243,7 +243,7 @@ export const createRegistrationOrder: RequestHandler<
       ...user!.registrationIDs,
       ...[newRegistration._id],
     ];
-    user!.save();
+    await user!.save();
 
     const response: ResRegistrationOrderBody = {
       status: httpCodes["201"].code,
