@@ -1,4 +1,8 @@
 import { motion } from "framer-motion";
+import logo from "../assets/logo.png";
+
+
+
 
 const Footer = () => {
   const socialLinks = [
@@ -32,21 +36,27 @@ const Footer = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          <div>
+        <div>
             <motion.div
-              className="mb-6"
+              className="mb-6 flex items-center space-x-1"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
+              {/* Logo with Neon Effect */}
+              <img
+                src={logo}
+                alt="Envisage Logo"
+                 className="h-10 w-10 object-contain transition-all duration-00"
+                style={{
+                  filter: `drop-shadow(0px 0px 4px #00FFFF) drop-shadow(0px 0px 8px #00FFFF)`,
+                }}
+              />
+
               <h2 className="text-2xl font-cyber font-bold neon-text mb-2">
                 ENVISAGE<span className="text-accent">2025</span>
               </h2>
-              <p className="text-gray-300 font-futuristic">
-                The ultimate college tech fest exploring the boundless
-                possibilities of the metaverse.
-              </p>
             </motion.div>
 
             <motion.div
@@ -60,7 +70,8 @@ const Footer = () => {
                 <a
                   key={social.name}
                   href={social.url}
-                  className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white hover:bg-accent transition-colors duration-300"
+                   className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white transition-all duration-300
+                 hover:text-white hover:filter hover:drop-shadow-[0_0_6px_white] hover:drop-shadow-[0_0_12px_white]"
                   aria-label={social.name}
                 >
                   <i className={`fab fa-${social.icon}`}></i>
@@ -85,7 +96,8 @@ const Footer = () => {
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-gray-400 hover:text-neon transition-colors duration-300 font-futuristic"
+                     className="text-gray-400 hover:text-white transition-all duration-300 font-futuristic 
+                                hover:[text-shadow:0_0_10px_white]"
                     >
                       {link}
                     </a>

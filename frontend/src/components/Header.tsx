@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, RefObject } from "react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../styles/ThemeProvider";
 import * as utils from "../styles/utils";
+import logo from "../assets/logo.png";
+
 
 const Header = () => {
   const theme = useTheme();
@@ -60,14 +62,27 @@ const Header = () => {
       {/* Header */}
       <header
         style={scrolled ? scrolledHeaderStyle : {}}
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-100 ${
           scrolled
             ? "py-2"
             : "py-4 bg-gradient-to-b from-primary-dark to-transparent"
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-none">
+             {/* Logo Image */}
+
+             <img
+                src={logo} 
+                alt="Envisage Logo"
+                className="h-10 w-10 md:h-12 md:w-12 object-contain transition-all duration-300"
+                style={{
+                  filter: `drop-shadow(0px 0px 4px ${theme.colors.neon.main}) 
+                           drop-shadow(0px 0px 8px ${theme.colors.neon.main})`,
+                }}
+                
+              />
+              
             <NavLink
               to="/"
               className="text-2xl font-cyber font-bold"
