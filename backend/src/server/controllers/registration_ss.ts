@@ -221,13 +221,13 @@ export const createRegistration: RequestHandler<
     // additional info
     if (additionalInfo) {
       newRegistration.additionalInfo = additionalInfo;
-      newRegistration.save();
+      await newRegistration.save();
     }
 
     if (user) {
       // add new registrations to user
       user!.pendingRegIDs = [...user!.pendingRegIDs, ...[newRegistration._id]];
-      user!.save();
+      await user!.save();
       logInfo("User update with new registration request", "createRegistration @ controllers/registrations.ts");
     }
 
