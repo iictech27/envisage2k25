@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
@@ -19,7 +18,6 @@ import {
 } from "../bodies/user.js";
 import UnverifiedUserModel from "../../db/models/unverified_user.js";
 import mailOptions from "../mails/verif_email.js";
-import transport from "../services/nodemailer.js";
 import SSRegistrationModel from "../../db/models/registration_ss.js";
 import { logDebug, logInfo, logWarn } from "../../util/logger.js";
 import { sendMail } from "../services/email_handler.js";
@@ -28,7 +26,6 @@ const hashNum = validatedEnv.HASH_NUM;
 
 // endpoint to retrieve data of currently logged in user
 export const getAuthUser: RequestHandler = async (req, res, next) => {
-
   // NOTE: protected by requireAuthUser middleware
 
   try {
@@ -44,7 +41,10 @@ export const getAuthUser: RequestHandler = async (req, res, next) => {
       details: "Successfully retrieved authenticated user!",
     };
 
-    logInfo("Successfully retrieved authenticated user", "getAuthUser @ controllers/users.ts");
+    logInfo(
+      "Successfully retrieved authenticated user",
+      "getAuthUser @ controllers/users.ts"
+    );
     res.status(response.status);
     res.json(response);
   } catch (error) {
@@ -59,9 +59,8 @@ export const signUp: RequestHandler<
   ReqSignupBody,
   unknown
 > = async (req, res, next) => {
-
   // NOTE: protected by requireUnathUser middleware
-  
+
   logDebug("Signup Request Body:", req.body, "signUp @ controllers/users.ts");
 
   const fullName = req.body.fullName?.trim();
@@ -72,7 +71,10 @@ export const signUp: RequestHandler<
   try {
     // make sure all parameters are received
     if (!fullName || !email || !password || !confirmPassword) {
-      logWarn("Tried to signup user without all parameters", "signUp @ controllers/users.ts");
+      logWarn(
+        "Tried to signup user without all parameters",
+        "signUp @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": Parameters missing!"
@@ -81,7 +83,10 @@ export const signUp: RequestHandler<
 
     // validate email
     if (!/\S+@\S+\.\S+/.test(email)) {
-      logWarn("Tried to signup user with an invalid email", "signUp @ controllers/users.ts");
+      logWarn(
+        "Tried to signup user with an invalid email",
+        "signUp @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message + ": Enter a valid email!"
@@ -90,7 +95,10 @@ export const signUp: RequestHandler<
 
     // make sure password is atleast 6 letter long
     if (password.length < 6) {
-      logWarn("Tried to signup user with password lower than 6 characters", "signUp @ controllers/users.ts");
+      logWarn(
+        "Tried to signup user with password lower than 6 characters",
+        "signUp @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message +
@@ -100,7 +108,10 @@ export const signUp: RequestHandler<
 
     // make sure both password and confirmation are same
     if (password !== confirmPassword) {
-      logWarn("Tried to signup user with mismatching password and confirm password", "signUp @ controllers/users.ts");
+      logWarn(
+        "Tried to signup user with mismatching password and confirm password",
+        "signUp @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message +
@@ -111,7 +122,10 @@ export const signUp: RequestHandler<
     // check if account with email exists
     const userWithEmail = await UserModel.findOne({ email: email }).exec();
     if (userWithEmail) {
-      logWarn("Tried to signup user but user already exists", "signUp @ controllers/users.ts");
+      logWarn(
+        "Tried to signup user but user already exists",
+        "signUp @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["409"].code,
         httpCodes["409"].message +
@@ -132,8 +146,14 @@ export const signUp: RequestHandler<
     if (unverifiedUserWithEmail) {
       unverifiedUserWithEmail.fullName = fullName;
       unverifiedUserWithEmail.email = email;
-      unverifiedUserWithEmail.hashedPassword = await bcrypt.hash(password, hashNum);
-      unverifiedUserWithEmail.hashedOtp = await bcrypt.hash(otp.toString(), hashNum);
+      unverifiedUserWithEmail.hashedPassword = await bcrypt.hash(
+        password,
+        hashNum
+      );
+      unverifiedUserWithEmail.hashedOtp = await bcrypt.hash(
+        otp.toString(),
+        hashNum
+      );
       unverifiedUserWithEmail.otpExpiresAt = tenMinutesLater;
       unverifiedUserWithEmail.otpRegenAt = now;
       await unverifiedUserWithEmail.save();
@@ -148,8 +168,10 @@ export const signUp: RequestHandler<
         details: "Successfully created new signup request!",
       };
 
-      logInfo("Successfully updated signup request.", "signUp @ controllers/user.ts");
-
+      logInfo(
+        "Successfully updated signup request.",
+        "signUp @ controllers/user.ts"
+      );
     } else {
       // create new user with given data
       const newUnverifiedUser = await UnverifiedUserModel.create({
@@ -171,12 +193,19 @@ export const signUp: RequestHandler<
         details: "Successfully created new signup request!",
       };
 
-      logInfo("Successfully created new signup request.", "signUp @ controllers/user.ts");
+      logInfo(
+        "Successfully created new signup request.",
+        "signUp @ controllers/user.ts"
+      );
     }
 
     const mailRes = await sendMail(mailOptions(email, otp.toString()));
     logInfo(`Mail sent to ${email}`, "signUp @ controllers/user.ts");
-    logDebug("Mail Sending Response:", mailRes, "signUp @ controllers/users.ts");
+    logDebug(
+      "Mail Sending Response:",
+      mailRes,
+      "signUp @ controllers/users.ts"
+    );
 
     res.status(response.status);
     res.json(response);
@@ -192,17 +221,23 @@ export const verifyEmail: RequestHandler<
   ReqEmailVeriBody,
   unknown
 > = async (req, res, next) => {
-
   // NOTE: protected by requireUnathUser middleware
 
-  logDebug("Verify Email Request Body:", req.body, "verifyEmail @ controllers/users.ts");
+  logDebug(
+    "Verify Email Request Body:",
+    req.body,
+    "verifyEmail @ controllers/users.ts"
+  );
 
   const userID = req.body.userID;
   const otp = req.body.otp;
 
   try {
     if (!otp) {
-      logWarn("Tried to verify user without providing otp", "verifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to verify user without providing otp",
+        "verifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No otp provided!"
@@ -210,7 +245,10 @@ export const verifyEmail: RequestHandler<
     }
 
     if (!userID) {
-      logWarn("Tried to verify user without providing user id", "verifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to verify user without providing user id",
+        "verifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No User ID provided!"
@@ -222,7 +260,10 @@ export const verifyEmail: RequestHandler<
     ).exec();
 
     if (!unverifiedUser) {
-      logWarn("Tried to verify user who hasnt sent a signup request", "verifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to verify user who hasnt sent a signup request",
+        "verifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["403"].code,
         httpCodes["403"].message + ": No signup request for user!"
@@ -234,7 +275,10 @@ export const verifyEmail: RequestHandler<
 
     // otp has expired
     if (difference <= 0) {
-      logWarn("Tried to verify user with expired otp", "verifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to verify user with expired otp",
+        "verifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["403"].code,
         httpCodes["403"].message +
@@ -244,7 +288,10 @@ export const verifyEmail: RequestHandler<
 
     const otpMatched = await bcrypt.compare(otp, unverifiedUser.hashedOtp);
     if (!otpMatched) {
-      logWarn("Tried to verify user with wrong otp", "verifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to verify user with wrong otp",
+        "verifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message + ": Invalid OTP!"
@@ -284,7 +331,7 @@ export const verifyEmail: RequestHandler<
       }
 
       registrations[i].userID = newUser._id;
-	    await registrations[i].save();
+      await registrations[i].save();
     }
     await newUser.save();
 
@@ -315,16 +362,22 @@ export const resendVerifyEmail: RequestHandler<
   ReqResendEmailBody,
   unknown
 > = async (req, res, next) => {
-
   // NOTE: protected by requireUnathUser middleware
 
-  logDebug("Resend Verify Request Body:", req.body, "resendVerifyEmail @ controllers/users.ts");
+  logDebug(
+    "Resend Verify Request Body:",
+    req.body,
+    "resendVerifyEmail @ controllers/users.ts"
+  );
 
   const userID = req.body.userID;
 
   try {
     if (!userID) {
-      logWarn("Tried to resend email without providing user id", "resendVerifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to resend email without providing user id",
+        "resendVerifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": No User ID provided!"
@@ -336,7 +389,10 @@ export const resendVerifyEmail: RequestHandler<
     ).exec();
 
     if (!unverifiedUser) {
-      logWarn("Tried to resend email to an user who hasnt sent a singup request", "resendVerifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to resend email to an user who hasnt sent a singup request",
+        "resendVerifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["403"].code,
         httpCodes["403"].message + ": No signup request for user!"
@@ -347,7 +403,10 @@ export const resendVerifyEmail: RequestHandler<
     const difference = unverifiedUser.otpRegenAt.valueOf() - now;
 
     if (difference >= 0) {
-      logWarn("Tried to resend email too soon since last request. have to wait for atleast 1 minute", "resendVerifyEmail @ controllers/users.ts");
+      logWarn(
+        "Tried to resend email too soon since last request. have to wait for atleast 1 minute",
+        "resendVerifyEmail @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["403"].code,
         httpCodes["403"].message +
@@ -367,9 +426,18 @@ export const resendVerifyEmail: RequestHandler<
     unverifiedUser.otpRegenAt = oneMinutesLater;
     await unverifiedUser.save();
 
-    const mailRes = await sendMail(mailOptions(unverifiedUser.email, otp.toString()));
-    logInfo(`Mail sent to ${unverifiedUser.email}`, "resendVerifyEmail @ controllers/user.ts");
-    logDebug("Mail Sending Response:", mailRes, "resendVerifyEmail @ controllers/users.ts");
+    const mailRes = await sendMail(
+      mailOptions(unverifiedUser.email, otp.toString())
+    );
+    logInfo(
+      `Mail sent to ${unverifiedUser.email}`,
+      "resendVerifyEmail @ controllers/user.ts"
+    );
+    logDebug(
+      "Mail Sending Response:",
+      mailRes,
+      "resendVerifyEmail @ controllers/users.ts"
+    );
 
     // create a response to sent to client
     const response: ResUserBody = {
@@ -380,7 +448,10 @@ export const resendVerifyEmail: RequestHandler<
       email: unverifiedUser.email,
     };
 
-    logInfo("Successfully resent verification mail.", "resendVerifyEmail @ controllers/user.ts");
+    logInfo(
+      "Successfully resent verification mail.",
+      "resendVerifyEmail @ controllers/user.ts"
+    );
 
     res.status(response.status);
     res.json(response);
@@ -396,7 +467,6 @@ export const logIn: RequestHandler<
   ReqLoginBody,
   unknown
 > = async (req, res, next) => {
-
   // NOTE: protected by requireUnathUser middleware
 
   logDebug("Login Request Body:", req.body, "logIn @ controllers/users.ts");
@@ -408,7 +478,10 @@ export const logIn: RequestHandler<
   try {
     // make sure all parameters are received
     if (!email || !password) {
-      logWarn("Tried to login user without all parameters", "logIn @ controllers/users.ts");
+      logWarn(
+        "Tried to login user without all parameters",
+        "logIn @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["400"].code,
         httpCodes["400"].message + ": Parameters missing!"
@@ -417,7 +490,10 @@ export const logIn: RequestHandler<
 
     // validate email
     if (!/\S+@\S+\.\S+/.test(email)) {
-      logWarn("Tried to login user with invalid email", "logIn @ controllers/users.ts");
+      logWarn(
+        "Tried to login user with invalid email",
+        "logIn @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message + ": Invalid credentials!"
@@ -433,7 +509,10 @@ export const logIn: RequestHandler<
         email: email,
       }).exec();
       if (unverifiedUserWithEmail) {
-        logWarn("Tried to login user with unverified email", "logIn @ controllers/users.ts");
+        logWarn(
+          "Tried to login user with unverified email",
+          "logIn @ controllers/users.ts"
+        );
         throw createHttpError(
           httpCodes["409"].code,
           httpCodes["409"].message +
@@ -441,7 +520,10 @@ export const logIn: RequestHandler<
         );
       }
 
-      logWarn("Tried to login user with no account", "logIn @ controllers/users.ts");
+      logWarn(
+        "Tried to login user with no account",
+        "logIn @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message + ": Invalid credentials!"
@@ -451,7 +533,10 @@ export const logIn: RequestHandler<
     // check password
     const passwordMatched = await bcrypt.compare(password, user.hashedPassword);
     if (!passwordMatched) {
-      logWarn("Tried to login user with invalid password", "logIn @ controllers/users.ts");
+      logWarn(
+        "Tried to login user with invalid password",
+        "logIn @ controllers/users.ts"
+      );
       throw createHttpError(
         httpCodes["401"].code,
         httpCodes["401"].message + ": Invalid credentials!"
@@ -501,7 +586,10 @@ export const logOut: RequestHandler = (req, res, next) => {
         if (error) {
           next(error);
         } else {
-          logInfo("Successfully logged out user.", "logOut @ controllers/user.ts");
+          logInfo(
+            "Successfully logged out user.",
+            "logOut @ controllers/user.ts"
+          );
           res.status(httpCodes["200"].code);
           res.send("User logged out successfully!");
         }
