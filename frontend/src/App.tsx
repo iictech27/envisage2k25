@@ -27,6 +27,8 @@ import Preloader from "./components/Preloader";
 import { useState, useEffect } from "react";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
+import { ProblemStatement } from "./pages/ProblemStatement/ProblemStatement";
+import ProblemDetailsPage from "./pages/ProblemStatement/ProblemDetailsPage";
 
 // Wrapper component to handle route changes
 function AppContent() {
@@ -64,6 +66,8 @@ function AppContent() {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/problem-statement" element={<ProblemStatement />} />
+        <Route path="/problem-details" element={<ProblemDetailsPage />} />
       </Routes>
     </>
   );
