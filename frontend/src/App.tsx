@@ -60,14 +60,20 @@ function AppContent() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/create-new-password" element={<CreateNewPasswordPage />} />
+        <Route
+          path="/create-new-password"
+          element={<CreateNewPasswordPage />}
+        />
         <Route path="/verify-email" element={<EmailVerificationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/problem-statement" element={<ProblemStatement />} />
-        <Route path="/problem-details" element={<ProblemDetailsPage />} />
+        <Route
+          path="/problem-details/:problemCode"
+          element={<ProblemDetailsPage />}
+        />
       </Routes>
     </>
   );

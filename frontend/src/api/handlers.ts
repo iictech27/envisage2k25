@@ -3,18 +3,28 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event, Registration } from "../components/admin/RegistrationList";
 import { eventOptions } from "../components/RegisterWithUPI";
+import { Problem, ReqParticipantRegistration } from "./bodies/participant";
 import {
   ReqSSRegistrationOrderBody,
   ResSSRegistrationBody,
 } from "./bodies/registration_ss";
-import { ReqEmailVeriBody, ReqLoginBody, ReqResendEmailBody, ReqSignupBody, ResUserBody, ResUserSignupBody } from "./bodies/user";
+import {
+  ReqEmailVeriBody,
+  ReqLoginBody,
+  ReqResendEmailBody,
+  ReqSignupBody,
+  ResUserBody,
+  ResUserSignupBody,
+} from "./bodies/user";
 // import { isResError } from "./bodies/errors";
 import {
   adminDeleteRegistration,
   adminGetRegistraions,
   adminRejectRegistration,
   adminVerifyRegistration,
+  fetchProblemStatements,
   newRegistration,
+  participantRegistration,
   reqAuthUserData,
   reqNewUserSignIn,
   reqServerStatus,
@@ -216,6 +226,30 @@ export async function deleteReg(regID: string): Promise<boolean> {
   } catch (error) {
     console.log(error);
     return false;
+  }
+}
+
+export async function getProblemStatements() {
+  try {
+    let problemStatements: Problem[] = [];
+    const response = await fetchProblemStatements();
+    problemStatements = response.problems;
+
+    return problemStatements;
+  } catch (error) {
+    console.log(error);
+    alert(getErrorMessage(error));
+    return [];
+  }
+}
+
+export async function registerTeam(formData: ReqParticipantRegistration) {
+  try {
+    const response = await participantRegistration(formData);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return getErrorMessage(error);
   }
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -299,7 +300,7 @@ const Register = ({ onClose }: RegisterProps) => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    >
   ) => {
     const { name, value } = e.target;
     setFormData({
@@ -529,7 +530,7 @@ const Register = ({ onClose }: RegisterProps) => {
                             id={`event-${event.id}`}
                             value={event.id}
                             checked={selectedEvents.some(
-                              (e) => e.id === event.id,
+                              (e) => e.id === event.id
                             )}
                             onChange={handleEventChange}
                             className="form-checkbox h-5 w-5 text-neon rounded"

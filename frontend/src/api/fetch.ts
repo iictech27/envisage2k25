@@ -1,10 +1,21 @@
 import validatedEnv from "./utils/validatedEnv";
 
 // import { ReqRegistrationBody, ResRegistrationBody } from "./bodies/registration";
-import { ReqEmailVeriBody, ReqLoginBody, ReqResendEmailBody, ReqSignupBody, ResUserBody, ResUserSignupBody } from "./bodies/user";
+import {
+  ReqEmailVeriBody,
+  ReqLoginBody,
+  ReqResendEmailBody,
+  ReqSignupBody,
+  ResUserBody,
+  ResUserSignupBody,
+} from "./bodies/user";
 import { ResEventsBody } from "./bodies/events";
 import { ResSSRegistrationBody } from "./bodies/registration_ss";
 import { ReqEditReg, ReqGetReg, ResRegAdmin } from "./bodies/admin";
+import {
+  ReqParticipantRegistration,
+  ResProblemStatements,
+} from "./bodies/participant";
 
 const reqTypes = {
   GET: "GET",
@@ -128,13 +139,17 @@ export async function reqUserLogIn(
 }
 
 export async function reqUserLogout() {
-  console.log(await fetchData("/users/logout", {
-    method: reqTypes.POST,
-    credentials: "include"
-  }));
+  console.log(
+    await fetchData("/users/logout", {
+      method: reqTypes.POST,
+      credentials: "include",
+    })
+  );
 }
 
-export async function adminGetRegistraions(cred: ReqGetReg): Promise<ResRegAdmin> {
+export async function adminGetRegistraions(
+  cred: ReqGetReg
+): Promise<ResRegAdmin> {
   const response = await fetchData("/admin/getreg", {
     method: reqTypes.POST,
     headers: { "Content-Type": "application/json" },
@@ -146,28 +161,63 @@ export async function adminGetRegistraions(cred: ReqGetReg): Promise<ResRegAdmin
 }
 
 export async function adminVerifyRegistration(cred: ReqEditReg) {
-  console.log(await fetchData("/admin/verreg", {
-    method: reqTypes.POST,
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(cred),
-  }));
+  console.log(
+    await fetchData("/admin/verreg", {
+      method: reqTypes.POST,
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(cred),
+    })
+  );
 }
 
 export async function adminRejectRegistration(cred: ReqEditReg) {
-  console.log(await fetchData("/admin/rejreg", {
-    method: reqTypes.POST,
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(cred),
-  }));
+  console.log(
+    await fetchData("/admin/rejreg", {
+      method: reqTypes.POST,
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(cred),
+    })
+  );
 }
 
 export async function adminDeleteRegistration(cred: ReqEditReg) {
-  console.log(await fetchData("/admin/delreg", {
-    method: reqTypes.POST,
+  console.log(
+    await fetchData("/admin/delreg", {
+      method: reqTypes.POST,
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(cred),
+    })
+  );
+}
+
+export async function fetchProblemStatements(): Promise<ResProblemStatements> {
+  const response = await fetchData("/participant/getProblemStatements", {
+    method: reqTypes.GET,
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify(cred),
-  }));
+  });
+
+  return response.json();
+}
+
+export async function participantRegistration(
+  formData: ReqParticipantRegistration
+) {
+  const response = await fetchData("/participant/register", {
+    method: reqTypes.POST,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+    credentials: "include",
+  });
+
+  if (response.ok) {
+    return response.json();
+  } else {
+    const errorBody = await response.json();
+    const errorMessage = errorBody.error;
+    throw Error(errorMessage);
+  }
 }
