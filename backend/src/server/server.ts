@@ -9,13 +9,19 @@ import rateLimit from "express-rate-limit";
 import { mongoStore } from "../db/db.js";
 import { httpCodes } from "../util/httpCodes.js";
 import validatedEnv from "../util/validatedEnv.js";
-import { logInfo, logErr, startHttpReqLogging, logWarn, logDebug } from "../util/logger.js";
+import {
+  logInfo,
+  logErr,
+  startHttpReqLogging,
+  logWarn,
+} from "../util/logger.js";
 import rootRouter from "./routes/root.js";
 import usersRouter from "./routes/users.js";
 import eventsRouter from "./routes/events.js";
 import registrationRouter from "./routes/registration.js";
 import { ResErrorBody } from "./bodies/errors.js";
 import adminRouter from "./routes/admin.js";
+import participantRouter from "./routes/participant.js";
 
 const server = express();
 const port = validatedEnv.PORT;
@@ -27,7 +33,7 @@ const apiLimiter = rateLimit({
   max: 20, // limit each IP to 20 requests per windowMs
   message: "Too many requests from this IP, please try again after 15 minutes",
   handler: (req, res) => {
-    logWarn(`${req.ip} exhausted rate limit.`, "apiLimiter @ server.ts");    
+    logWarn(`${req.ip} exhausted rate limit.`, "apiLimiter @ server.ts");
     res.status(429).send({ message: "Too many requests, try again later." });
   },
 });
@@ -36,7 +42,9 @@ function startServer(): void {
   // listen to requests
 
   server.listen(port, () => {
-    logInfo("------------------------------------------------------------------------------------------");
+    logInfo(
+      "------------------------------------------------------------------------------------------"
+    );
     logInfo("Listening at port " + port);
   });
 
@@ -105,10 +113,14 @@ function startServer(): void {
   server.use("/api", apiLimiter, registrationRouter);
   server.use("/api", eventsRouter);
   server.use("/api", adminRouter);
+  server.use("/api", participantRouter);
 
   // non-existent endpoint handler
   server.use((_req: Request, _res: Response, next: NextFunction) => {
-    logWarn("Tried to access a non-existent endpoint!", "endpoint handler @ server.ts");
+    logWarn(
+      "Tried to access a non-existent endpoint!",
+      "endpoint handler @ server.ts"
+    );
     next(
       createHttpError(
         httpCodes["404"].code,
