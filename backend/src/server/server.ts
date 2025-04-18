@@ -30,7 +30,7 @@ const sessionTimeLimitMs = validatedEnv.SESSION_EXP_MIN_M * 60 * 1000;
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // limit each IP to 20 requests per windowMs
+  max: 40, // limit each IP to 20 requests per windowMs
   message: "Too many requests from this IP, please try again after 15 minutes",
   handler: (req, res) => {
     logWarn(`${req.ip} exhausted rate limit.`, "apiLimiter @ server.ts");
