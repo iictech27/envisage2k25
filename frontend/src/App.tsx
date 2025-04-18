@@ -28,6 +28,7 @@ import { useState, useEffect } from "react";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import { ProblemStatement } from "./pages/ProblemStatement/ProblemStatement";
+import ProblemStatementBackup from "./pages/ProblemStatement/ProblemStatementBackup";
 import ProblemDetailsPage from "./pages/ProblemStatement/ProblemDetailsPage";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -74,6 +75,10 @@ function AppContent() {
         <Route
           path="/iictmsl-envisage2k25-hack-ur-way-problem-statement"
           element={<ProblemStatement />}
+        />
+        <Route
+          path="/iictmsl-envisage2k25-hack-ur-way-problem-statement-list"
+          element={<ProblemStatementBackup />}
         />
         <Route
           path="/iictmsl-envisage2k25-hack-ur-way-problem-details/:problemCode"
