@@ -15,7 +15,7 @@ const HomePage = () => {
       if (mobile) {
         document.documentElement.style.setProperty(
           "--animation-speed-multiplier",
-          "0.5",
+          "0.5"
         );
         document.body.classList.add("mobile-optimized");
         const scrollHandler = () => {
@@ -36,7 +36,7 @@ const HomePage = () => {
       } else {
         document.documentElement.style.setProperty(
           "--animation-speed-multiplier",
-          "1",
+          "1"
         );
         document.body.classList.remove("mobile-optimized");
       }

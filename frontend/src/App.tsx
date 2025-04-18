@@ -29,6 +29,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import { ProblemStatement } from "./pages/ProblemStatement/ProblemStatement";
 import ProblemDetailsPage from "./pages/ProblemStatement/ProblemDetailsPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Wrapper component to handle route changes
 function AppContent() {
@@ -44,6 +45,7 @@ function AppContent() {
   return (
     <>
       <Preloader key={key} />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -69,9 +71,12 @@ function AppContent() {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path="/problem-statement" element={<ProblemStatement />} />
         <Route
-          path="/problem-details/:problemCode"
+          path="/iictmsl-envisage2k25-hack-ur-way-problem-statement"
+          element={<ProblemStatement />}
+        />
+        <Route
+          path="/iictmsl-envisage2k25-hack-ur-way-problem-details/:problemCode"
           element={<ProblemDetailsPage />}
         />
       </Routes>

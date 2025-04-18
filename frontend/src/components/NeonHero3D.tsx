@@ -15,6 +15,8 @@ import * as THREE from "three";
 // import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 import { Preload } from "@react-three/drei";
 import { PerformanceMonitor } from "@react-three/drei";
+import { motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
 
 // Enhanced 3D background component
 const Background = () => {
@@ -45,7 +47,7 @@ const Background = () => {
             transparent
             opacity={0.6}
           />
-        </Box>,
+        </Box>
       );
     }
 
@@ -100,7 +102,7 @@ const Background = () => {
               wireframe
             />
           </Torus>
-        </Float>,
+        </Float>
       );
     }
 
@@ -162,7 +164,7 @@ const Background = () => {
             transparent
             opacity={0.7}
           />
-        </Sphere>,
+        </Sphere>
       );
     }
 
@@ -200,7 +202,7 @@ const Background = () => {
     const ringRefs = positions.map(() =>
       Array(3)
         .fill(0)
-        .map(() => React.createRef<THREE.Mesh>()),
+        .map(() => React.createRef<THREE.Mesh>())
     );
 
     // Create animation function outside the loop
@@ -242,7 +244,7 @@ const Background = () => {
               transparent
               opacity={0.7}
             />
-          </Torus>,
+          </Torus>
         );
       }
     });
@@ -391,6 +393,25 @@ const NeonHero3D = ({ onRegisterClick }: NeonHero3DProps) => {
             </span>
             <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           </button>
+          {/* hack ur way button */}
+          <motion.button
+            className="cyber-button text-lg px-8 py-3 relative overflow-hidden group animate-enhanced-glow hover:cursor-pointer"
+            style={{
+              background: "linear-gradient(45deg, #ec4899, #f97316)",
+              boxShadow:
+                "0 0 10px rgba(236, 72, 153, 0.5), inset 0 0 10px rgba(236, 72, 153, 0.5)",
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <NavLink
+              to={"/iictmsl-envisage2k25-hack-ur-way-problem-statement"}
+              className="relative z-10"
+            >
+              Hack-Ur-Way
+            </NavLink>
+            <span className="absolute inset-0 bg-gradient-to-r from-pink-600 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          </motion.button>
         </div>
       </div>
 
