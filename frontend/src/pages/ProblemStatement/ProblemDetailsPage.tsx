@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
 import { useParams } from "react-router-dom";
 import { ReqParticipantRegistration } from "../../api/bodies/participant";
 import { registerParticipant } from "../../features/participantSlice";
 import { useState } from "react";
+import { problems } from "./ProblemStatement";
 
 interface FormInputProps {
   label: string;
@@ -119,11 +120,11 @@ FormInputProps) => {
 const ProblemDetailsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { problemCode } = useParams();
-  const { problems } = useSelector((state: RootState) => state.participant);
+  // const { problems } = useSelector((state: RootState) => state.participant);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Find problem by code
-  const problem = problems.find((p) => p.problemCode === problemCode);
+  const problem = problems.find((p: any) => p.problemCode === problemCode);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

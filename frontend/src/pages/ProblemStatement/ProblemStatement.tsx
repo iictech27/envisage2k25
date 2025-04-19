@@ -1,15 +1,164 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import { Problem } from "../../api/bodies/participant";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
-import { fetchProblemsThunk } from "../../features/participantSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { AppDispatch, RootState } from "../../store";
+// import { fetchProblemsThunk } from "../../features/participantSlice";
 import CyberpunkButton from "../../components/CyberpunkButton";
 import FinalCountdown from "../../components/FinalCountdown";
 
-const Card = ({ problem }: { problem: Problem }) => {
+export const problems = [
+  {
+    _id: "6802168140a25d5ec03acb28",
+    title: "Smart Grocery Management",
+    description:
+      "Raja, a busy working professional with a packed schedule, frequently finds himself throwing away expired food items due to forgotten expiry dates and lack of meal planning. His hectic routine leaves little time for manually tracking grocery usage or coming up with ideas for meals using the ingredients he already has. This leads to unnecessary food waste, increased expenses, and inconvenience. A smart solution is needed to help Raja — and others like him — manage groceries more efficiently by automatically tracking expiry dates, reducing waste, and offering recipe suggestions based on available items.",
+    overview: "Track expiry, reduce waste, suggest recipes.",
+    category: "Web & Mobile App",
+    problemCode: "WEB-001",
+  },
+  {
+    _id: "6802168140a25d5ec03acb29",
+    title: "Personal Finance Buddy",
+    description:
+      "Priya, a college student on a tight budget, struggles to manage her monthly expenses. With limited income from allowances or part-time jobs, she finds it hard to track spending, often overspends, and rarely saves for personal goals—like buying a concert ticket. She needs a simple, smart solution to monitor her expenses, categorize spending, and get personalized money-saving tips.\nThe goal is to build a personal finance assistant that helps students like Priya take control of their finances through features like budget tracking, goal setting, smart insights, and spending alerts—making money management easier and more effective.",
+    overview: "Track expenses, save smarter.",
+    category: "Web & Mobile App",
+    problemCode: "WEB-002",
+  },
+  {
+    _id: "6802168140a25d5ec03acb2a",
+    title: "Streamlining Solo Travel Safety for Digital Nomads",
+    description:
+      "Maya is an avid digital nomad who travels the world while working remotely. While she enjoys exploring new places, she often finds herself anxious about her safety, especially when traveling alone in unfamiliar cities. There are limited resources that combine safety information with real-time updates, such as nearby safe zones, emergency contacts, and trusted community recommendations. Maya dreams of a solution that would give her peace of mind by helping her navigate new places with confidence, alerting her to potential risks and offering immediate support in case of emergencies.",
+    overview: "Real-time safety alerts for solo travelers.",
+    category: "Digital Nomads",
+    problemCode: "DN-001",
+  },
+  {
+    _id: "6802168140a25d5ec03acb2b",
+    title: "Neighborhood Safety & Alert Network",
+    description:
+      "Ayesha, a concerned mother and active member of her community, often worries about the safety of her neighborhood. From suspicious activity to minor incidents, there's no quick or reliable way for residents to report concerns or stay informed about local safety issues. By the time word spreads, it's often too late to act. This lack of communication creates anxiety and leaves residents unprepared. A smart solution is needed to help Ayesha — and communities like hers — stay safe by enabling real-time alerts, easy reporting of incidents, and a connected neighborhood network that fosters collective awareness and response.",
+    overview: "Report threats, alert neighbors.",
+    category: "Web & Mobile App",
+    problemCode: "WEB-003",
+  },
+  {
+    _id: "6802168140a25d5ec03acb2c",
+    title: "Elderly Care Reminder System",
+    description:
+      "Rahul’s grandfather, who lives with him, often forgets to take his medicines on time. Despite Rahul’s best efforts, his busy schedule makes it difficult to keep track of his grandfather’s daily health routines. Missed medications or appointments can lead to serious health issues and added stress for the whole family. Rahul needs a simple, reliable solution that reminds his grandfather about his medications and appointments — while also keeping Rahul informed. A smart system is needed to support elderly care through timely reminders, health tracking, and caregiver alerts, helping families like Rahul’s ensure better care with peace of mind.",
+    overview: "Med reminders, family check-ins.",
+    category: "Web & Mobile App",
+    problemCode: "WEB-004",
+  },
+  {
+    _id: "6802168140a25d5ec03acb2d",
+    title: "AI – Mental Health Support for Gig Workers",
+    description:
+      "Deepak, a Swiggy delivery partner, works long hours under stressful conditions, often without proper breaks or support. He feels constantly exhausted and demotivated but doesn’t realize he may be experiencing burnout. Like many gig workers, Deepak lacks access to mental health resources, emotional support, or even someone to talk to. The irregular schedules and job insecurity only make things worse. A smart solution is needed to help Deepak — and gig workers like him — monitor their mental well-being, access support tools, receive AI-driven mood insights, and find ways to de-stress through personalized guidance, all while preserving their privacy.",
+    overview: "AI stress alerts, wellness tips.",
+    category: "AI/ML Solution",
+    problemCode: "AI-001",
+  },
+  {
+    _id: "6802168140a25d5ec03acb2e",
+    title: "Smart Resume & Job Match Tool",
+    description:
+      "Ananya has sent over 100 resumes to potential employers but has received no replies. Despite her qualifications, she feels lost in the sea of job applications and struggles to stand out. She wishes for a tool that could help her tailor her resumes, match them with the right job opportunities, and even highlight her strengths in a way that resonates with employers. A smart solution is needed to help Ananya — and job seekers like her — optimize their resumes, get personalized job recommendations, and improve their chances of landing interviews through AI-driven matching and insights.",
+    overview: "Resume AI, perfect job matches.",
+    category: "AI/ML Solution",
+    problemCode: "AI-002",
+  },
+  {
+    _id: "6802168140a25d5ec03acb2f",
+    title: "AI-Driven Daily Habit Builder",
+    description:
+      "Vikram wants to build a consistent gym habit but keeps failing. He starts strong, but soon the motivation fades, and his routine falls apart. He imagines an AI-powered system that could understand his challenges, track his progress, and offer personalized encouragement. A smart solution is needed to help Vikram — and others like him — develop healthy habits by providing tailored reminders, motivational insights, habit tracking, and progress updates, ensuring they stay on course and build lasting routines, whether it’s for the gym, dieting, or other personal goals.",
+    overview: "AI habit coach, tiny wins.",
+    category: "AI/ML Solution",
+    problemCode: "AI-003",
+  },
+  {
+    _id: "6802168140a25d5ec03acb30",
+    title: "Community Skill Barter Platform",
+    description:
+      "Neha is an excellent graphic designer but struggles with coding. She often finds herself wishing for a way to get help with programming without having to hire expensive developers. She dreams of a platform where people like her can exchange skills with others in their community, offering their expertise in design in exchange for coding assistance. A smart solution is needed to create a Community Skill Barter Platform where individuals can connect, share their skills, and trade services, fostering collaboration and helping everyone learn, grow, and accomplish more without financial barriers.",
+    overview: "Trade skills, no money.",
+    category: "Community Platform",
+    problemCode: "COM-001",
+  },
+  {
+    _id: "6802168140a25d5ec03acb31",
+    title: "Freelancer Marketplace with Smart Contracts",
+    description:
+      "Ravi, a freelancer, is tired of clients ghosting him after he delivers his work. Despite his best efforts, he often ends up without payment or clear communication, leaving him frustrated and unpaid. He wishes for a platform that guarantees fair compensation and accountability. A smart solution is needed to build a Freelancer Marketplace with Smart Contracts, where freelancers like Ravi can securely execute projects, with automated contracts ensuring payment upon completion. This system will eliminate disputes, protect both parties, and create a trusted environment where freelancers can focus on their work, knowing they’ll get paid fairly and on time.",
+    overview: "No scams, auto-payments.",
+    category: "Blockchain",
+    problemCode: "BC-001",
+  },
+  {
+    _id: "6802168140a25d5ec03acb32",
+    title: "Transparent Donation Tracker",
+    description:
+      "Aditi regularly donates to various NGOs, but she often wonders where her money actually goes and how it's being used. Despite trusting the organizations, she feels disconnected from the impact her contributions make. She wishes for a system that provides transparency, showing exactly how her donations are spent and the outcomes they generate. A smart solution is needed to create a Transparent Donation Tracker, where donors like Aditi can see a real-time breakdown of their donations, track project progress, and receive updates on the difference their contributions are making, ensuring trust and encouraging more giving.",
+    overview: "Track donations, no secrets.",
+    category: "Blockchain",
+    problemCode: "BC-002",
+  },
+  {
+    _id: "6802168140a25d5ec03acb33",
+    title: "Empowering Remote Workers with Task/Goal Accountability",
+    description:
+      "Mark is a remote worker who often struggles with productivity and staying accountable to his goals. While he enjoys the flexibility of working from home, he finds it hard to stick to a routine without the structure of an office environment. He wishes for a tool that would not only track his tasks but also hold him accountable by rewarding small milestones, setting up virtual challenges with friends, and encouraging healthy work habits like taking breaks and maintaining work-life balance. The goal is to gamify productivity in a way that motivates remote workers to stay on track and reach their goals.",
+    overview: "Gamified productivity and goal tracking.",
+    category: "Digital Nomads",
+    problemCode: "DN-002",
+  },
+  {
+    _id: "6802168140a25d5ec03acb34",
+    title: "AI – Personalized Education for Remote Learning",
+    description:
+      "8th grader Kavya finds online classes boring and struggles to stay engaged with the generic teaching methods. She often feels left behind as the pace doesn’t match her learning style. Kavya wishes for an AI tutor that can personalize lessons, track her progress, and make learning more interactive and fun. A smart solution is needed to create an AI-powered Personalized Education System for remote learning, where students like Kavya can receive customized lessons, real-time feedback, and engaging content tailored to their unique strengths and weaknesses, helping them stay motivated and excel in their studies.",
+    overview: "AI tutor, learns your way.",
+    category: "AI/ML Solution",
+    problemCode: "AI-004",
+  },
+  {
+    _id: "6802168140a25d5ec03acb35",
+    title: "AI-Powered Legal Assistant for Contracts",
+    description:
+      "Startup founder Raj often gets confused by the legal jargon in contracts, making him anxious about signing agreements. He needs a simple way to understand complex legal terms and ensure he’s not missing critical clauses. Raj wishes for an AI-powered assistant that can analyze contracts, explain terms in plain language, and highlight important details or potential risks. A smart solution is needed to create an AI-powered Legal Assistant for Contracts, helping entrepreneurs like Raj quickly and easily understand legal documents, make informed decisions, and avoid costly mistakes, all without the need for expensive legal consultations.",
+    overview: "AI lawyer, simplifies contracts.",
+    category: "AI/ML Solution",
+    problemCode: "AI-005",
+  },
+  {
+    _id: "6802168140a25d5ec03acb36",
+    title: "Decentralized Identity Wallet",
+    description:
+      "Techie Aarav hates remembering countless passwords and is constantly worried about data breaches and identity theft. With so many online accounts, keeping track of login details and securing personal information has become a major hassle. He wishes for a more secure, hassle-free solution to manage his digital identity. A smart solution is needed to create a Decentralized Identity Wallet, allowing Aarav and others to store and manage their personal data securely, using blockchain technology. This system would provide a single, encrypted access point to verify identity, eliminating the need for multiple passwords and reducing the risk of data leaks.",
+    overview: "Own your ID, no leaks.",
+    category: "Blockchain",
+    problemCode: "BC-003",
+  },
+  {
+    _id: "68029066d86c28102dcb4e44",
+    title: "Open Innovation: Build What Matters",
+    description:
+      "Why limit innovation to predefined problems? Some of the best solutions come from exploring new ideas that don’t fit within traditional boundaries. The challenge is to create an open platform where innovators can propose their own problems and solutions, without restrictions, while tapping into the collective creativity of the community. This approach encourages out-of-the-box thinking and empowers individuals to build what truly matters to them and society. A smart solution is needed to foster Open Innovation, enabling people to connect, collaborate, and create solutions that go beyond conventional constraints, driving meaningful change in various sectors.",
+    overview:
+      "No constraints. No boundaries. Just innovation. Bring your own problem, build your own solution.",
+    category: "Open Innovation",
+    problemCode: "ON-001",
+  },
+];
+
+const Card = ({ problem }: { problem: any }) => {
   return (
     <div className="perspective-[1000px]">
       <div className="relative w-[220px] h-[300px] cursor-pointer transition-all duration-200 group">
@@ -157,7 +306,7 @@ const CountdownTimer = ({ onTimeUp }: { onTimeUp: () => void }) => {
         // const daysUntilSaturday = (6 - day + 7) % 7 || 7; // If already Saturday, move to next
         // target.setDate(now.getDate() + daysUntilSaturday);
         // target.setHours(11, 0, 0, 0); // 11:00 AM
-        target.setHours(11, 0, 0, 0);
+        target.setHours(11, 10, 0, 0);
         localStorage.setItem("testTargetTime", target.toString());
       } else {
         target = new Date(savedTarget);
@@ -401,11 +550,11 @@ const CountdownTimer = ({ onTimeUp }: { onTimeUp: () => void }) => {
 };
 
 export function ProblemStatement() {
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
-  const { problems, loading, error } = useSelector(
-    (state: RootState) => state.participant
-  );
+  // const { problems, loading, error } = useSelector(
+  //   (state: RootState) => state.participant
+  // );
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [timeUp, setTimeUp] = useState(() => {
@@ -422,16 +571,16 @@ export function ProblemStatement() {
     localStorage.setItem("timeUp", String(timeUp));
   }, [timeUp]);
 
-  useEffect(() => {
-    dispatch(fetchProblemsThunk());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchProblemsThunk());
+  // }, [dispatch])
 
   // Get unique categories from problems
   const categories = useMemo(() => {
     const categorySet = new Set<string>();
     problems.forEach((p) => categorySet.add(p.category));
     return ["All", ...Array.from(categorySet)];
-  }, [problems]);
+  }, []);
 
   // Handle start final countdown
   const handleStartFinalCountdown = () => {
@@ -449,15 +598,15 @@ export function ProblemStatement() {
     selectedCategory === "All"
       ? problems
       : problems.filter(
-          (problem: Problem) =>
+          (problem) =>
             problem.category.toLowerCase() === selectedCategory.toLowerCase()
         );
 
-  if (error) {
-    return (
-      <h1 className="text-red-500">Error loading problem statements...</h1>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <h1 className="text-red-500">Error loading problem statements...</h1>
+  //   );
+  // }
   return (
     <>
       <Header />
@@ -539,13 +688,9 @@ export function ProblemStatement() {
 
               <div className="mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-18 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {loading ? (
-                    <h1 className="text-white">Loading...</h1>
-                  ) : (
-                    filteredProblems.map((problem) => (
-                      <Card key={problem._id} problem={problem} />
-                    ))
-                  )}
+                  {filteredProblems.map((problem) => (
+                    <Card key={problem._id} problem={problem} />
+                  ))}
                 </div>
               </div>
 
