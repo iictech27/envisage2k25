@@ -153,10 +153,11 @@ const CountdownTimer = ({ onTimeUp }: { onTimeUp: () => void }) => {
         target = target = new Date();
 
         // Set target to upcoming Saturday 11:00 AM
-        const day = now.getDay(); // 0 (Sun) to 6 (Sat)
-        const daysUntilSaturday = (6 - day + 7) % 7 || 7; // If already Saturday, move to next
-        target.setDate(now.getDate() + daysUntilSaturday);
-        target.setHours(11, 0, 0, 0); // 11:00 AM
+        // const day = now.getDay(); // 0 (Sun) to 6 (Sat)
+        // const daysUntilSaturday = (6 - day + 7) % 7 || 7; // If already Saturday, move to next
+        // target.setDate(now.getDate() + daysUntilSaturday);
+        // target.setHours(11, 0, 0, 0); // 11:00 AM
+        target.setHours(11, 0, 0, 0);
         localStorage.setItem("testTargetTime", target.toString());
       } else {
         target = new Date(savedTarget);
